@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 import RestaurantCard from "./RestaurantCard";
-import restaurantList from "../utils/mockData";
 import { swiggy_api_URL } from '../utils/constants';
 import Shimmer from './Shimmer';
 import { Link } from 'react-router-dom';
@@ -22,9 +21,7 @@ const Body = () => {
     async function fetchData()  {
         try{
             const response = await fetch(swiggy_api_URL);
-            // console.log(data);
             const json = await response.json();
-            console.log(json);
              
             // initialize checkJsonData() function to check Swiggy Restaurant data
             async function checkJsonData(jsonData){
@@ -40,6 +37,7 @@ const Body = () => {
                 }
             }
             const resData = await checkJsonData(json);
+          
 
             setListOfRestaurant(resData);
             setFilteredRestaurant(resData);
@@ -50,12 +48,7 @@ const Body = () => {
        
     }
    
-    // console.log(listOfRestaurants);
-
-    // Conditional Rendering
-    // if (listOfRestaurants.length === 0)
-    //    return <Shimmer/>
-
+  
     const onlineStatus = useOnlineStatus();
 
     if(onlineStatus === false)
@@ -73,26 +66,26 @@ const Body = () => {
                            setSerachText(e.target.value);
                        }}
                        />
-                    <button className='px-4 py-2 m-4 bg-green-100 rounded-lg'
-                    onClick={() => {
-                        // Filter the restaurant cards and update the UI
-                        // serachText
-                        console.log(searchText);
+                    <button 
+                        className='px-4 py-2 m-4 bg-green-100 rounded-lg'
+                        onClick={() => {
+                            // Filter the restaurant cards and update the UI
+                            // serachText
+                            // console.log(searchText);
 
-                        const filteredRestaurant = listOfRestaurants.filter((restaurant) => 
-                        restaurant?.info?.name.toLowerCase().includes(searchText.toLowerCase()))
+                            const filteredRestaurant = listOfRestaurants.filter((restaurant) => 
+                            restaurant?.info?.name.toLowerCase().includes(searchText.toLowerCase()))
 
-                        setFilteredRestaurant(filteredRestaurant);
-                    }}>Search</button>
+                            setFilteredRestaurant(filteredRestaurant);
+                        }}>Search</button>
                 </div>
-                <div className='search m-4 p-4 flex items-center rounded-lg'>
-                    <button className="px-4 py-2 bg-gray-100"
+                <div className='search m-4 p-4 flex items-center'>
+                    <button className="px-4 py-2 bg-gray-100 rounded-lg"
                     onClick={() =>{
                         const filteredList = listOfRestaurants.filter(
-                            (res) => res.info.avgRating > 4
+                            (res) => res.info.avgRating > 4.2
                         )
-                        // console.log(listOfRestaurants);
-                        setListOfRestaurant(filteredList);
+                        setFilteredRestaurant(filteredList);
                     }}
                     >
                     Top Rated Restaurant</button>
@@ -101,10 +94,10 @@ const Body = () => {
             <div className="flex flex-wrap">
                 {filteredRestaurant.map((restaurant) => (
                     <Link
-                        key={restaurant?.info?.id}
+                        key={restaurant?.info.id}
                         to={"/restaurants/" + restaurant?.info?.id}
                     >
-                        <RestaurantCard key={restaurant?.info?.id} {...restaurant?.info} />
+                        <RestaurantCard key={restaurant?.info?.id} {...restaurant?.info} />  
                     </Link>
                 ))}
             </div>
