@@ -1,18 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
 import { swiggy_api_URL } from '../utils/constants';
 import Shimmer from './Shimmer';
 import { Link } from 'react-router-dom';
 import useOnlineStatus from '../utils/useOnlineStatus';
+import UserContext from '../utils/UserContext';
 
 
 const Body = () => {
     // Local State Variable - Super Power Variable
     const [listOfRestaurants, setListOfRestaurant] = useState([]);
     const [filteredRestaurant, setFilteredRestaurant] = useState([]);
-
     const [searchText, setSerachText] = useState("");
+
+    // const RestaurantCardPromoted = withPromotedLabel(withPromotedLabel);
 
     useEffect(() => {
       fetchData();
@@ -54,6 +56,8 @@ const Body = () => {
     if(onlineStatus === false)
        return <h1> Looks like you are offline!! Please check your internet connection</h1>
 
+    const {loggedInUser, setUserName} = useContext(UserContext);
+
     return listOfRestaurants.length === 0 ? <Shimmer/> :(
         <div className="body">
             <div className="filter flex">
@@ -70,9 +74,6 @@ const Body = () => {
                         className='px-4 py-2 m-4 bg-green-100 rounded-lg'
                         onClick={() => {
                             // Filter the restaurant cards and update the UI
-                            // serachText
-                            // console.log(searchText);
-
                             const filteredRestaurant = listOfRestaurants.filter((restaurant) => 
                             restaurant?.info?.name.toLowerCase().includes(searchText.toLowerCase()))
 
@@ -90,6 +91,14 @@ const Body = () => {
                     >
                     Top Rated Restaurant</button>
                     </div>
+                    <div className="search m-4 p-4 flex items-center">
+                    <label> UserName : </label>
+                    <input
+                        className="border border-black p-2"
+                        value={loggedInUser}
+                        onChange={(e) => setUserName(e.target.value)}
+                    />
+            </div>
             </div>
             <div className="flex flex-wrap">
                 {filteredRestaurant.map((restaurant) => (
@@ -97,7 +106,14 @@ const Body = () => {
                         key={restaurant?.info.id}
                         to={"/restaurants/" + restaurant?.info?.id}
                     >
-                        <RestaurantCard key={restaurant?.info?.id} {...restaurant?.info} />  
+                        {/* if the restaurants is Promoted then add a Promoted lable to it  */}
+
+                        {/* {restaurant.data.promoted ? (
+                            <RestaurantCardPromoted key={restaurant?.info?.id} {...restaurant?.info} />  
+                        ):( */}
+                            <RestaurantCard key={restaurant?.info?.id} {...restaurant?.info} />  
+                        {/* )} */}
+
                     </Link>
                 ))}
             </div>

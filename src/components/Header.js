@@ -1,12 +1,16 @@
 import { LOGO_URL } from '../utils/constants';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import useOnlineStatus from '../utils/useOnlineStatus';
+import UserContext from '../utils/UserContext';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
     const [btnNameReact, setBtnNameReact] = useState('login');
-    // let btnName = 'Login';
-    
+    const { loggedInUser } = useContext(UserContext);
+
+    // Subscribing to the store using a Selector
+    const cartItems = useSelector((store) => store.cart.items);
     const onlineStatus = useOnlineStatus();
 
     return (
@@ -31,22 +35,25 @@ const Header = () => {
                     <li className='px-3'>
                         <Link to="/grocery">Grocery</Link>
                     </li>
-                    <li className='px-3'>Cart</li>
+                    <li className='px-3 font-bold text-xl'>
+                        <Link to='/cart'> Cart - ({cartItems.length} items) </Link>
+                    </li>
                     <button
                     className='login'
                     onClick={() =>{
                         btnNameReact === 'Login'
                         ? setBtnNameReact('Logout')
                         : setBtnNameReact('Login')
-                        // console.log(btnName);
                     }}
                     >
                     {btnNameReact}
                     </button>
+                    <li className='px-4'>{loggedInUser}</li>
                 </ul>
             </div>
         </div>
     )
 }
+
 
 export default Header;

@@ -3,20 +3,20 @@ import { swiggy_menu_api_URL } from '../utils/constants';
 
 
 const useRestaurantMenu = (resId) => {
-    const [resInfo, setResInfo] = useState(null);
+   const [resInfo, setResInfo] = useState(null);
 
-    useEffect(() =>{
+   useEffect(() =>{
        fetchData();
-    }, []);
+   }, []);
 
-    const fetchData = async () => {
-       const data = await fetch(swiggy_menu_api_URL + resId);
-       const json = await data.json();
+   const fetchData = async () => {
+      const data = await fetch(swiggy_menu_api_URL + resId);
+      const json = await data.json();
 
-       setResInfo(json.data);
-    }
+      setResInfo(json.data);
+   }
 
-    return resInfo;
+   return resInfo;
 }
 
 
