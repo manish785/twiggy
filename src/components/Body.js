@@ -20,36 +20,49 @@ const Body = () => {
       fetchData();
     }, []);
  
-    async function fetchData()  {
-        try{
-            const response = await fetch(swiggy_api_URL);
+    async function fetchData() {
+        const swiggy_api_URL = 'https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING';
+      
+        try {
+            const response = await fetch(`https://thingproxy.freeboard.io/fetch/${swiggy_api_URL}`, {
+            method: 'GET',
+            headers: {
+                'Origin': 'http://localhost:54442',
+                'Content-Type': 'application/json',
+                // Add any other headers if needed
+            },
+            });
+        
+            console.log('Response:', response);
+        
             const json = await response.json();
-             
-            // initialize checkJsonData() function to check Swiggy Restaurant data
-            async function checkJsonData(jsonData){
-                for(let i=0; i< jsonData?.data?.cards.length; i++){
+            console.log('JSON Data:', json);
+      
+         
+        // initialize checkJsonData() function to check Swiggy Restaurant data
+        async function checkJsonData(jsonData){
+            for(let i=0; i< jsonData?.data?.cards.length; i++){
 
-                    // initialize checkData for Swiggy Restaurant data
-                    let checkData = json?.data?.cards[i]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+                // initialize checkData for Swiggy Restaurant data
+                let checkData = json?.data?.cards[i]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
 
-                    // if checkData is not undefined then return it
-                    if(checkData !== undefined){
-                        return checkData;
-                    }
+                // if checkData is not undefined then return it
+                if(checkData !== undefined){
+                    return checkData;
                 }
             }
-            const resData = await checkJsonData(json);
-          
-
-            setListOfRestaurant(resData);
-            setFilteredRestaurant(resData);
-        }catch(err){
-            console.log('err', err);
-            return;
         }
-       
-    }
-   
+        const resData = await checkJsonData(json);
+        
+
+        setListOfRestaurant(resData);
+        setFilteredRestaurant(resData);
+        } catch (err) {
+          console.log('Error:', err);
+          // Handle the error as needed
+        }
+      }
+      
   
     const onlineStatus = useOnlineStatus();
 
