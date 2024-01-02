@@ -1,49 +1,61 @@
 import { useDispatch } from 'react-redux';
-import { addItem } from '../utils/cartSlice';
-import { CDN_URL } from '../utils/constants';
+import { addItem, increaseQuantity, decreaseQuantity, removeItem } from '../utils/cartSlice';
+import { CDN_URL, MENU_ITEM_URL } from '../utils/constants';
 
-const ItemList = ({ items }) => {
-    const dispatch = useDispatch();
 
-    const handleAddItem = ( item ) => {
-      // Dispatch the action
-      dispatch(addItem(item));
-    }
+const ItemList = (props) => {
+  const { items } = props;
+  console.log(items);
+  const { imageId, name, qty, price, defaultPrice, isVeg} = items;
+  const dispatch = useDispatch();
+  const increaseQty = (item) => {
+    //dispatch an action
+    dispatch(increaseQuantity(item));
+  };
+  const decreaseQty = (item) => {
+    //dispatch an action
+    dispatch(decreaseQuantity(item));
+  };
+  const remove= (item)=>{
+    dispatch(removeItem(item));
+  }
 
-    return (
-      <div>
-        {items.map((item) => (
-          <div
-            key={item.card.info.id}
-            className="p-2 m-2 border-gray-200 border-b-2 text-left flex justify-between"
-          >
-            <div className="w-9/12">
-              <div className="py-2">
-                <span>{item.card.info.name}</span>
-                <span>
-                  - ₹
-                  {item.card.info.price
-                    ? item.card.info.price / 100
-                    : item.card.info.defaultPrice / 100}
-                </span>
-              </div>
-              <p className="text-xs">{item.card.info.description}</p>
-            </div>
-            <div className='w-3/12 p-4'>
-                <div className='absolute'>
-                  <button className='p-2 mx-16 rounded-lg bg-black text-white shadow-lg'
-                  onClick={() => handleAddItem(item)}
-                  >
-                      Add+
-                  </button>
-                </div>
-                <img src={CDN_URL + item.card.info.imageId} className="w-full" />
-            </div>
-          </div>
-        ))}
+  // const decreaseQty=(item)=>{
+  //     dispatch(decreaseQuantity(item));
+  // };
+
+  return (
+    <div className="flex justify-between flex-nowrap ">
+      <div className="flex"> 
+        <img className="p-2 w-28 md:w-40" src={MENU_ITEM_URL + imageId}></img>
+        <div className="mt-3 m-2 mr-10">
+          <h2 className=" text-base lg:text-lg font-bold">{name}</h2>
+        </div>
       </div>
+
+      <div className="p-4  m-auto flex flex-col">
+        <div className="sm:text-center">
+        <button className=" m-0 bg-slate-200 p-1 pl-2 rounded-l-lg text-red-700 font-bold"
+            onClick={() => {
+              (qty==1) ? remove(items) : decreaseQty(items);
+            }}
+          >
+            -
+          </button>
+          <button className=" m-0 p-1 bg-slate-200">{qty}</button>
+          <button className=" bg-slate-200 m-0 p-1 pr-2 rounded-r-lg text-green-700 font-bold"
+            onClick={() => increaseQty(items)}
+          >
+            +
+          </button>
+        </div>
+          <span className="px-3 sm:text-center m-4">
+          {" "}
+          {" Rs."}
+          {(price * qty) / 100 || (defaultPrice * qty) / 100}
+          </span>
+      </div>
+    </div>
   );
 };
-
-
 export default ItemList;

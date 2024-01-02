@@ -6,6 +6,7 @@ import Shimmer from './Shimmer';
 import { Link } from 'react-router-dom';
 import useOnlineStatus from '../utils/useOnlineStatus';
 import UserContext from '../utils/UserContext';
+import { data } from './mocks/MOCK_RES_DATA'
 
 
 const Body = () => {
@@ -21,21 +22,9 @@ const Body = () => {
     }, []);
  
     async function fetchData() {
-        const swiggy_api_URL = 'https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING';
       
         try {
-            const response = await fetch(`https://thingproxy.freeboard.io/fetch/${swiggy_api_URL}`, {
-            method: 'GET',
-            headers: {
-                'Origin': 'http://localhost:54442',
-                'Content-Type': 'application/json',
-                // Add any other headers if needed
-            },
-            });
-        
-            console.log('Response:', response);
-        
-            const json = await response.json();
+            const json = data;
             console.log('JSON Data:', json);
       
          
