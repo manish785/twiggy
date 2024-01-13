@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 
-import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
+import RestaurantCard from "./RestaurantCard";
 import { swiggy_api_URL } from '../utils/constants';
 import Shimmer from './Shimmer';
 import { Link } from 'react-router-dom';
@@ -21,7 +21,7 @@ const Body = () => {
       fetchData();
     }, []);
  
-    async function fetchData() {
+    function fetchData() {
       
         try {
             const json = data;
@@ -29,7 +29,7 @@ const Body = () => {
       
          
         // initialize checkJsonData() function to check Swiggy Restaurant data
-        async function checkJsonData(jsonData){
+        function checkJsonData(jsonData){
             for(let i=0; i< jsonData?.data?.cards.length; i++){
 
                 // initialize checkData for Swiggy Restaurant data
@@ -41,7 +41,7 @@ const Body = () => {
                 }
             }
         }
-        const resData = await checkJsonData(json);
+        const resData =  checkJsonData(json);
         
 
         setListOfRestaurant(resData);
@@ -62,46 +62,40 @@ const Body = () => {
 
     return listOfRestaurants.length === 0 ? <Shimmer/> :(
         <div className="body">
-            <div className="filter flex">
-                <div className='search m-4 p-4'>
-                    <input 
-                       type="text" 
-                       data-testid="searchInput"
-                       className='border border-solid border-black' 
-                       value={searchText}
-                       onChange={(e) =>{
-                           setSerachText(e.target.value);
-                       }}
-                       />
-                    <button 
-                        className='px-4 py-2 m-4 bg-green-100 rounded-lg'
-                        onClick={() => {
-                            // Filter the restaurant cards and update the UI
-                            const filteredRestaurant = listOfRestaurants.filter((restaurant) => 
-                            restaurant?.info?.name.toLowerCase().includes(searchText.toLowerCase()))
+            <div className="">
+                <div className='flex flex-wrap justify-between'>
+                    <div className='search m-4 p-4'>
+                        <input 
+                        type="text" 
+                        data-testid="searchInput"
+                        className='border border-solid border-black' 
+                        value={searchText}
+                        onChange={(e) =>{
+                            setSerachText(e.target.value);
+                        }}
+                        />
+                        <button 
+                            className='px-4 py-2 m-4 bg-violet-100 rounded-lg'
+                            onClick={() => {
+                                // Filter the restaurant cards and update the UI
+                                const filteredRestaurant = listOfRestaurants.filter((restaurant) => 
+                                restaurant?.info?.name.toLowerCase().includes(searchText.toLowerCase()))
 
-                            setFilteredRestaurant(filteredRestaurant);
-                        }}>Search</button>
-                </div>
-                <div className='search m-4 p-4 flex items-center'>
-                    <button className="px-4 py-2 bg-gray-100 rounded-lg"
-                    onClick={() =>{
-                        const filteredList = listOfRestaurants.filter(
-                            (res) => res.info.avgRating > 4.2
-                        )
-                        setFilteredRestaurant(filteredList);
-                    }}
-                    >
-                    Top Rated Restaurant</button>
+                                setFilteredRestaurant(filteredRestaurant);
+                            }}>Search</button>
                     </div>
-                    <div className="search m-4 p-4 flex items-center">
-                    <label> UserName : </label>
-                    <input
-                        className="border border-black p-2"
-                        value={loggedInUser}
-                        onChange={(e) => setUserName(e.target.value)}
-                    />
-            </div>
+                    <div className='search m-4 p-4 flex items-center'>
+                        <button className="px-4 py-2 bg-violet-100 rounded-lg"
+                        onClick={() =>{
+                            const filteredList = listOfRestaurants.filter(
+                                (res) => res.info.avgRating > 4.2
+                            )
+                            setFilteredRestaurant(filteredList);
+                        }}
+                        >
+                        Top Rated Restaurant</button>
+                    </div>
+                </div>
             </div>
             <div className="flex flex-wrap">
                 {filteredRestaurant.map((restaurant) => (

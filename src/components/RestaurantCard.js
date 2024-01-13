@@ -23,9 +23,13 @@ const RestaurantCard = ({
             />
             <h3 className='font-bold py-4 text-lg'>{name}</h3>
             <h4>{cuisines ? cuisines.join(", ") : "Cuisine information not available"}</h4>
-            <h4>{avgRating} stars</h4>
-            <h4>{costForTwo ?? '₹200 for two'}</h4>
-            {sla && sla.deliveryTime && (<h4>{sla.deliveryTime} minutes</h4>)}
+            <div className="flex justify-between items-center text-gray-600 mt-4 text-sm ">
+            <h4 className=" px-2 p-1 bg-green-700 rounded-md text-white ">
+                <p className="">★{avgRating}</p>{" "}
+            </h4>
+            <h4>{sla.deliveryTime} mins</h4>
+            <h4>{costForTwo}</h4>
+            </div>
         </div>
     )
 }
