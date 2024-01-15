@@ -25,9 +25,8 @@ const Body = () => {
       
         try {
             const json = data;
-            console.log('JSON Data:', json);
-      
-         
+           
+        
         // initialize checkJsonData() function to check Swiggy Restaurant data
         function checkJsonData(jsonData){
             for(let i=0; i< jsonData?.data?.cards.length; i++){
@@ -47,7 +46,6 @@ const Body = () => {
         setListOfRestaurant(resData);
         setFilteredRestaurant(resData);
         } catch (err) {
-          console.log('Error:', err);
           // Handle the error as needed
         }
       }

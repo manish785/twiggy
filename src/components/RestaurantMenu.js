@@ -25,7 +25,6 @@ const RestaurantMenu = () => {
 
     const {name, cuisines, costForTwoMessage} = resInfo?.info;
     const itemCards = resInfo?.itemCards;
-    console.log(itemCards);
   
     // const categories =
     // resInfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
@@ -38,10 +37,8 @@ const RestaurantMenu = () => {
     if (itemCards.length != 0) {
         itemCards.forEach((element) => {
           element.card.info.qty = 0;
-          console.log(element.card.info);
         });
       }
-      console.log(itemCards);
 
     return (
         <div className="menu lg:mx-40 ">

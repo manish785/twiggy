@@ -5,7 +5,7 @@ import { CDN_URL, MENU_ITEM_URL } from '../utils/constants';
 
 const ItemList = (props) => {
   const { items } = props;
-  console.log(items);
+ 
   const { imageId, name, qty, price, defaultPrice, isVeg} = items;
   const dispatch = useDispatch();
   const increaseQty = (item) => {
