@@ -2,6 +2,7 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 
 
 const Contact = () => {
+
   return (
     <div>
       <h1 className='font-bold text-3xl p-4 m-4'>Contact Us Page</h1>

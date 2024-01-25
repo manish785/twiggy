@@ -12,7 +12,9 @@ const RestaurantMenu = () => {
     const { resId } = useParams();
     const dummy = 'Dummy Data';
     const resInfo = useRestaurantMenu(resId);
+    console.log('elon bhai', resInfo);
     const [showIndex, setShowIndex] = useState(null);
+    const [data, setData] = useState(null);
     const dispatch = useDispatch();
     const addFoodItem = (item) => {
         //dispatch an action
@@ -23,9 +25,6 @@ const RestaurantMenu = () => {
         return <Shimmer/>
     }
 
-    const {name, cuisines, costForTwoMessage} = resInfo?.info;
-    const itemCards = resInfo?.itemCards;
-  
     // const categories =
     // resInfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
     //   (c) =>
@@ -33,6 +32,14 @@ const RestaurantMenu = () => {
     //     "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
     // );
 
+    // setData(categories);
+
+    // if(data === null){
+    //   return <Shimmer/>
+    // }
+
+    const {name, cuisines, costForTwoMessage} = resInfo?.info;
+    const itemCards = resInfo?.itemCards;
 
     if (itemCards.length != 0) {
         itemCards.forEach((element) => {
