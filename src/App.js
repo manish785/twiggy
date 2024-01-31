@@ -10,6 +10,7 @@ import Body from "./components/Body";
 import Contact from "./components/Contact";
 import Error from "./components/Error";
 import Cart from "./components/Cart";
+import  Footer  from "./components/Footer";
 import RestaurantMenu from "./components/RestaurantMenu";
 import UserContext from "./utils/UserContext";
 
@@ -44,6 +45,7 @@ const AppLayout = () => {
                 <React.Fragment>
                     <Header />
                     <Outlet />
+                    <Footer/>
                 </React.Fragment>
             </div>
         </UserContext.Provider>
