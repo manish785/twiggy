@@ -12,6 +12,7 @@ import Error from "./components/Error";
 import Cart from "./components/Cart";
 import  Footer  from "./components/Footer";
 import RestaurantMenu from "./components/RestaurantMenu";
+import Login from "./components/Login";
 import UserContext from "./utils/UserContext";
 
 import appStore from "./utils/appStore";
@@ -45,7 +46,7 @@ const AppLayout = () => {
                 <React.Fragment>
                     <Header />
                     <Outlet />
-                    <Footer/>
+                    {/* <Footer/> */}
                 </React.Fragment>
             </div>
         </UserContext.Provider>
@@ -85,6 +86,10 @@ const appRouter = createBrowserRouter([
             {
                 path: '/cart',
                 element: <Cart/>
+            },
+            {
+                path: '/login',
+                element: <Login/>
             },
         ],
         errorElement: <Error/>

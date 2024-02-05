@@ -38,7 +38,10 @@ const Header = () => {
                     <li className='px-3 font-bold text-xl'>
                         <Link to='/cart'> Cart - ({cartItems.length} items) </Link>
                     </li>
-                    <button
+                    <li className='px-3 font-bold text-xl'>
+                        <Link to='/login'>Login</Link>
+                    </li>
+                    {/* <button
                     className='login'
                     onClick={() =>{
                         btnNameReact === 'Login'
@@ -47,7 +50,7 @@ const Header = () => {
                     }}
                     >
                     {btnNameReact}
-                    </button>
+                    </button> */}
                     <li className='px-4'>{loggedInUser}</li>
                 </ul>
             </div>

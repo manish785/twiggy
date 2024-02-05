@@ -1,5 +1,5 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
-
+import Footer from './Footer';
 
 const Contact = () => {
 
@@ -21,6 +21,9 @@ const Contact = () => {
          Submit
         </button>
       </form>
+       <div className='mt-[100px]'>
+          <Footer/>
+       </div>
     </div>
   );
 };
