@@ -39,7 +39,7 @@ const Header = () => {
                         <Link to='/cart'> Cart - ({cartItems.length} items) </Link>
                     </li>
                     <li className='px-3 font-bold text-xl'>
-                        <Link to='/login'>Login</Link>
+                        <Link to='/login'>Logout</Link>
                     </li>
                     {/* <button
                     className='login'
