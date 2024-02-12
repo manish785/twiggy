@@ -100,17 +100,17 @@ const Login = () => {
     }
 
     return (
-        <div className='mt-[-224px]'>
+        <div className='mt-[-224px] full-screen'>
             <div className="absolute">
                 <img
-                    className="h-screen w-screen object-cover"
+                    className="h-[800px] w-screen object-cover"
                     src={BG_URL}
                     alt="BG-IMG"
                 />
             </div>
             <form
                 onSubmit={(e) => e.preventDefault()}
-                className="absolute mt-[70px] left-0 right-0 w-[70%] md:w-[70%] xl:w-[25%] p-4 md:p-8 mx-auto text-white bg-black rounded-lg my-36 bg-opacity-888 "
+                className="absolute mt-[130px] left-0 right-0 w-[70%] md:w-[70%] xl:w-[25%] p-4 md:p-8 mx-auto text-white bg-black rounded-lg my-36 bg-opacity-888 "
             >
                 <h1 className="py-4 text-3xl font-bold">
                     {isLoggedIn ? 'Logout' : (isSignInForm ? 'Sign In' : 'Sign Up')}
