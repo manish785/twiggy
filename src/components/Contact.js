@@ -4,6 +4,7 @@ import Footer from './Footer';
 const Contact = () => {
 
   return (
+    <>
     <div className='w-full h-[290px]'>
       <h1 className='font-bold text-3xl p-4 m-[-2px]'>Contact Us Page</h1>
       <form>
@@ -21,10 +22,11 @@ const Contact = () => {
          Submit
         </button>
       </form>
-       <div className='mt-[100px]'>
-          <Footer/>
-       </div>
     </div>
+    <div className='mt-[100px]'>
+    <Footer/>
+    </div>
+    </>
   );
 };
 
