@@ -17,3 +17,5 @@ export const USER_AVATAR = "https://occ-0-6247-2164.1.nflxso.net/dnm/api/v6/K6hj
 export const BG_URL = "https://img.freepik.com/free-vector/gradient-connection-background_52683-117380.jpg?w=1480&t=st=1706862815~exp=1706863415~hmac=813d8c3cb05c44922d79b65764b217c87c9b5f662717f26d3985fa14eb6413bf";
 
 export const GET_RESTAURANTS_URL = process.env.REACT_APP_SWIGGY_API;
+
+export const GROCERY_URL = 'https://cdn.dribbble.com/users/90631/screenshots/16812389/media/7afe0c556ede3387b72f21fe5cc60a57.png';

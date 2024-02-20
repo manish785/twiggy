@@ -1,13 +1,18 @@
 import Footer from "./Footer";
+import { GROCERY_URL } from '../utils/constants';
 
 const Grocery = () => {
     
     return(
         <>
         <div className="w-full h-[290px]">
-            <h1>Our Grocery Online Store, and we have a lot of child components inside the web page</h1>
+            <img
+             className="h-[1000px] w-full mt-[0px] relative"
+             src={GROCERY_URL}
+             alt='grocery-url'
+            />
         </div>
-        <div className='mt-[100px]'>
+        <div className='mt-[710px]'>
         <Footer/>
         </div>
         </>

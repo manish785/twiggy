@@ -7,7 +7,7 @@ const ItemList = (props) => {
     const { items } = props;
     console.log('hi', items);
   
-    const { imageId, name, qty, price, defaultPrice, isVeg } = items[0];
+    const { imageId, name, qty, price, defaultPrice, isVeg } = items;
     console.log('manish', imageId);
     const dispatch = useDispatch();
     const increaseQty = (item) => {
@@ -60,4 +60,6 @@ const ItemList = (props) => {
       </div>
     );
 };
+
+
 export default ItemList;
