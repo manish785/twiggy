@@ -9,8 +9,6 @@ import { data } from './mocks/MOCK_RES_DATA';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-// import leftA from "../img/left-arrow.png";
-// import rightA from "../img/right-arrow.png";
 
 
 const Body = () => {
@@ -214,7 +212,7 @@ const Body = () => {
                             placeholder=""
                             className='m-2 mx-9 p-2 border border-black border-solid rounded-lg'
                             value={searchText}
-                            onChange={(e) => setSearchText(e.target.value)}
+                            onChange={(e) => setSerachText(e.target.value)}
                         />
                         <button className='px-2 py-2 m-4 bg-pink-100 rounded-lg' onClick={() => {
                             const filteredList = listOfRestaurants.filter((res) => res?.info?.name.toLowerCase().includes(searchText.toLowerCase()));
@@ -261,11 +259,12 @@ const Body = () => {
                 </div>
             </div>
 
-           <div className='mt-[-1px]'>
-               <Footer/>
-           </div> 
+            <div className='mt-[-1px]'>
+                <Footer/>
+            </div> 
         </div>
     );
 }
+
 
 export default Body;

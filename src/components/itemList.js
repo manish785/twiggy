@@ -5,8 +5,10 @@ import { CDN_URL, MENU_ITEM_URL } from '../utils/constants';
 
 const ItemList = (props) => {
     const { items } = props;
+    console.log('hi', items);
   
-    const { imageId, name, qty, price, defaultPrice, isVeg} = items;
+    const { imageId, name, qty, price, defaultPrice, isVeg } = items[0];
+    console.log('manish', imageId);
     const dispatch = useDispatch();
     const increaseQty = (item) => {
       //dispatch an action
@@ -27,7 +29,7 @@ const ItemList = (props) => {
     return (
       <div className="flex justify-between flex-nowrap ">
         <div className="flex"> 
-          <img className="p-2 w-28 md:w-40" src={MENU_ITEM_URL + imageId}></img>
+          <img className="p-2 w-28 md:w-40" src={MENU_ITEM_URL + imageId} />
           <div className="mt-3 m-2 mr-10">
             <h2 className=" text-base lg:text-lg font-bold">{name}</h2>
           </div>
