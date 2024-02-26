@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 
 import Header from "./components/Header";
 import Body from "./components/Body";
-//import About from "./components/About";
+import About from "./components/About";
 import Contact from "./components/Contact";
 import Error from "./components/Error";
 import Cart from "./components/Cart";
@@ -30,18 +30,8 @@ const About = lazy(() => import('./components/About'));
 
 const AppLayout = () => {
     const [userName, setUserName] = useState('');
-
-    useEffect(() => {
-      // Make an API call and send username and password
-      const data = {
-        name: 'Manish Kumar'
-      };
-      setUserName(data.name);
-    }, []);
-
     return(
         <Provider store={appStore}> 
-            <UserContext.Provider value={{loggedInUser: userName, setUserName}}>
             <div className="app">
                 <React.Fragment>
                     <Header />
@@ -49,7 +39,6 @@ const AppLayout = () => {
                     {/* <Footer/> */}
                 </React.Fragment>
             </div>
-        </UserContext.Provider>
         </Provider>
     )
 }
