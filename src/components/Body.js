@@ -223,12 +223,24 @@ const Body = () => {
                     </div>
                     <div>
                         <button className='px-2 py-2 m-4 bg-pink-100 rounded-lg' onClick={() => {
+                            const filteredResList = listOfRestaurants.filter((res) => 
+                            res?.info?.isOpen ===  true);
+                            setFilteredRestaurant(filteredResList);
+                        }}>
+                           Open Restaurant
+                        </button>
+                        
+                    </div>
+
+                    <div>
+                        <button className='px-2 py-2 m-4 bg-pink-100 rounded-lg' onClick={() => {
                             const filteredResList = listOfRestaurants.filter((res) => res?.info?.avgRating > 4);
                             setFilteredRestaurant(filteredResList);
                         }}>
                             Top Rated Restaurants
                         </button>
                     </div>
+
                     <div>
                         <button className='px-2 py-2 m-4 bg-pink-100 rounded-lg' onClick={() => {
                             const filteredResList = listOfRestaurants.filter((res) => res?.info?.veg === true);

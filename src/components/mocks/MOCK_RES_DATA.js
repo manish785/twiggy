@@ -1045,7 +1045,7 @@ export const data={
                           "opened": true
                         },
                         "badges": {},
-                        "isOpen": true,
+                        "isOpen": false,
                         "type": "F",
                         "badgesV2": {
                           "entityBadges": {
@@ -1176,7 +1176,7 @@ export const data={
                             }
                           ]
                         },
-                        "isOpen": true,
+                        "isOpen": false,
                         "type": "F",
                         "badgesV2": {
                           "entityBadges": {
@@ -2997,7 +2997,7 @@ export const data={
                           "opened": true
                         },
                         "badges": {},
-                        "isOpen": true,
+                        "isOpen": false,
                         "type": "F",
                         "badgesV2": {
                           "entityBadges": {
@@ -3137,7 +3137,7 @@ export const data={
                           "opened": true
                         },
                         "badges": {},
-                        "isOpen": true,
+                        "isOpen": false,
                         "type": "F",
                         "badgesV2": {
                           "entityBadges": {

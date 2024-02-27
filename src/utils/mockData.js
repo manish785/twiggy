@@ -26,8 +26,8 @@ const restaurantList = [
           city: "surat",
         },
         cityState: "21",
-        address:
-          "Shop 32 To 35, Sheetal Shopping Square,Near Lb Turning Point, Bhatar Road,MAJURA NONDH, Surat,GUJARAT-395001",
+        address: 
+        "Shop 32 To 35, Sheetal Shopping Square,Near Lb Turning Point, Bhatar Road,MAJURA NONDH, Surat,GUJARAT-395001",
         locality: "Bhatar Road",
         parentId: 2456,
         unserviceable: false,
