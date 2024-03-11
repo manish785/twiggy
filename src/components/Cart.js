@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 const Cart = () => {
     // subscribe the right portion of the store 
     const cartItems = useSelector((store) => store.cart.items);
+   
     const dispatch = useDispatch();
 
     const handleClearCart = () => {

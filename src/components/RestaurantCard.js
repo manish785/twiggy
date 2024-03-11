@@ -12,7 +12,7 @@ const RestaurantCard = ({
    
 
     return(
-        <div className="m-4 p-4 h-[500px] w-[250px] rounded-lg bg-gray-100 hover:bg-gray-200">  
+        <div className="m-4 p-4 h-[500px] w-[253px] rounded-lg bg-gray-100 hover:bg-gray-200">  
             <img 
                 className="rounded-lg h-[280px] w-[400px]"
                 alt='res-logo' 

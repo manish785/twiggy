@@ -10,10 +10,16 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Error from "./components/Error";
 import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
+import PaymentPage from "./components/PaymentPage";
 import  Footer  from "./components/Footer";
 import RestaurantMenu from "./components/RestaurantMenu";
 import Login from "./components/Login";
 import UserContext from "./utils/UserContext";
+import { Auth0Provider } from "@auth0/auth0-react";
+import { ToastProvider } from 'react-toast-notifications';
+
+
 
 import appStore from "./utils/appStore";
 //import Grocery from "./components/Grocery";
@@ -31,6 +37,12 @@ const About = lazy(() => import('./components/About'));
 const AppLayout = () => {
     const [userName, setUserName] = useState('');
     return(
+        <ToastProvider autoDismiss autoDismissTimeout={5000} placement="top-left">
+        <Auth0Provider
+        domain="dev-ssvzdizyuhxdvzmr.us.auth0.com"
+        clientId="tWBg4eMwkTui3fUFTtKyip5pnLKrNb0f"
+        redirectUri= {window.location.origin}
+        >
         <Provider store={appStore}> 
             <div className="app">
                 <React.Fragment>
@@ -40,6 +52,8 @@ const AppLayout = () => {
                 </React.Fragment>
             </div>
         </Provider>
+        </Auth0Provider>
+        </ToastProvider>
     )
 }
 
@@ -61,6 +75,14 @@ const appRouter = createBrowserRouter([
                 {
                     path: '/contact',
                     element: <Contact/>
+                },
+                {
+                    path: '/checkout',
+                    element: <Checkout/>
+                },
+                {
+                    path: '/payment',
+                    element: <PaymentPage/>
                 },
                 {
                 path: '/grocery',

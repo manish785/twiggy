@@ -6,10 +6,30 @@ import UserContext from '../utils/UserContext';
 import { useSelector } from 'react-redux';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useAuth0 } from "@auth0/auth0-react";
+import useShowToast from "../CustomHooks/useShowToast";
+import backgroundColor from "./backgroundColor";
+
+
+import {
+    Flex,
+    Button,
+    Text,
+  } from "@chakra-ui/react";
+
 
 const Header = () => {
     const { loggedInUser } = useContext(UserContext);
     const navigate = useNavigate();
+    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+
+    const [showToast] = useShowToast();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+        showToast("Login Successfully", "success");
+        }
+    }, [isAuthenticated]);
     
     // Subscribing to the store using a Selector
     const cartItems = useSelector((store) => store.cart.items);
@@ -68,16 +88,28 @@ const Header = () => {
                         <Link to='/cart'> Cart - ({cartItems.length} items) </Link>
                     </li>
                     <li>
-                        {btnNameReact === 'login' ? (
-                            <button className='ml-7 mt-2' onClick={handleSignIn}>
-                                <p className='font-bold text-xl mt-[-9px]'>Login</p>
+                    {isAuthenticated ? (
+                        <div className="flex flex-col gap-10">
+                            <p className="text-sm font-bold text-xl">Welcome {user.name}</p>
+                
+                            <button
+                                className={`bg-${backgroundColor} text-white-700 font-bold text-xl text-bold border-1 border-gray-300 hover:text-black`}
+                                onClick={() => {
+                                    showToast("Logout Successfully", "success", 5000);
+                                    logout({ logoutParams: { returnTo: window.location.origin } });
+                                }}
+                            >
+                                Logout
                             </button>
-                        ) : (
-                            <button className='ml-7 mt-2' onClick={handleSignOut}>
-                                <p className='font-bold text-xl mt-[-7px] mr-[1px]'>Hi, Guest</p>
-                                <p className='font-bold  text-xl pt-[3px]'>Logout</p>
-                            </button>
-                        )}
+                        </div>
+                    ) : (
+                        <button
+                        className='h-[30px] w-[80px] text-white-700 font-bold text-xl'
+                        onClick={() => loginWithRedirect()}
+                         >
+                        Login
+                       </button>
+                    )}
                     </li>
                 </ul>
             </div>
