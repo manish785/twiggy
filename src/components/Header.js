@@ -9,6 +9,7 @@ import { auth } from "../utils/firebase";
 import { useAuth0 } from "@auth0/auth0-react";
 import useShowToast from "../CustomHooks/useShowToast";
 import backgroundColor from "./backgroundColor";
+import { useToasts } from 'react-toast-notifications';
 
 
 import {
@@ -22,12 +23,17 @@ const Header = () => {
     const { loggedInUser } = useContext(UserContext);
     const navigate = useNavigate();
     const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+    const { addToast } = useToasts();
 
     const [showToast] = useShowToast();
 
     useEffect(() => {
         if (isAuthenticated) {
-        showToast("Login Successfully", "success");
+        // showToast("Login Successfully", "success");
+        addToast('Login Successfully', {
+            appearance: 'success',
+            autoDismiss: true
+        })
         }
     }, [isAuthenticated]);
     
@@ -95,7 +101,10 @@ const Header = () => {
                             <button
                                 className={`bg-${backgroundColor} text-white-700 font-bold text-xl text-bold border-1 border-gray-300 hover:text-black`}
                                 onClick={() => {
-                                    showToast("Logout Successfully", "success", 5000);
+                                    addToast('Logout Successfully', {
+                                        appearance: 'success',
+                                        autoDismiss: true
+                                    })
                                     logout({ logoutParams: { returnTo: window.location.origin } });
                                 }}
                             >
@@ -116,5 +125,6 @@ const Header = () => {
         </div>
     )
 }
+
 
 export default Header;

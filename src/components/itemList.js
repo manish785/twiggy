@@ -26,6 +26,7 @@ import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import CartItem from "../components/CartItem";
 import backgroundColor from './backgroundColor';
+import { useToasts } from 'react-toast-notifications';
 
 import { AddressSchema } from "../Schema";
 
@@ -39,7 +40,8 @@ const initialValue = {
 
 const ItemList = (props) => {
     const { items } = props;
-  
+    const { addToast } = useToasts();
+
     const dispatch = useDispatch();
     const increaseQty = (item) => {
       dispatch(increaseQuantity(item));
@@ -57,7 +59,10 @@ const ItemList = (props) => {
       validationSchema: AddressSchema,
       onSubmit: (value, action) => {
         Dispatch(Address(value));
-        showToast("Address added successfully", "success");
+        addToast('Address added successfully', {
+          appearance: 'success',
+          autoDismiss: true
+      })
         navigate("/user/payment");
         action.resetForm();
       },
@@ -102,16 +107,16 @@ const ItemList = (props) => {
 
         {items.length === 0 && (
         <div className="border border-gray-300 m-[40px] flex flex-col justify-center items-center gap-4 p-6 w-11/12 mx-auto">
-        <h1 className="text-2xl font-semibold m-[4px] pb-[4px]">Your shopping cart is Empty</h1>
+        <h1 className="text-2xl font-semibold m-[4px] pb-[4px]">Your cart is Empty</h1>
+        <p className='font-thin text-sm'>You can go to home page to view more restaurants</p>
         <Link to="/" className="bg-blue-500 m-[10px] p-[20px] text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300 ease-in-out">
-          Start shopping
+          SEE RESTAURANTS NEAR YOU
         </Link>
       </div>
       )}
       
       {items.length > 0 && (
-            <div className="border h-[200px] w-[900px] border-gray-300 m-[40px] flex flex-col justify-center items-center gap-4 p-6 w-11/12 mx-auto">
-            <h1 className="text-2xl font-semibold m-[4px] pb-[4px]">Total</h1>
+            <div className="border h-[100px] w-[900px] flex justify-between border-gray-300 m-[40px] flex flex-col justify-center items-center gap-4 p-6 w-11/12 mx-auto">
             <div className='flex justify-between'>
               <button className='bg-green-200 h-[50px] w-[120px] rounded-md text-bold text-xl'>
                 <Link to='/'>Empty Cart</Link>
@@ -127,5 +132,6 @@ const ItemList = (props) => {
       </div>
     );
 };
+
 
 export default ItemList;

@@ -20,7 +20,6 @@ const useRestaurants = () => {
     try {
       setIsLoading(true);
       const { data } = await axios.post(GET_RESTAURANTS_URL, address);
-      console.log('elon bhai', data);
 
       if (data?.data) {
         setBanners(
@@ -48,7 +47,6 @@ const useRestaurants = () => {
         );
       }
     } catch (err) {
-      console.log(err.response);
       setError(err.response);
     } finally {
       setIsLoading(false);

@@ -11,13 +11,18 @@ import Contact from "./components/Contact";
 import Error from "./components/Error";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
-import PaymentPage from "./components/PaymentPage";
+import PaymentPage from "./Pages/PaymentPage/index";
+// import PaymentConfirm from "../Pages/PaymentPage/";
+import PaymentConfirm from "./Pages/PaymentPage/components/PaymentConfirm";
 import  Footer  from "./components/Footer";
 import RestaurantMenu from "./components/RestaurantMenu";
 import Login from "./components/Login";
 import UserContext from "./utils/UserContext";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { ToastProvider } from 'react-toast-notifications';
+import * as React from 'react'
+
+import { ChakraProvider } from '@chakra-ui/react'
 
 
 
@@ -46,8 +51,10 @@ const AppLayout = () => {
         <Provider store={appStore}> 
             <div className="app">
                 <React.Fragment>
-                    <Header />
-                    <Outlet />
+                    <ChakraProvider>
+                        <Header />
+                        <Outlet />
+                    </ChakraProvider>
                     {/* <Footer/> */}
                 </React.Fragment>
             </div>
@@ -83,6 +90,10 @@ const appRouter = createBrowserRouter([
                 {
                     path: '/payment',
                     element: <PaymentPage/>
+                },
+                {
+                    path: '/payment/confirm',
+                    element: <PaymentConfirm/>
                 },
                 {
                 path: '/grocery',
