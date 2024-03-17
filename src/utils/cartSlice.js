@@ -12,6 +12,7 @@ const cartSlice = createSlice({
       const itemInCart = state.items.find(
         (item) => item.id === action.payload.id
       );
+      console.log('hi pathak', itemInCart);
       if (itemInCart) {
         itemInCart.qty++;
       } else {

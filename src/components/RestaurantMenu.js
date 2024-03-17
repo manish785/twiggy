@@ -17,7 +17,6 @@ import backgroundColor from './backgroundColor';
 import { useToasts } from 'react-toast-notifications';
 
 
-
 const RestaurantMenu = () => {
     const { resId } = useParams();
     const dummy = 'Dummy Data';
@@ -80,7 +79,7 @@ const RestaurantMenu = () => {
       ))}
 
       addToast('Product added successfully', {
-        appearance: 'error',
+        appearance: 'success',
         autoDismiss: true
     })
       setVisible(true);

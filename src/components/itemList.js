@@ -58,7 +58,7 @@ const ItemList = (props) => {
       initialValues: initialValue,
       validationSchema: AddressSchema,
       onSubmit: (value, action) => {
-        Dispatch(Address(value));
+        dispatch(Address(value));
         addToast('Address added successfully', {
           appearance: 'success',
           autoDismiss: true
@@ -71,7 +71,7 @@ const ItemList = (props) => {
 
     return (
       <div>
-        {items.map((item) => (
+        {/* {items.map((item) => (
           <div key={item.imageId} className="flex justify-between flex-nowrap">
             <div className="flex"> 
               <img className="p-2 h-[100px] w-[100px] md:w-40 rounded-md" src={MENU_ITEM_URL + item.imageId} />
@@ -103,7 +103,7 @@ const ItemList = (props) => {
               </span>
             </div>
           </div>
-        ))}
+        ))} */}
 
         {items.length === 0 && (
         <div className="border border-gray-300 m-[40px] flex flex-col justify-center items-center gap-4 p-6 w-11/12 mx-auto">
@@ -112,23 +112,23 @@ const ItemList = (props) => {
         <Link to="/" className="bg-blue-500 m-[10px] p-[20px] text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300 ease-in-out">
           SEE RESTAURANTS NEAR YOU
         </Link>
-      </div>
-      )}
-      
-      {items.length > 0 && (
-            <div className="border h-[100px] w-[900px] flex justify-between border-gray-300 m-[40px] flex flex-col justify-center items-center gap-4 p-6 w-11/12 mx-auto">
-            <div className='flex justify-between'>
-              <button className='bg-green-200 h-[50px] w-[120px] rounded-md text-bold text-xl'>
-                <Link to='/'>Empty Cart</Link>
-               </button>
-              <button className='bg-green-200 h-[50px] w-[120px] rounded-md text-bold text-xl ml-[300px]'>
-                <Link to='/checkout'>
-                  Checkout
-                </Link>
-               </button>
-            </div>
         </div>
-      )}
+        )}
+      
+        {items.length > 0 && (
+              <div className="border h-[100px] w-[900px] pt-[20px] ml-[-90px] flex justify-between border-gray-300 m-[40px] flex flex-col  gap-4 p-6 w-11/12 ">
+              <div className='flex justify-between'>
+                <button className='bg-black text-white h-[50px] w-[120px] rounded-md text-bold text-xl'>
+                  <Link to='/'>Empty Cart</Link>
+                </button>
+                <button className='bg-black text-white h-[50px] w-[120px] rounded-md text-bold text-xl ml-[100px]'>
+                  <Link to='/checkout'>
+                    Checkout
+                  </Link>
+                </button>
+              </div>
+          </div>
+        )}
       </div>
     );
 };
