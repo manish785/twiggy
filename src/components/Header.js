@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import toast from "react-hot-toast";
 
-import { getLoginWithRedirectOptions } from "../utils/auth0Config";
+import {
+  getLoginWithRedirectOptions,
+  performLogout,
+} from "../utils/auth0Config";
 import { LOGO_URL } from "../utils/constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
 
@@ -23,12 +26,31 @@ const Header = () => {
   const { itemCount } = useSelector((state) => state.cart);
   const onlineStatus = useOnlineStatus();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const wasAuthenticatedRef = useRef(false);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !wasAuthenticatedRef.current) {
       toast.success("Welcome back!");
     }
+    wasAuthenticatedRef.current = isAuthenticated;
   }, [isAuthenticated]);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) {
+      return;
+    }
+
+    setIsLoggingOut(true);
+    closeMenu();
+
+    try {
+      await performLogout(logout);
+    } catch {
+      toast.error("Could not log out. Please try again.");
+      setIsLoggingOut(false);
+    }
+  };
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -102,12 +124,10 @@ const Header = () => {
             <button
               type="button"
               className="btn-secondary hidden !px-3 !py-2 text-sm text-red-600 hover:border-red-200 hover:bg-red-50 sm:inline-flex md:!px-4"
-              onClick={() => {
-                toast.success("Logged out");
-                logout({ logoutParams: { returnTo: window.location.origin } });
-              }}
+              onClick={handleLogout}
+              disabled={isLoggingOut}
             >
-              Logout
+              {isLoggingOut ? "Logging out..." : "Logout"}
             </button>
           ) : (
             <button
@@ -174,12 +194,10 @@ const Header = () => {
                   <button
                     type="button"
                     className="btn-secondary w-full text-red-600"
-                    onClick={() => {
-                      closeMenu();
-                      logout({ logoutParams: { returnTo: window.location.origin } });
-                    }}
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
                   >
-                    Logout
+                    {isLoggingOut ? "Logging out..." : "Logout"}
                   </button>
                 </>
               ) : (
