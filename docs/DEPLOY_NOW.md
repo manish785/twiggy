@@ -4,6 +4,17 @@ Code is pushed to: **https://github.com/manish785/twiggy**
 
 ---
 
+## Important: frontend = Static Site, backend = Web Service
+
+| Part | Render type | Root | Build | Publish/Start |
+|------|-------------|------|-------|----------------|
+| React app | **Static Site** | repo root | `npm install && npm run build` | `dist` |
+| Node API | **Web Service** | `backend` | `npm ci` | `npm start` |
+
+Do **not** deploy the frontend as a Web Service with `npm start` (Parcel dev) — you get a **blank page**. See [RENDER_FIX_BLANK_PAGE.md](RENDER_FIX_BLANK_PAGE.md).
+
+---
+
 ## One-click links (use your GitHub account)
 
 ### 1. Render — backend API
