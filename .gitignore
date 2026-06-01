@@ -1,6 +1,17 @@
-node_modules
-dist
-parcel-cache
-/.parcel-cache
-/dist
-/node_modules
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.parcel-cache/
+
+# Environment (secrets)
+.env
+backend/.env
+
+# OS / editor
+.DS_Store
+*.log
+
+# Personal / generated artifacts (not part of app)
+*.pdf

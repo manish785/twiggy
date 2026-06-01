@@ -1,0 +1,295 @@
+USE foodheaven_db;
+
+INSERT INTO restaurants (
+  id,
+  name,
+  cloudinary_image_id,
+  locality,
+  area_name,
+  avg_rating,
+  cost_for_two_message,
+  is_open,
+  delivery_time_minutes,
+  cuisines
+)
+VALUES
+  (
+    55474,
+    'Pizza Hut',
+    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'Mandawali',
+    'IP Extension',
+    3.80,
+    '₹350 for two',
+    1,
+    34,
+    JSON_ARRAY('Pizzas')
+  ),
+  (
+    10101,
+    'Burger Barn',
+    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'City Center',
+    'Main Market',
+    4.30,
+    '₹250 for two',
+    1,
+    25,
+    JSON_ARRAY('Burgers', 'Fast Food')
+  ),
+  (
+    20202,
+    'Green Bowl',
+    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    'Lake View',
+    'Sector 9',
+    4.60,
+    '₹300 for two',
+    1,
+    22,
+    JSON_ARRAY('Healthy Food', 'Salads')
+  ),
+  (
+    30001,
+    'Spice Route',
+    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'Nehru Nagar',
+    'Sector 1',
+    4.20,
+    '₹280 for two',
+    1,
+    28,
+    JSON_ARRAY('North Indian', 'Biryani')
+  ),
+  (
+    30002,
+    'Roll Nation',
+    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'Gandhi Chowk',
+    'Sector 2',
+    4.10,
+    '₹220 for two',
+    1,
+    24,
+    JSON_ARRAY('Rolls', 'Snacks')
+  ),
+  (
+    30003,
+    'South Spice',
+    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    'Old City',
+    'Sector 3',
+    4.40,
+    '₹260 for two',
+    1,
+    26,
+    JSON_ARRAY('South Indian')
+  ),
+  (
+    30004,
+    'Taco Street',
+    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'Park Avenue',
+    'Sector 4',
+    4.00,
+    '₹300 for two',
+    1,
+    29,
+    JSON_ARRAY('Mexican', 'Fast Food')
+  ),
+  (
+    30005,
+    'Kebab House',
+    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'River Side',
+    'Sector 5',
+    4.50,
+    '₹360 for two',
+    1,
+    30,
+    JSON_ARRAY('Mughlai', 'Kebabs')
+  ),
+  (
+    30006,
+    'Noodle Bar',
+    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    'Tech Park',
+    'Sector 6',
+    4.30,
+    '₹270 for two',
+    1,
+    23,
+    JSON_ARRAY('Chinese', 'Asian')
+  ),
+  (
+    30007,
+    'Chai & Chat',
+    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'Station Road',
+    'Sector 7',
+    4.00,
+    '₹180 for two',
+    1,
+    18,
+    JSON_ARRAY('Street Food', 'Beverages')
+  ),
+  (
+    30008,
+    'The Salad Lab',
+    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'Green Avenue',
+    'Sector 8',
+    4.70,
+    '₹320 for two',
+    1,
+    21,
+    JSON_ARRAY('Healthy Food', 'Salads')
+  ),
+  (
+    30009,
+    'Wrap It Up',
+    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    'City Mall',
+    'Sector 9',
+    4.10,
+    '₹210 for two',
+    1,
+    20,
+    JSON_ARRAY('Wraps', 'Fast Food')
+  ),
+  (
+    30010,
+    'Dosa Point',
+    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'Temple Road',
+    'Sector 10',
+    4.50,
+    '₹240 for two',
+    1,
+    19,
+    JSON_ARRAY('South Indian')
+  ),
+  (
+    30011,
+    'Biryani Blues',
+    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'Central Plaza',
+    'Sector 11',
+    4.40,
+    '₹340 for two',
+    1,
+    31,
+    JSON_ARRAY('Biryani', 'North Indian')
+  ),
+  (
+    30012,
+    'Momo Junction',
+    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    'Hill View',
+    'Sector 12',
+    4.00,
+    '₹200 for two',
+    1,
+    22,
+    JSON_ARRAY('Tibetan', 'Chinese')
+  ),
+  (
+    30013,
+    'Pasta Palace',
+    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'Rose Garden',
+    'Sector 13',
+    4.30,
+    '₹330 for two',
+    1,
+    27,
+    JSON_ARRAY('Italian', 'Pasta')
+  ),
+  (
+    30014,
+    'Sushi Bay',
+    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'Lake Side',
+    'Sector 14',
+    4.60,
+    '₹480 for two',
+    1,
+    33,
+    JSON_ARRAY('Japanese', 'Asian')
+  ),
+  (
+    30015,
+    'BBQ Nation Mini',
+    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    'Metro Plaza',
+    'Sector 15',
+    4.20,
+    '₹420 for two',
+    1,
+    35,
+    JSON_ARRAY('Barbecue', 'Grill')
+  ),
+  (
+    30016,
+    'Cake Corner',
+    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'Bakery Lane',
+    'Sector 16',
+    4.10,
+    '₹190 for two',
+    1,
+    17,
+    JSON_ARRAY('Desserts', 'Bakery')
+  ),
+  (
+    30017,
+    'Falafel Factory',
+    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'Food Street',
+    'Sector 17',
+    4.30,
+    '₹280 for two',
+    1,
+    24,
+    JSON_ARRAY('Middle Eastern', 'Healthy Food')
+  )
+ON DUPLICATE KEY UPDATE
+  name = VALUES(name),
+  avg_rating = VALUES(avg_rating),
+  cost_for_two_message = VALUES(cost_for_two_message),
+  is_open = VALUES(is_open),
+  delivery_time_minutes = VALUES(delivery_time_minutes),
+  cuisines = VALUES(cuisines),
+  is_active = 1;
+
+DELETE FROM menu_items
+WHERE restaurant_id IN (
+  55474, 10101, 20202, 30001, 30002, 30003, 30004, 30005, 30006, 30007,
+  30008, 30009, 30010, 30011, 30012, 30013, 30014, 30015, 30016, 30017
+);
+
+INSERT INTO menu_items (restaurant_id, name, image_id, price_paise, default_price_paise, rating)
+VALUES
+  (55474, 'Margherita Pizza', 'abc123', 19900, 19900, 4.2),
+  (55474, 'Farmhouse Pizza', 'def456', 34900, 34900, 4.4),
+  (10101, 'Classic Cheeseburger', 'ghi789', 17900, 17900, 4.1),
+  (10101, 'Peri Peri Fries', 'jkl012', 9900, 9900, 3.9),
+  (20202, 'Protein Bowl', 'mno345', 25900, 25900, 4.7),
+  (20202, 'Quinoa Salad', 'pqr678', 22900, 22900, 4.5),
+  (30001, 'Chicken Dum Biryani', 'img30001', 27900, 27900, 4.3),
+  (30002, 'Paneer Kathi Roll', 'img30002', 14900, 14900, 4.0),
+  (30003, 'Masala Dosa', 'img30003', 12900, 12900, 4.5),
+  (30004, 'Veg Taco Combo', 'img30004', 19900, 19900, 3.9),
+  (30005, 'Seekh Kebab Plate', 'img30005', 29900, 29900, 4.4),
+  (30006, 'Hakka Noodles', 'img30006', 18900, 18900, 4.2),
+  (30007, 'Samosa Chaat', 'img30007', 9900, 9900, 3.8),
+  (30008, 'Mediterranean Salad', 'img30008', 21900, 21900, 4.7),
+  (30009, 'Chicken Wrap', 'img30009', 15900, 15900, 4.1),
+  (30010, 'Mysore Dosa', 'img30010', 13900, 13900, 4.6),
+  (30011, 'Hyderabadi Biryani', 'img30011', 26900, 26900, 4.5),
+  (30012, 'Steam Momos', 'img30012', 12900, 12900, 4.0),
+  (30013, 'Arrabiata Pasta', 'img30013', 23900, 23900, 4.2),
+  (30014, 'California Sushi Roll', 'img30014', 32900, 32900, 4.6),
+  (30015, 'BBQ Chicken Platter', 'img30015', 34900, 34900, 4.3),
+  (30016, 'Chocolate Truffle Cake', 'img30016', 14900, 14900, 4.1),
+  (30017, 'Falafel Pita Pocket', 'img30017', 19900, 19900, 4.4);

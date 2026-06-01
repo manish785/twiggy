@@ -1,55 +1,31 @@
-import {render, screen} from '@testing-library/react';
-import Contact from '../Contact';
-import '@testing-library/jest-dom';
+import { render, screen } from "@testing-library/react";
+import Contact from "../Contact";
+import "@testing-library/jest-dom";
 
+jest.mock("react-hot-toast", () => ({
+  success: jest.fn(),
+  error: jest.fn(),
+}));
 
-describe('Contact Us Page Test Cases', () => {
+describe("Contact page", () => {
+  it("renders contact headings", () => {
+    render(<Contact />);
+    expect(screen.getByText("Contact us")).toBeInTheDocument();
+    expect(screen.getByText("Get in touch")).toBeInTheDocument();
+  });
 
-    it('Should load contact us component', () => {
-        render(<Contact/>);
-    
-        const heading = screen.getByRole('heading');
-    
-        //Assertions
-        expect(heading).toBeInTheDocument();
-    })
-    
-    it('Should load button inside Contact component', () => {
-        render(<Contact/>);
-    
-        const button = screen.getByRole('button');
-    
-        //Assertions
-        expect(button).toBeInTheDocument();
-    })
-    
-    it('Should load button inside Contact component', () => {
-        render(<Contact/>);
-    
-        const inputName = screen.getByPlaceholderText('name');
-    
-        //Assertions
-        expect(inputName).toBeInTheDocument();
-    })
-    
-    it('Should load 2 input boxes on the Contact component', () => {
-        render(<Contact/>);
-    
-        // Querying
-        const inputBoxes = screen.getAllByRole('textbox');
-    
-        //Assertions
-        expect(inputBoxes.length).toBe(2);
-    })
-})
+  it("renders submit button", () => {
+    render(<Contact />);
+    expect(screen.getByRole("button", { name: "Send message" })).toBeInTheDocument();
+  });
 
+  it("renders name input", () => {
+    render(<Contact />);
+    expect(screen.getByPlaceholderText("Your name")).toBeInTheDocument();
+  });
 
-
-
-
-
-
-
-
-
-
+  it("renders message textarea", () => {
+    render(<Contact />);
+    expect(screen.getByPlaceholderText("Your message")).toBeInTheDocument();
+  });
+});

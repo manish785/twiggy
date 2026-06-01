@@ -1,141 +1,115 @@
-// import UserClass from "./UserClass";
-import React from 'react';
-import Footer from "./Footer";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import Shimmer from "./Shimmer";
 
 const About = () => {
-    const [userInfo, setUserInfo] = useState('');
-    const [loading, setLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        getUserProfileInfo();
-    }, []);
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch("https://api.github.com/users/manish785");
+        if (!res.ok) throw new Error("Failed to fetch profile");
+        setUserInfo(await res.json());
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
 
-    const getUserProfileInfo = async () => {
-       const data = await fetch('https://api.github.com/users/manish785');
-       const json = await data.json();
-       setUserInfo(json);
-       setLoading(false);
-    }
+  if (loading) return <Shimmer />;
 
-    if(userInfo.length === 0){
-        return <h1>Data is loading</h1>
-    }
+  if (error) {
+    return (
+      <div className="page-shell flex items-center justify-center">
+        <p className="text-red-600">{error}</p>
+      </div>
+    );
+  }
 
-    return(
-        <>
-           <div className="h-[700px] w-full bg-blue-200 flex ">
-            <div className="h-[700px] w-[1000px] bg-white ml-[70px] flex flex-wrap">
-                <div>
-                    <img 
-                     className="p-[6px] h-[300px] w-[300px]"
-                     src={userInfo.avatar_url} 
-                     alt='profile-pic'
-                    />
-                    <h1 className="font-thin text-3xl p-[4px] pt-[10px]">Name: {userInfo.name}</h1>
-                    <p className="font-normal text-3xl p-[4px] pt-[10px]">Location: {userInfo.location}</p>
-                    <p className="font-normal text-3xl p-[4px] pt-[10px]">Software Developer</p>
-              
-                    <div className=''>
-                    <div>
-                        <h1 className='font-bold text-xl p-[4px]'>My Coding Profile</h1>
-                    </div>
-                        <span className='ml-4'>
-                            <div className="mt-[-30px]">
-                                <Link to='https://leetcode.com/9073078357manish/' className='flex items-center'>
-                                <span className="p-[4px]">Leetcode Profile :</span>
-                                <img className='h-[30px] w-[30px] ml-2' src='https://cdn.iconscout.com/icon/free/png-256/free-leetcode-3521542-2944960.png' alt='leetcode-icon' />
-                                </Link>
-                            </div>
-                            <div className="mt-[-20px]">
-                                <Link to='https://github.com/manish785' className='flex items-center pt-4'>
-                                <span className="p-[4px]">Github Profile :</span>
-                                <img className='h-[30px] w-[30px] ml-2' src='https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png' alt='leetcode-icon' />
-                                </Link>
-                            </div>
-                        </span>
-                    </div>
-                </div>
+  return (
+    <div className="page-shell">
+      <section className="bg-hero-gradient border-b border-ink-100 py-12">
+        <div className="page-container text-center">
+          <h1 className="section-title">About FoodHeaven</h1>
+          <p className="section-subtitle mx-auto max-w-2xl">
+            A full-stack food delivery platform built with React, Node.js, Express, and
+            MySQL — designed for learning and production-ready patterns.
+          </p>
+        </div>
+      </section>
 
-                <div>
-                <div>
-                    <h1 className="text-blue-900 font-bolder text-3xl p-[40px]">BIO</h1>
-                    <p className="pl-[40px] pt-[-10px]">
-                        Certainly! Here's a Lorem Ipsum text:Lorem ipsum dolor sit amet, <br></br>consectetur adipiscing elit. 
-                        Sed nec libero convallis, convallis sem <br></br>sit amet, placerat turpis. Integer pretium justo ut nulla lacinia, 
-                        <br></br>
-                    </p>
-                </div>
-
-                <div>
-                    <h1 className="text-blue-900 font-bolder text-3xl p-[40px]">GOALS</h1>
-                    <p className="pl-[40px] pt-[-1000px]">
-                        Certainly! Here's a Lorem Ipsum text:Lorem ipsum dolor sit amet, <br></br>consectetur adipiscing elit. 
-                        Sed nec libero convallis, convallis sem <br></br>sit amet, placerat turpis. Integer pretium justo ut nulla lacinia, 
-                        <br></br>
-                    </p>
-                </div>
-
-                <div>
-                    <h1 className="text-blue-900 font-bolder text-3xl p-[40px]">WANTS AND NEEDS</h1>
-                    <p className="pl-[40px] pt-[-10px]">
-                        Certainly! Here's a Lorem Ipsum text:Lorem ipsum dolor sit amet, <br></br>consectetur adipiscing elit. 
-                        Sed nec libero convallis, convallis sem <br></br>sit amet, placerat turpis. Integer pretium justo ut nulla lacinia, 
-                        <br></br>
-                    </p>
-                </div>
-               </div>
+      <div className="page-container py-12">
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="card-surface p-8 text-center lg:col-span-1">
+            <img
+              className="mx-auto h-36 w-36 rounded-full object-cover ring-4 ring-brand-100"
+              src={userInfo?.avatar_url}
+              alt="Profile"
+            />
+            <h2 className="mt-4 font-display text-xl font-bold text-ink-900">
+              {userInfo?.name || "Developer"}
+            </h2>
+            <p className="text-ink-500">{userInfo?.location || "India"}</p>
+            <p className="mt-2 text-sm font-medium text-brand-600">
+              Backend-focused software engineer
+            </p>
+            <div className="mt-6 flex flex-col gap-2">
+              <a
+                href="https://github.com/manish785"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-secondary text-sm"
+              >
+                GitHub →
+              </a>
+              <a
+                href="https://leetcode.com/9073078357manish/"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-secondary text-sm"
+              >
+                LeetCode →
+              </a>
             </div>
-            
-            <div className="h-[700px] w-[400px] bg-white ml-[70px] flex flex-wrap">
-                <div>
-                    <h1 className="text-blue-900 font-bolder text-3xl p-[40px]">TECH</h1>
-                    <p className="pl-[40px] pt-[-10px]">Design Software</p>
-                    <p className="pl-[40px] pt-[-10px]">Web Apps</p>
-                    <p className="pl-[40px] pt-[-10px]">Socail Media</p>
-                </div>
+          </div>
 
-                <div>
-                    <h1 className="text-blue-900 font-bolder text-3xl p-[40px]">BIO</h1>
-                    <p className="pl-[40px] pt-[-10px]">
-                        Certainly! Here's a Lorem Ipsum text:Lorem ipsum dolor sit amet, <br></br>consectetur adipiscing elit. 
-                        Sed nec libero convallis, convallis sem <br></br>sit amet, placerat turpis. Integer pretium justo ut nulla lacinia, 
-                        <br></br>
-                    </p>
-                </div>
-
+          <div className="card-surface p-8 lg:col-span-2">
+            <h3 className="font-display text-lg font-bold text-brand-600">Tech stack</h3>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["React", "Redux", "Node.js", "Express", "MySQL", "Auth0", "REST APIs"].map(
+                (tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-full bg-brand-50 px-4 py-1.5 text-sm font-medium text-brand-700"
+                  >
+                    {tech}
+                  </span>
+                )
+              )}
             </div>
-           </div>
-           <Footer/>
-        </>
-        
-    )
+
+            <h3 className="mt-8 font-display text-lg font-bold text-ink-900">Bio</h3>
+            <p className="mt-2 leading-relaxed text-ink-600">
+              Passionate about building scalable backend systems, clean APIs, and
+              user-friendly interfaces. This project demonstrates end-to-end order flow
+              with database persistence.
+            </p>
+
+            <h3 className="mt-8 font-display text-lg font-bold text-ink-900">Goals</h3>
+            <p className="mt-2 leading-relaxed text-ink-600">
+              Grow as a backend engineer at product companies and startups, with strong
+              fundamentals in system design and distributed systems.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
-
-
-
-
-
-
-// class About extends React.Component {
-//     constructor(props){
-//         super(props);
-//     }
-    
-//     componentDidMount(){
-//     }
- 
-//     render() {
-//         return (
-//             <div className="pb-20">
-//                 {/* <h1>About Me</h1>
-//                 <UserClass name={'first'} location={'Darbhanga Class'}/>
-//                 <Footer/> */}
-//             </div>
-//         )
-//     }
-// }
-
 
 export default About;

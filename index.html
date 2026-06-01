@@ -1,24 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character encoding for the document (supports most characters and emojis) -->
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Makes the website responsive on all devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO description -->
+    <meta name="description" content="FoodHeaven - Online food ordering platform">
+
+    <!-- Browser tab title -->
+    <title>FoodHeaven App</title>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-    rel="icon"
-    type="image/svg+xml"
-    href="https://img.freepik.com/free-vector/food-shopping-logo-template-design_460848-10299.jpg"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
     />
-    <link rel="stylesheet" href="/index.css">
-    <title>Twiggy App</title>
+    <link rel="stylesheet" href="/index.css" />
 </head>
+
 <body>
+    <!-- 
+        Root container for the JavaScript application.
+        React (or any SPA framework) will mount the entire UI inside this div.
+    -->
     <div id="root">
-        <h1>Not Rendered</h1>
+        <!-- Fallback content if JavaScript fails to load -->
+        <noscript>
+            <h1>Please enable JavaScript to run this application.</h1>
+        </noscript>
     </div>
 
-    <script type="module" src="/src/App.js">
-      
-    </script>
+    <!-- 
+        Main entry point of the application.
+        "type=module" allows ES6 imports/exports.
+        The App.js file will render the React app inside #root.
+    -->
+    <script type="module" src="/src/App.js"></script>
 </body>
 </html>

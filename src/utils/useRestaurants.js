@@ -1,73 +1,39 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-// import { selectAddress } from '../features/address/addressSlice';
-import { GET_RESTAURANTS_URL } from '../utils/constants';
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+import { GET_RESTAURANTS_URL } from "./constants";
 
 const useRestaurants = () => {
-  // const { address } = useSelector(selectAddress);
-  const [banners, setBanners] = useState([]);
-  const [foods, setFoods] = useState([]);
-  const [topRestaurants, setTopRestaurants] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const getRestaurants = async () => {
+  const fetchRestaurants = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      setIsLoading(true);
-      const { data } = await axios.post(GET_RESTAURANTS_URL, address);
-
-      if (data?.data) {
-        setBanners(
-          data?.data?.cards.filter(
-            (items) => items?.card?.card?.id === 'topical_banner'
-          )[0]
-        );
-
-        setFoods(
-          data?.data?.cards.filter(
-            (items) => items?.card?.card?.id === 'whats_on_your_mind'
-          )[0]
-        );
-
-        setTopRestaurants(
-          data?.data?.cards.filter(
-            (items) => items?.card?.card?.id === 'top_brands_for_you'
-          )[0]
-        );
-
-        setRestaurants(
-          data?.data?.cards.filter(
-            (items) => items?.card?.card?.id === 'restaurant_grid_listing'
-          )[0]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-        );
-      }
+      const response = await axios.get(GET_RESTAURANTS_URL);
+      setRestaurants(response?.data?.data || []);
     } catch (err) {
-      setError(err.response);
+      const isNetworkError =
+        !err?.response &&
+        (err?.code === "ERR_NETWORK" || err?.message === "Network Error");
+
+      setError(
+        isNetworkError
+          ? "Cannot reach the API. Start the backend: cd backend && npm run dev"
+          : err?.response?.data?.message || "Unable to fetch restaurants"
+      );
     } finally {
       setIsLoading(false);
     }
-  };
-
-  useEffect(() => {
-    getRestaurants();
   }, []);
 
-  return {
-    banners,
-    foods,
-    topRestaurants,
-    restaurants,
-    isLoading,
-    error,
-    triggerGetRestaurants: () => {
-      return getRestaurants();
-    },
-  };
+  useEffect(() => {
+    fetchRestaurants();
+  }, [fetchRestaurants]);
+
+  return { restaurants, isLoading, error, refetch: fetchRestaurants };
 };
 
 export default useRestaurants;

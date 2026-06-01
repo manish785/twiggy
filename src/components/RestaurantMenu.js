@@ -1,158 +1,119 @@
-import Shimmer from './Shimmer';
-import { useParams } from 'react-router-dom';
-import { useState } from 'react';
-import { swiggy_menu_api_URL } from '../utils/constants';
-import useRestaurantMenu from '../utils/useRestaurantMenu';
-import RestaurantCategory from './RestaurantCategory';
-import { MENU_ITEM_URL } from "../utils/constants";
-import { addItem } from "../utils/cartSlice";
+import { useParams, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useAuth0 } from "@auth0/auth0-react";
-import useShowToast from "../CustomHooks/useShowToast";
-import {
-  Button,
-  useBreakpointValue
-} from "@chakra-ui/react";
-import backgroundColor from './backgroundColor';
-import { useToasts } from 'react-toast-notifications';
+import toast from "react-hot-toast";
 
+import Shimmer from "./Shimmer";
+import { FOOD_PLACEHOLDER, MENU_ITEM_URL } from "../utils/constants";
+import useRestaurantMenu from "../utils/useRestaurantMenu";
+import { addToCart } from "../redux/CartPage/action";
 
 const RestaurantMenu = () => {
-    const { resId } = useParams();
-    const dummy = 'Dummy Data';
-    const resInfo = useRestaurantMenu(resId);
-    const [showIndex, setShowIndex] = useState(null);
-    const { addToast } = useToasts();
-    const [data, setData] = useState(null);  
-    const [showToast] = useShowToast();
-    const [visible, setVisible] = useState(false);
-    // const textSize = useBreakpointValue({
-    //   base: "lg",
-    //   md: "md",
-    // });
-    const { isAuthenticated } = useAuth0();
-    const dispatch = useDispatch();
-    
-    const addFoodItem = (item) => {
-        //dispatch an action
-        dispatch(addItem(item));
-      };
+  const { resId } = useParams();
+  const dispatch = useDispatch();
+  const { resInfo, error } = useRestaurantMenu(resId);
 
-    if(resInfo === null){
-        return <Shimmer/>
-    }
-
-    // const categories =
-    // resInfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
-    //   (c) =>
-    //     c.card?.["card"]?.["@type"] ===
-    //     "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
-    // );
-
-    // setData(categories);
-
-    // if(data === null){
-    //   return <Shimmer/>
-    // }
-
-    const {name, cuisines, costForTwoMessage} = resInfo?.info;
-    const itemCards = resInfo?.itemCards;
-
-    if (itemCards.length != 0) {
-        itemCards.forEach((element) => {
-          element.card.info.qty = 0;
-        });
-      }
-
-    const HandleAddtoBag = () => {
-      if (!isAuthenticated) {
-        // showToast("Please login to use add to bag", "info");
-        addToast('Please login to use add to bag', {
-          appearance: 'error',
-          autoDismiss: true
-      })
-        return;
-      }
-      // showToast("Product added successfully", "success");
-      {itemCards?.map((item) => (  
-        addFoodItem(item.card.info)
-      ))}
-
-      addToast('Product added successfully', {
-        appearance: 'success',
-        autoDismiss: true
-    })
-      setVisible(true);
-    };
-    
-    
-
+  if (error) {
     return (
-        <div className="menu lg:mx-40 ">
-        <p className="m-2 text-xs text-slate-700">Home/{name}</p>
-  
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className=" m-3 text-3xl  font-bold">{name}</h1>
-            <p className="mx-3">{cuisines.join(", ")}</p>
-            <p className="mx-3">{costForTwoMessage}</p>
-          </div>
+      <div className="page-shell flex items-center justify-center">
+        <div className="card-surface max-w-md p-8 text-center">
+          <p className="text-red-600">{error}</p>
+          <Link to="/" className="btn-primary mt-4">
+            Back to home
+          </Link>
         </div>
-  
-        <div className="line h-0.5 bg-slate-800 mx-3 my-2"></div>
-  
-        {/* city, cost for two , time */}
-  
-        <h2 className="mx-3 font-bold text-xl my-3">Menu</h2>
-        <ul data-testid="menu" className="mx-3">
-          {itemCards?.map((item) => (
-            <li
-              className="border-b-2 flex justify-between p-2 items-center duration-200 hover:scale-105"
-              key={item.card.info.id}
-            >
-              <div className="flex">
-                <img
-                  className="p-2 w-40 rounded-xl"
-                  src={MENU_ITEM_URL + item.card.info.imageId}
-                ></img>
-                <div className="m-2 text-slate-700">
-                  <p className="text-lg font-semibold">{item.card.info.name} </p>
-                  <p className="m-1">
-                    {" Rs."}
-                    {item.card.info.price / 100 ||
-                      item.card.info.defaultPrice / 100}
-                  </p>
-                  <button className="text-green-700 m-1 font-semibold">
-                    {item.card.info.ratings.aggregatedRating.rating} ★
-                  </button>
+      </div>
+    );
+  }
+
+  if (!resInfo) return <Shimmer />;
+
+  const { name, cuisines, costForTwoMessage } = resInfo.info;
+  const itemCards = resInfo.itemCards || [];
+
+  const handleAddToCart = (item) => {
+    const itemPriceInRupees = Number((item.price || item.defaultPrice || 0) / 100);
+
+    dispatch(
+      addToCart({
+        id: item.id,
+        name: item.name,
+        price: itemPriceInRupees,
+        productQuantity: 1,
+      })
+    );
+    toast.success(`${item.name} added to cart`);
+  };
+
+  return (
+    <div className="page-shell">
+      <div className="page-container max-w-4xl">
+        <nav className="mb-6 flex items-center gap-2 text-sm text-ink-500">
+          <Link to="/" className="hover:text-brand-600">
+            Home
+          </Link>
+          <span>/</span>
+          <span className="font-medium text-ink-800">{name}</span>
+        </nav>
+
+        <div className="card-surface mb-8 p-6 sm:p-8">
+          <h1 className="font-display text-3xl font-bold text-ink-900 sm:text-4xl">
+            {name}
+          </h1>
+          <p className="mt-2 text-ink-600">{cuisines?.join(" • ")}</p>
+          <p className="mt-1 text-sm font-medium text-brand-600">
+            {costForTwoMessage}
+          </p>
+        </div>
+
+        <h2 className="mb-4 font-display text-xl font-bold text-ink-900">Menu</h2>
+
+        <ul data-testid="menu" className="space-y-4">
+          {itemCards.map((item) => {
+            const info = item?.card?.info;
+            const price = (info.price || info.defaultPrice) / 100;
+
+            return (
+              <li
+                key={info.id}
+                className="card-surface flex flex-col gap-4 p-4 transition hover:shadow-card-hover sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div className="flex gap-4">
+                  <img
+                    className="h-24 w-24 shrink-0 rounded-xl object-cover ring-1 ring-ink-100"
+                    src={
+                      info.imageId ? MENU_ITEM_URL + info.imageId : FOOD_PLACEHOLDER
+                    }
+                    alt={info.name}
+                    onError={(e) => {
+                      e.currentTarget.src = FOOD_PLACEHOLDER;
+                    }}
+                  />
+                  <div>
+                    <p className="font-display text-lg font-semibold text-ink-900">
+                      {info.name}
+                    </p>
+                    <p className="mt-1 text-lg font-bold text-ink-800">₹{price}</p>
+                    <span className="badge-rating mt-2">
+                      {info?.ratings?.aggregatedRating?.rating || "—"} ★
+                    </span>
+                  </div>
                 </div>
-              </div>
-              {/* <Button
-                display={!visible ? "block" : "none"}
-                marginTop="10px"
-                color={"white"}
-                colorScheme="green"
-                backgroundColor={backgroundColor}
-                onClick={() => HandleAddtoBag()}
-                // fontSize={textSize}
-              >
-              Add to bag
-             </Button> */}
-              <button
-                // onClick={HandleAddtoBag}
-                data-testid="addBtn"
-                className="p-1 md:p-2 m-1 md:m-2 rounded-md text-sm md:text-md shadow-lg text-white bg-blue-800 hover:bg-blue-500 active:bg-blue-950 hover:scale-105"
-                onClick={HandleAddtoBag}
-                // onClick={() => addFoodItem(item.card.info)}
-              >
-                + Add to Cart
-              </button>
-            </li>
-          ))}
+
+                <button
+                  type="button"
+                  data-testid="addBtn"
+                  className="btn-primary shrink-0 sm:min-w-[140px]"
+                  onClick={() => handleAddToCart(info)}
+                >
+                  + Add to cart
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </div>
-    )
+    </div>
+  );
 };
-
 
 export default RestaurantMenu;

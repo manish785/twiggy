@@ -1,35 +1,50 @@
-import React from "react";
-import { useNavigate } from 'react-router-dom';
-import { Box, Flex, Image } from '@chakra-ui/react';
-
+import { useEffect } from "react";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
 const PaymentConfirm = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const orderNumber = location?.state?.orderNumber;
+  const totalAmount = location?.state?.totalAmount;
 
-    setTimeout(() => {
-        alert("Redirecting to homepage...");
-        navigate('/');
-    }, 3000)
+  useEffect(() => {
+    const timer = setTimeout(() => navigate("/"), 4000);
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
-    return (
-        <Flex
-          flexDirection={"column"}
-          justifyContent="center"
-          alignItems={"center"}
-          fontWeight="700"
-          fontSize={30}
-          m="auto"
-          mb="50"
-          textAlign="center"
-          w={{ lg: "100%", sm: "90%", base: "905" }}
-        >
-          <Box w={400}>
-            <Image src="https://static.vecteezy.com/system/resources/previews/006/900/704/original/green-tick-checkbox-illustration-isolated-on-white-background-free-vector.jpg" />
-          </Box>
-          <h1>Your order has been placed successfully</h1>
-        </Flex>
-    );
+  return (
+    <div className="page-shell flex items-center justify-center py-16">
+      <div className="card-surface max-w-md p-10 text-center">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 text-4xl">
+          ✓
+        </div>
+
+        <h1 className="mt-6 font-display text-2xl font-bold text-ink-900">
+          Order placed!
+        </h1>
+        <p className="mt-2 text-ink-500">
+          Your food is on the way. Thanks for ordering with FoodHeaven.
+        </p>
+
+        {orderNumber && (
+          <p className="mt-6 rounded-xl bg-ink-50 px-4 py-3 text-sm font-medium text-ink-700">
+            Order ID: <span className="text-brand-600">{orderNumber}</span>
+          </p>
+        )}
+        {totalAmount && (
+          <p className="mt-2 text-lg font-bold text-ink-900">
+            Paid ₹{totalAmount}
+          </p>
+        )}
+
+        <p className="mt-6 text-xs text-ink-400">Redirecting to home in a few seconds...</p>
+
+        <Link to="/" className="btn-primary mt-6 inline-flex">
+          Back to home
+        </Link>
+      </div>
+    </div>
+  );
 };
-
 
 export default PaymentConfirm;

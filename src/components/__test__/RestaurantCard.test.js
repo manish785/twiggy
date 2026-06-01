@@ -1,29 +1,13 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import RestaurantCard from "../RestaurantCard";
-import MOCK_DATA from "../mocks/resCardMock.json";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-it("should render RestaurantCard component with props Data", async () => {
-  render(<RestaurantCard resData={MOCK_DATA} />);
+import RestaurantCard from "../RestaurantCard";
+import MOCK_DATA from "../mocks/resCardMock.json";
 
-  // Use waitFor with a custom condition
-  await waitFor(() => {
-    const name = screen.getByText("Leon's - Burgers & Wings (Leon Grill)");
-    if (name) {
-      return name;
-    }
-    throw new Error("Element not found");
-  });
+it("renders restaurant card details", () => {
+  render(<RestaurantCard {...MOCK_DATA} />);
 
-  // Print the component structure for debugging
-  screen.debug();
-
-  // Assert that the element is present in the document
-  const name = screen.getByText("Leon's - Burgers & Wings (Leon Grill)");
-  expect(name).toBeInTheDocument();
-});
-
-
-it("should render RestaurantCard component with Promoted Label", () => {
-    // Home Work - test HOC : withPromtedLabel()
+  expect(
+    screen.getByText("Leon's - Burgers & Wings (Leon Grill)")
+  ).toBeInTheDocument();
 });

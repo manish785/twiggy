@@ -1,54 +1,62 @@
-import { CDN_URL } from '../utils/constants';
+import { CDN_URL } from "../utils/constants";
 
 const RestaurantCard = ({
-        cloudinaryImageId,
-        name,
-        cuisines,
-        costForTwo,
-        avgRating,
-        sla,
-        deliveryTime
-    }) => {
-   
+  cloudinaryImageId,
+  name = "Unknown Restaurant",
+  cuisines = [],
+  costForTwo = "N/A",
+  avgRating = "N/A",
+  sla = {},
+  isOpen = true,
+}) => (
+  <article className="group card-surface w-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover">
+    <div className="relative h-44 overflow-hidden">
+      <img
+        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+        alt={name}
+        src={
+          cloudinaryImageId
+            ? CDN_URL + cloudinaryImageId
+            : "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80"
+        }
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink-900/70 via-transparent to-transparent" />
+      {!isOpen && (
+        <span className="absolute left-3 top-3 rounded-lg bg-red-500/90 px-2 py-1 text-xs font-bold text-white backdrop-blur-sm">
+          Closed
+        </span>
+      )}
+      <span className="badge-rating absolute bottom-3 left-3 shadow-md">
+        ★ {avgRating}
+      </span>
+    </div>
 
-    return(
-        <div className="m-4 p-4 h-[500px] w-[253px] rounded-lg bg-gray-100 hover:bg-gray-200">  
-            <img 
-                className="rounded-lg h-[280px] w-[400px]"
-                alt='res-logo' 
-                src={
-                    CDN_URL
-                    + cloudinaryImageId
-                }
-            />
-            <h3 className='font-bold py-4 text-lg'>{name}</h3>
-            <h4>{cuisines ? cuisines.join(", ") : "Cuisine information not available"}</h4>
-            <div className="flex justify-between items-center text-gray-600 mt-4 text-sm ">
-            <h4 className=" px-2 p-1 bg-green-700 rounded-md text-white ">
-                <p className="">★{avgRating}</p>{" "}
-            </h4>
-            <h4>{sla.deliveryTime} mins</h4>
-            <h4>{costForTwo}</h4>
-            </div>
-        </div>
-    )
-}
+    <div className="p-4">
+      <h3 className="font-display text-lg font-bold text-ink-900 line-clamp-1">
+        {name}
+      </h3>
+      <p className="mt-1 text-sm text-ink-500 line-clamp-2">
+        {cuisines.length ? cuisines.join(", ") : "Multi-cuisine"}
+      </p>
 
+      <div className="mt-4 flex items-center justify-between border-t border-ink-100 pt-3 text-sm">
+        <span className="flex items-center gap-1 text-ink-600">
+          <span aria-hidden>⏱</span>
+          {sla?.deliveryTime ? `${sla.deliveryTime} mins` : "—"}
+        </span>
+        <span className="font-semibold text-ink-800">{costForTwo}</span>
+      </div>
+    </div>
+  </article>
+);
 
-// Higher Order Component
-
-// input - RestaurantCard => RestaurantCardPromoted
-
-// export const withPromotedLabel = ( RestaurantCard ) => {
-//     return (props) => {
-//         return (
-//             <div>
-//                 <label className='absolute bg-black text-white m-2 p-2 rounded-lg'>Promoted</label>
-//                 <RestaurantCard {...props}/>
-//             </div>
-//         )
-//     }
-// }
-
+export const withPromotedLabel = (WrappedComponent) => (props) => (
+  <div className="relative">
+    <span className="absolute left-3 top-3 z-10 rounded-lg bg-brand-500 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white shadow-lg">
+      Promoted
+    </span>
+    <WrappedComponent {...props} />
+  </div>
+);
 
 export default RestaurantCard;

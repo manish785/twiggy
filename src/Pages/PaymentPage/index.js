@@ -1,380 +1,255 @@
-import {
-    Box,
-    Flex,
-    Heading,
-    Text,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionIcon,
-    AccordionPanel,
-    Image,
-  } from "@chakra-ui/react";
-  
-  import { useState } from "react";
-  import { SiPaytm } from "react-icons/si";
-  import { useSelector } from "react-redux";
-  import { AiOutlineCreditCard } from "react-icons/ai";
-  import { BsArrowRightCircle, BsCashCoin, BsGift } from "react-icons/bs";
-  
-  import Cod from "./components/Cod";
-  import Paytm from "./components/Paytm";
-  import GiftCard from "./components/GiftCard";
-  import CreditCard from "./components/CreditCard";
-  
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-  function PaymentPage() {
-    const [method, setMethod] = useState("Card");
-  
-    const { ItemCount, totalCartPrice, deliveryAddress } = useSelector(
-      (state) => state.NewCartReducer
-    );
-  
+import { successPayment } from "../../redux/CartPage/action";
+import {
+  CREATE_ORDER_URL,
+  getConfirmPaymentUrl,
+} from "../../utils/constants";
+import { getApiAccessToken } from "../../utils/sessionAuth";
+import appStore from "../../utils/appStore";
+import { persistCart } from "../../utils/cartStorage";
+
+const PAYMENT_OPTIONS = [
+  { id: "card", label: "Credit / Debit Card", icon: "💳", desc: "Visa, Mastercard, RuPay" },
+  { id: "cod", label: "Cash on delivery", icon: "💵", desc: "Pay when order arrives" },
+  { id: "paytm", label: "Paytm Wallet", icon: "📱", desc: "Instant wallet payment" },
+];
+
+const PaymentPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {
+    isAuthenticated,
+    isLoading: isAuthLoading,
+    loginWithRedirect,
+    user,
+    getAccessTokenSilently,
+  } = useAuth0();
+  const [method, setMethod] = useState("card");
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const { itemCount, totalCartPrice, deliveryAddress, data } = useSelector(
+    (state) => state.cart
+  );
+
+  const goToLogin = () => {
+    // Save cart before Auth0 redirect (full page reload clears in-memory Redux)
+    persistCart(appStore.getState().cart);
+    return loginWithRedirect({
+      appState: { returnTo: "/payment" },
+    });
+  };
+
+  const handlePayment = async () => {
+    if (itemCount === 0) {
+      toast.error("Cart is empty");
+      return;
+    }
+
+    if (
+      !deliveryAddress?.name ||
+      !deliveryAddress?.email ||
+      !deliveryAddress?.number ||
+      !deliveryAddress?.address ||
+      !deliveryAddress?.pincode
+    ) {
+      toast.error("Please add delivery address first");
+      navigate("/checkout");
+      return;
+    }
+
+    if (isAuthLoading) {
+      toast.error("Checking login status, please try again");
+      return;
+    }
+
+    if (!isAuthenticated) {
+      toast.error("Please login to complete payment");
+      await goToLogin();
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+
+      const jwtToken = await getApiAccessToken({
+        getAccessTokenSilently,
+        user,
+      });
+
+      const headers = {
+        Authorization: `Bearer ${jwtToken}`,
+        "Idempotency-Key": `order-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      };
+
+      const createOrderResponse = await axios.post(
+        CREATE_ORDER_URL,
+        {
+          items: data.map((item) => ({
+            menuItemId: Number(item.id),
+            quantity: Number(item.productQuantity || 1),
+          })),
+          deliveryAddress,
+          paymentMethod: method,
+        },
+        { headers }
+      );
+
+      const order = createOrderResponse?.data?.data;
+
+      await axios.post(
+        getConfirmPaymentUrl(order.orderId),
+        {
+          status: "SUCCESS",
+          provider: "TWIGGY_MOCK_GATEWAY",
+        },
+        { headers }
+      );
+
+      dispatch(successPayment());
+      toast.success("Payment successful!");
+
+      navigate("/payment/confirm", {
+        state: {
+          orderNumber: order.orderNumber,
+          totalAmount: order.totalAmount,
+        },
+      });
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Payment failed. Please try again.";
+      toast.error(message);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  if (itemCount === 0) {
     return (
-      <Flex
-        direction={{
-          base: "column",
-          sm: "column",
-          md: "column",
-          lg: "row",
-          xl: "row",
-          "2xl": "row",
-        }}
-        gap={{
-          base: 10,
-          sm: 10,
-          md: 10,
-          lg: 0,
-          xl: 0,
-          "2xl": 0,
-        }}
-        border="px solid black"
-        width="90%"
-        margin="auto"
-        justifyContent="space-around"
-        marginTop="20px"
-        marginBottom="20px"
-        padding="10px"
-      >
-        <Flex
-          direction="column"
-          gap="10"
-          border="px solid red"
-          width={{
-            base: "90%",
-            sm: "90%",
-            md: "90%",
-            lg: "60%",
-            xl: "60%",
-            "2xl": "60%",
-          }}
-        >
-          <Flex direction="column">
-            <Heading
-              as="h1"
-              fontSize="36px"
-              fontWeight="600"
-              fontFamily="Inter,sans-serif"
-            >
-              Choose payment method
-            </Heading>
-            <Text fontSize="14px" fontFamily="Inter,sans-serif">
-              Choose the Payment method you prefer
-            </Text>
-          </Flex>
-  
-          <Flex direction="column" gap="3">
-            <Text fontSize="20px" fontWeight="600" fontFamily="sans-serif">
-              Payment Method Options
-            </Text>
-            <Flex
-              direction={{
-                base: "column",
-                sm: "column",
-                md: "row",
-                lg: "row",
-                xl: "row",
-                "2xl": "row",
-              }}
-              borderTop="1px solid grey"
-              borderRight="1px solid grey"
-              borderLeft="1px solid grey"
-              borderRadius="1rem"
-              justifyContent={"space-around"}
-              padding="5px"
-            >
-              <Flex
-                direction="column"
-                gap="0.5"
-                border="0px solid blue"
-                marginLeft="10px"
-              >
-                <Flex
-                  _hover={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setMethod("Card")}
-                  border="1px solid grey"
-                  borderLeft={method === "Card" && `5px solid #689f38`}
-                  padding="2"
-                  boxShadow="md"
-                  borderRadius="10px"
-                  width={{
-                    lg: "298px",
-                    "2xl": "298px",
-                    md: "298px",
-                  }}
-                >
-                  <Box border="0px solid red">
-                    <AiOutlineCreditCard size="25" />
-                  </Box>
-                  <Flex border="0px solid red" flexDirection="column">
-                    <Heading
-                      as="h6"
-                      fontSize="16px"
-                      fontWeight="500"
-                      fontFamily="sans-serif"
-                    >
-                      Credit/Debit Card
-                    </Heading>
-                    <Text color="grey">Visa,Mastercard,Rupay & more</Text>
-                  </Flex>
-                  {method === "Card" && (
-                    <Box border="0px solid red" margin="auto">
-                      <BsArrowRightCircle size="25" />
-                    </Box>
-                  )}
-                </Flex>
-                <Flex
-                  _hover={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setMethod("Cod")}
-                  gap="1"
-                  border="1px solid grey"
-                  borderLeft={method === "Cod" && "5px solid #689f38"}
-                  padding="2"
-                  boxShadow="md"
-                  borderRadius="10px"
-                >
-                  <Box border="0px solid red">
-                    <BsCashCoin size="25" />
-                  </Box>
-                  <Flex border="0px solid red" flexDirection="column">
-                    <Heading
-                      as="h6"
-                      fontSize="16px"
-                      fontWeight="500"
-                      fontFamily="sans-serif"
-                    >
-                      Cash on delivery
-                    </Heading>
-                    <Text color="grey">Pay at your doorstep</Text>
-                  </Flex>
-                  {method === "Cod" && (
-                    <Box border="0px solid red" margin="auto">
-                      <BsArrowRightCircle size="25" />
-                    </Box>
-                  )}
-                </Flex>
-                <Flex
-                  _hover={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setMethod("Gift")}
-                  gap="1"
-                  border="1px solid grey"
-                  borderLeft={method === "Gift" && "5px solid #689f38"}
-                  padding="2"
-                  boxShadow="md"
-                  borderRadius="10px"
-                >
-                  <Box border="0px solid red">
-                    <BsGift size="25" />
-                  </Box>
-                  <Flex border="0px solid red" flexDirection="column">
-                    <Heading
-                      as="h6"
-                      fontSize="16px"
-                      fontWeight="500"
-                      fontFamily="sans-serif"
-                    >
-                      Gift card
-                    </Heading>
-                    <Text color="grey">One card for all bigbasket users</Text>
-                  </Flex>
-                  {method === "Gift" && (
-                    <Box border="0px solid red" margin="auto">
-                      <BsArrowRightCircle size="25" />
-                    </Box>
-                  )}
-                </Flex>
-                <Flex
-                  _hover={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setMethod("Paytm")}
-                  gap="1"
-                  border="1px solid grey"
-                  borderLeft={method === "Paytm" && "5px solid #689f38"}
-                  padding="2"
-                  boxShadow="md"
-                  borderRadius="10px"
-                >
-                  <Box border="0px solid red">
-                    <SiPaytm size="25" />
-                  </Box>
-                  <Flex border="0px solid red" flexDirection="column">
-                    <Heading
-                      as="h6"
-                      fontSize="16px"
-                      fontWeight="500"
-                      fontFamily="sans-serif"
-                    >
-                      Paytm Wallet
-                    </Heading>
-                    <Text color="grey">Link your Paytm wallet and pay</Text>
-                  </Flex>
-                  {method === "Paytm" && (
-                    <Box border="0px solid red" margin="auto">
-                      <BsArrowRightCircle size="25" />
-                    </Box>
-                  )}
-                </Flex>
-              </Flex>
-              <Box border="0px solid black" marginTop="5px">
-                {" "}
-                {method === "Card" ? (
-                  <CreditCard totalCartPrice={totalCartPrice} />
-                ) : method === "Cod" ? (
-                  <Cod totalCartPrice={totalCartPrice} />
-                ) : method === "Gift" ? (
-                  <GiftCard totalCartPrice={totalCartPrice} />
-                ) : method === "Paytm" ? (
-                  <Paytm totalCartPrice={totalCartPrice} />
-                ) : null}
-              </Box>
-            </Flex>
-          </Flex>
-        </Flex>
-        <Flex
-          direction="column"
-          border="0px solid yellow"
-          margin="auto"
-          marginTop="-8"
-          gap="10"
-        >
-          <Box>
-            <Image
-              src="https://adn-static1.nykaa.com/media/wysiwyg/Payments/desktop-icons/payment-icon.svg"
-              width=""
-              height=""
-              alt=""
-            />
-          </Box>
-          <Box width={"80%"}>
-            <Accordion allowToggle>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box
-                      as="span"
-                      display="flex"
-                      justifyContent="space-between"
-                      flex="1"
-                      textAlign="left"
-                    >
-                      <Heading as="h1" fontSize="16px">
-                        Bag
-                      </Heading>
-                      <Heading fontSize="14px">{ItemCount} Items</Heading>
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel
-                  pb={4}
-                  display="flex"
-                  justifyContent={"space-between"}
-                >
-                  <Flex flexDirection="column">
-                    <Text>{ItemCount} items in the Cart</Text>
-                    <Heading as="h3" fontSize="large" fontWeight="medium">
-                      Delivery address
-                    </Heading>
-                    <Text>{deliveryAddress.name}</Text>
-                    <Text>{deliveryAddress.email}</Text>
-                    <Text>{deliveryAddress.number}</Text>
-                    <Text>{deliveryAddress.address}</Text>
-                    <Text>{deliveryAddress.pincode}</Text>
-                  </Flex>
-                </AccordionPanel>
-              </AccordionItem>
-              <AccordionItem></AccordionItem>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box
-                      as="span"
-                      display="flex"
-                      justifyContent="space-between"
-                      flex="1"
-                      textAlign="left"
-                    >
-                      <Heading as="h1" fontSize="16px">
-                        Price Details
-                      </Heading>
-                      {
-                        <Heading fontSize="14px">
-                          ₹{totalCartPrice.toFixed(1)}
-                        </Heading>
-                      }
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <Text display={"flex"} justifyContent="space-between">
-                    <span>Bag MRP ({ItemCount} items)</span>
-                    <span>₹{totalCartPrice.toFixed(1)}</span>
-                  </Text>
-                  <Text display={"flex"} justifyContent="space-between">
-                    <span>After Discount</span>
-                    <span>₹{totalCartPrice.toFixed(1)}</span>
-                  </Text>
-                  <Text display={"flex"} justifyContent="space-between">
-                    <span>Saving at this Time</span>
-                    <span color="green">
-                      {totalCartPrice.toFixed(1) - totalCartPrice.toFixed(1)}
-                    </span>
-                  </Text>
-                  <Heading
-                    display={"flex"}
-                    justifyContent="space-between"
-                    as="h1"
-                    fontSize="16px"
-                  >
-                    <span>You Pay</span> <span>₹{totalCartPrice.toFixed(1)}</span>{" "}
-                  </Heading>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-            <Box display="flex" gap="10px" mt="12px" p="12px 17px">
-              <Text fontSize={"12px"}>
-                Buy authentic products. Pay securely. Easy returns and exchange
-              </Text>
-              <Image
-                w="39px"
-                h="37px"
-                src="https://adn-static1.nykaa.com/media/wysiwyg/Payments/desktop-icons/pay-secure-lock.png"
-                alt="image"
-              />
-            </Box>
-          </Box>
-        </Flex>
-      </Flex>
+      <div className="page-shell flex items-center justify-center">
+        <div className="card-surface max-w-md p-8 text-center">
+          <p className="text-4xl">🛒</p>
+          <h2 className="mt-4 font-display text-xl font-bold text-ink-900">
+            Your cart is empty
+          </h2>
+          <p className="mt-2 text-ink-500">
+            Add items from a restaurant, then checkout and return here to pay.
+          </p>
+          <Link to="/" className="btn-primary mt-6 inline-block">
+            Browse restaurants
+          </Link>
+        </div>
+      </div>
     );
   }
-  
-  
-  export default PaymentPage;
+
+  return (
+    <div className="page-shell">
+      <div className="page-container py-10">
+        <Link
+          to="/checkout"
+          className="mb-6 inline-flex text-sm font-medium text-brand-600 hover:text-brand-700"
+        >
+          ← Edit address
+        </Link>
+
+        <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">
+          Step 3 of 3
+        </p>
+        <h1 className="section-title mt-1">Payment</h1>
+
+        {!isAuthLoading && isAuthenticated && user && (
+          <p className="mt-2 text-sm text-ink-500">
+            Logged in as {user.email || user.name}
+          </p>
+        )}
+
+        {!isAuthLoading && !isAuthenticated && (
+          <p className="mt-2 text-sm text-amber-700">
+            Login is required to place your order. You can browse and checkout as
+            a guest, then sign in here to pay.
+          </p>
+        )}
+
+        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-5">
+          <div className="space-y-3 lg:col-span-3">
+            {PAYMENT_OPTIONS.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => setMethod(option.id)}
+                className={`card-surface flex w-full items-center gap-4 p-5 text-left transition ${
+                  method === option.id
+                    ? "border-brand-500 ring-2 ring-brand-500/20"
+                    : "hover:border-brand-200"
+                }`}
+              >
+                <span className="text-3xl">{option.icon}</span>
+                <div>
+                  <p className="font-semibold text-ink-900">{option.label}</p>
+                  <p className="text-sm text-ink-500">{option.desc}</p>
+                </div>
+                {method === option.id && (
+                  <span className="ml-auto text-brand-500">✓</span>
+                )}
+              </button>
+            ))}
+
+            {!isAuthLoading && !isAuthenticated ? (
+              <button
+                type="button"
+                onClick={goToLogin}
+                className="btn-primary mt-4 w-full !py-4 text-base"
+              >
+                Login to pay ₹{totalCartPrice}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handlePayment}
+                disabled={isProcessing || isAuthLoading}
+                className="btn-primary mt-4 w-full !py-4 text-base"
+              >
+                {isAuthLoading
+                  ? "Checking session..."
+                  : isProcessing
+                    ? "Processing payment..."
+                    : `Pay ₹${totalCartPrice}`}
+              </button>
+            )}
+          </div>
+
+          <aside className="card-surface order-first h-fit p-6 lg:order-none lg:col-span-2">
+            <h2 className="font-display text-lg font-bold text-ink-900">
+              Order summary
+            </h2>
+            <p className="mt-1 text-sm text-ink-500">{itemCount} items</p>
+
+            <div className="mt-6 space-y-2 border-t border-ink-100 pt-4 text-sm">
+              <p className="font-semibold text-ink-800">Deliver to</p>
+              <p className="text-ink-600">{deliveryAddress?.name}</p>
+              <p className="text-ink-600">{deliveryAddress?.address}</p>
+              <p className="text-ink-600">
+                {deliveryAddress?.pincode} · {deliveryAddress?.number}
+              </p>
+            </div>
+
+            <div className="mt-6 flex justify-between border-t border-ink-100 pt-4 text-xl font-bold">
+              <span>Total</span>
+              <span className="text-brand-600">₹{totalCartPrice}</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PaymentPage;

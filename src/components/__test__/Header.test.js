@@ -1,77 +1,35 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import appStore from '../../utils/appStore';
-import Header from '../Header';
-import { BrowserRouter } from 'react-router-dom';
-import '@testing-library/jest-dom';
+import { render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import "@testing-library/jest-dom";
 
-it("Should render Header Component with a login button", () => {
-    render(
-      <BrowserRouter>
-        <Provider store={appStore}>
-          <Header />
-        </Provider>
-      </BrowserRouter>
-    );
-  
-    const loginButton = screen.getByRole("button", { name : 'login'});
-  
-    //const loginButton = screen.getByText("Login");
-  
-    expect(loginButton).toBeInTheDocument();
-  });
-  
+import appStore from "../../utils/appStore";
+import Header from "../Header";
 
-it("Should render Header Component with a Cart Items 0", () => {
-    render(
-      <BrowserRouter>
-        <Provider store={appStore}>
-          <Header />
-        </Provider>
-      </BrowserRouter>
-    );
-  
-    const cartItem = screen.getByText('Cart - (0 items)');
-  
-    expect(cartItem).toBeInTheDocument();
-  });
- 
+jest.mock("@auth0/auth0-react", () => ({
+  useAuth0: () => ({
+    isAuthenticated: false,
+    user: null,
+    loginWithRedirect: jest.fn(),
+    logout: jest.fn(),
+  }),
+}));
 
-  it("Should render Header Component with a Cart item ", () => {
-    render(
-      <BrowserRouter>
-        <Provider store={appStore}>
-          <Header />
-        </Provider>
-      </BrowserRouter>
-    );
-  
-    const cartItem = screen.getByText(/Cart/);
-  
-    expect(cartItem).toBeInTheDocument();
-  });
- 
- 
-  it("Should change Login Button to Logout on click", () => {
-    render(
-      <BrowserRouter>
-        <Provider store={appStore}>
-          <Header />
-        </Provider>
-      </BrowserRouter>
-    );
-  
-    const loginButton = screen.getByRole("button", { name: "Login" });
-  
-    fireEvent.click(loginButton);
-  
-    const logoutButton = screen.getByRole("button", { name: "Logout" });
-  
-    expect(logoutButton).toBeInTheDocument();
-  });
- 
- 
+const renderHeader = () =>
+  render(
+    <BrowserRouter>
+      <Provider store={appStore}>
+        <Header />
+      </Provider>
+    </BrowserRouter>
+  );
 
+it("renders login button", () => {
+  renderHeader();
+  expect(screen.getByRole("button", { name: "Login" })).toBeInTheDocument();
+});
 
-
-
+it("renders cart link", () => {
+  renderHeader();
+  expect(screen.getByRole("link", { name: /Cart/i })).toBeInTheDocument();
+});

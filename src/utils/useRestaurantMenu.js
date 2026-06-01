@@ -1,27 +1,29 @@
-import { useState, useEffect } from 'react';
-import { MENU_DATA } from '../components/mocks/MOCK_MENU_DATA';
-
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { getRestaurantMenuUrl } from "./constants";
 
 const useRestaurantMenu = (resId) => {
   const [resInfo, setResInfo] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!resId) {
+      return;
+    }
     fetchData();
-  }, []);
+  }, [resId]);
 
-  const fetchData =  () => {
-    
+  const fetchData = async () => {
     try {
-      const json = MENU_DATA.find(obj=> obj.id===resId);
-      setResInfo(json.data);
+      setError(null);
+      const response = await axios.get(getRestaurantMenuUrl(resId));
+      setResInfo(response?.data?.data || null);
     } catch (error) {
-      console.error('Error fetching restaurant menu:', error);
-      // Handle the error as needed
+      setError(error?.response?.data?.message || "Unable to fetch menu");
     }
   };
 
-  return resInfo;
+  return { resInfo, error };
 };
-
 
 export default useRestaurantMenu;
