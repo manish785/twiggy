@@ -2,5 +2,11 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": null,
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "env": {
+    "REACT_APP_AUTH0_DOMAIN": "dev-5k6wn3xfw6lvzvkj.us.auth0.com",
+    "REACT_APP_AUTH0_CLIENT_ID": "4d8HhuQt62vCakX8rch92Elc6K0HkLYp",
+    "REACT_APP_AUTH0_AUDIENCE": "https://api.foodheaven.app",
+    "REACT_APP_API_BASE_URL": "https://foodheaven-api.onrender.com/api/v1"
+  }
 }

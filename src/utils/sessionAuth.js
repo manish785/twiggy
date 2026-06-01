@@ -1,5 +1,9 @@
 import axios from "axios";
 import { AUTH0_AUDIENCE, DEV_AUTH_KEY, DEV_TOKEN_URL } from "./constants";
+import {
+  AUTH0_LOGIN_SCOPE,
+  isAuthSessionError,
+} from "./auth0Config";
 
 const SESSION_JWT_KEY = "foodheaven_session_jwt";
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
@@ -44,18 +48,11 @@ async function fetchDevSessionToken({ user, forceRefresh = false }) {
   return token;
 }
 
-const AUTH0_API_SCOPES = "openid profile email";
-
-function isMissingRefreshTokenError(error) {
-  const message = error?.message || "";
-  return message.includes("Missing Refresh Token");
-}
-
 async function fetchAuth0AccessToken({ getAccessTokenSilently, forceRefresh }) {
   const tokenOptions = {
     authorizationParams: {
       audience: AUTH0_AUDIENCE,
-      scope: AUTH0_API_SCOPES,
+      scope: AUTH0_LOGIN_SCOPE,
     },
     cacheMode: forceRefresh ? "off" : "on",
   };
@@ -63,7 +60,7 @@ async function fetchAuth0AccessToken({ getAccessTokenSilently, forceRefresh }) {
   try {
     return await getAccessTokenSilently(tokenOptions);
   } catch (error) {
-    if (!forceRefresh && isMissingRefreshTokenError(error)) {
+    if (!forceRefresh && isAuthSessionError(error)) {
       return getAccessTokenSilently({
         ...tokenOptions,
         cacheMode: "off",
@@ -103,10 +100,14 @@ export async function getApiAccessToken({
     return await fetchAuth0AccessToken({ getAccessTokenSilently, forceRefresh });
   } catch (error) {
     if (IS_PRODUCTION || !DEV_AUTH_KEY) {
-      const hint = isMissingRefreshTokenError(error)
+      const hint = isAuthSessionError(error)
         ? "Please log out, log in again, then retry payment."
         : "Log in again or check Auth0 API configuration.";
-      throw new Error(error?.message ? `${error.message} ${hint}` : hint);
+      const authError = new Error(
+        error?.message ? `${error.message} ${hint}` : hint
+      );
+      authError.needsReauth = isAuthSessionError(error);
+      throw authError;
     }
 
     return fetchDevSessionToken({ user, forceRefresh });

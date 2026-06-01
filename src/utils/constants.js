@@ -10,8 +10,23 @@ export const LOGO_URL =
 export const BG_URL =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpaeAl1DBJ6LEXy8b2GMdt3fgTfY9NcQHbbgNCauOaA&s";
 
-export const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api/v1";
+const LOCAL_API_BASE = "http://localhost:5000/api/v1";
+const PRODUCTION_API_BASE = "https://foodheaven-api.onrender.com/api/v1";
+
+function resolveApiBaseUrl() {
+  const fromEnv = process.env.REACT_APP_API_BASE_URL;
+  if (fromEnv) {
+    return fromEnv.replace(/\/$/, "");
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    return PRODUCTION_API_BASE;
+  }
+
+  return LOCAL_API_BASE;
+}
+
+export const API_BASE_URL = resolveApiBaseUrl();
 
 export const AUTH0_DOMAIN =
   process.env.REACT_APP_AUTH0_DOMAIN ||

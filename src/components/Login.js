@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import PageLoader from "./ui/PageLoader";
+import { getLoginWithRedirectOptions } from "../utils/auth0Config";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,11 +40,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() =>
-              loginWithRedirect({
-                appState: {
-                  returnTo,
-                },
-              })
+              loginWithRedirect(getLoginWithRedirectOptions({ returnTo }))
             }
             className="btn-primary mt-8 w-full !py-4"
           >

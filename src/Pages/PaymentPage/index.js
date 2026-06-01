@@ -10,6 +10,7 @@ import {
   CREATE_ORDER_URL,
   getConfirmPaymentUrl,
 } from "../../utils/constants";
+import { getLoginWithRedirectOptions } from "../../utils/auth0Config";
 import { getApiAccessToken } from "../../utils/sessionAuth";
 import appStore from "../../utils/appStore";
 import { persistCart } from "../../utils/cartStorage";
@@ -40,9 +41,9 @@ const PaymentPage = () => {
   const goToLogin = () => {
     // Save cart before Auth0 redirect (full page reload clears in-memory Redux)
     persistCart(appStore.getState().cart);
-    return loginWithRedirect({
-      appState: { returnTo: "/payment" },
-    });
+    return loginWithRedirect(
+      getLoginWithRedirectOptions({ returnTo: "/payment" })
+    );
   };
 
   const handlePayment = async () => {
@@ -121,6 +122,19 @@ const PaymentPage = () => {
         },
       });
     } catch (error) {
+      if (error?.needsReauth) {
+        toast.error("Session expired. Please sign in again.");
+        await goToLogin();
+        return;
+      }
+
+      const status = error?.response?.status;
+      if (status === 401) {
+        toast.error("Session expired. Please sign in again.");
+        await goToLogin();
+        return;
+      }
+
       const message =
         error?.response?.data?.message ||
         error?.message ||

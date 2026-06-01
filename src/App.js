@@ -23,11 +23,8 @@ import PaymentPage from "./Pages/PaymentPage/index";
 import PaymentConfirm from "./Pages/PaymentPage/components/PaymentConfirm";
 import PageLoader from "./components/ui/PageLoader";
 import appStore from "./utils/appStore";
-import {
-  AUTH0_AUDIENCE,
-  AUTH0_CLIENT_ID,
-  AUTH0_DOMAIN,
-} from "./utils/constants";
+import { AUTH0_CLIENT_ID, AUTH0_DOMAIN } from "./utils/constants";
+import { getAuth0AuthorizationParams } from "./utils/auth0Config";
 
 const Grocery = lazy(() => import("./components/Grocery"));
 const About = lazy(() => import("./components/About"));
@@ -37,15 +34,6 @@ const auth0Domain =
 const auth0ClientId =
   AUTH0_CLIENT_ID || "4d8HhuQt62vCakX8rch92Elc6K0HkLYp";
 
-const auth0AuthorizationParams = {
-  redirect_uri: window.location.origin,
-  scope: "openid profile email",
-};
-
-if (AUTH0_AUDIENCE) {
-  auth0AuthorizationParams.audience = AUTH0_AUDIENCE;
-}
-
 const AppLayout = () => {
   const navigate = useNavigate();
 
@@ -54,7 +42,7 @@ const AppLayout = () => {
     domain={auth0Domain}
     clientId={auth0ClientId}
     cacheLocation="localstorage"
-    authorizationParams={auth0AuthorizationParams}
+    authorizationParams={getAuth0AuthorizationParams()}
     onRedirectCallback={(appState) => {
       navigate(appState?.returnTo || "/", { replace: true });
     }}
