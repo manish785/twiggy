@@ -1,9 +1,6 @@
 import axios from "axios";
 import { AUTH0_AUDIENCE, DEV_AUTH_KEY, getDevTokenUrl } from "./constants";
-import {
-  AUTH0_LOGIN_SCOPE,
-  isAuthSessionError,
-} from "./auth0Config";
+import { getAuth0ApiTokenParams, isAuthSessionError } from "./auth0Config";
 
 const SESSION_JWT_KEY = "foodheaven_session_jwt";
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
@@ -50,10 +47,7 @@ async function fetchDevSessionToken({ user, forceRefresh = false }) {
 
 async function fetchAuth0AccessToken({ getAccessTokenSilently, forceRefresh }) {
   const tokenOptions = {
-    authorizationParams: {
-      audience: AUTH0_AUDIENCE,
-      scope: AUTH0_LOGIN_SCOPE,
-    },
+    authorizationParams: getAuth0ApiTokenParams(),
     cacheMode: forceRefresh ? "off" : "on",
   };
 

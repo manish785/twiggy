@@ -1,4 +1,4 @@
-import { AUTH0_AUDIENCE, AUTH0_CLIENT_ID } from "./constants";
+import { AUTH0_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_DOMAIN } from "./constants";
 import {
   clearAuthReturnTo,
   saveAuthReturnTo,
@@ -7,7 +7,28 @@ import { clearSessionToken } from "./sessionAuth";
 
 export const AUTH0_LOGIN_SCOPE = "openid profile email";
 
-/** Remove Auth0 SPA cache from localStorage (used on logout fallback). */
+/** Login redirect only — no API audience (requested later for payment). */
+export function getAuth0LoginParams() {
+  return {
+    scope: AUTH0_LOGIN_SCOPE,
+    redirect_uri:
+      typeof window !== "undefined" ? window.location.origin : undefined,
+  };
+}
+
+/** Params when fetching an access token for the backend API. */
+export function getAuth0ApiTokenParams() {
+  const params = {
+    scope: AUTH0_LOGIN_SCOPE,
+  };
+
+  if (AUTH0_AUDIENCE) {
+    params.audience = AUTH0_AUDIENCE;
+  }
+
+  return params;
+}
+
 export function clearAuth0Cache() {
   if (typeof window === "undefined") {
     return;
@@ -25,10 +46,6 @@ export function clearAuth0Cache() {
   }
 }
 
-/**
- * Sign out reliably without depending on Auth0 Allowed Logout URLs.
- * Clears local Auth0 cache and reloads the app (header shows Login).
- */
 export async function performLogout(logout) {
   clearSessionToken();
   clearAuthReturnTo();
@@ -51,35 +68,21 @@ export async function performLogout(logout) {
   }
 }
 
-/** Auth0Provider and loginWithRedirect params (includes API audience). */
-export function getAuth0AuthorizationParams() {
-  const params = {
-    scope: AUTH0_LOGIN_SCOPE,
-  };
-
-  if (AUTH0_AUDIENCE) {
-    params.audience = AUTH0_AUDIENCE;
-  }
-
-  if (typeof window !== "undefined") {
-    params.redirect_uri = window.location.origin;
-  }
-
-  return params;
-}
-
-export function getLoginWithRedirectOptions(appState = {}) {
-  const returnTo = appState.returnTo || "/";
+export function startLogin(returnTo = "/") {
   saveAuthReturnTo(returnTo);
-
-  return {
-    appState: { returnTo },
-  };
 }
 
 export async function loginWithAuth(loginWithRedirect, returnTo = "/") {
-  const options = getLoginWithRedirectOptions({ returnTo });
-  await loginWithRedirect(options);
+  if (!AUTH0_DOMAIN || !AUTH0_CLIENT_ID) {
+    throw new Error("Auth0 domain or client id is missing.");
+  }
+
+  startLogin(returnTo);
+
+  await loginWithRedirect({
+    appState: { returnTo },
+    authorizationParams: getAuth0LoginParams(),
+  });
 }
 
 export function isAuthSessionError(error) {

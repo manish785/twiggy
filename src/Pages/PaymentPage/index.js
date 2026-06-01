@@ -10,7 +10,7 @@ import {
   getConfirmPaymentUrl,
   getCreateOrderUrl,
 } from "../../utils/constants";
-import { loginWithAuth } from "../../utils/auth0Config";
+import { startLogin } from "../../utils/auth0Config";
 import { getApiAccessToken } from "../../utils/sessionAuth";
 import appStore from "../../utils/appStore";
 import { persistCart } from "../../utils/cartStorage";
@@ -38,13 +38,10 @@ const PaymentPage = () => {
     (state) => state.cart
   );
 
-  const goToLogin = async () => {
+  const goToLogin = () => {
     persistCart(appStore.getState().cart);
-    try {
-      await loginWithAuth(loginWithRedirect, "/payment");
-    } catch {
-      navigate("/login", { state: { returnTo: "/payment" } });
-    }
+    startLogin("/payment");
+    navigate("/login", { state: { returnTo: "/payment" } });
   };
 
   const handlePayment = async () => {

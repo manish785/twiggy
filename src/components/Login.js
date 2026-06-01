@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import PageLoader from "./ui/PageLoader";
 import { loginWithAuth } from "../utils/auth0Config";
@@ -9,7 +10,10 @@ import { saveAuthReturnTo } from "../utils/authReturnTo";
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+  const { loginWithRedirect, isAuthenticated, isLoading, error: auth0Error } =
+    useAuth0();
+  const [isStartingLogin, setIsStartingLogin] = useState(false);
+
   const searchParams = new URLSearchParams(location.search);
   const returnTo =
     location.state?.returnTo || searchParams.get("returnTo") || "/";
@@ -24,11 +28,37 @@ const Login = () => {
     }
   }, [isAuthenticated, navigate, returnTo]);
 
+  useEffect(() => {
+    if (auth0Error) {
+      toast.error(auth0Error.message || "Auth0 error");
+    }
+  }, [auth0Error]);
+
+  const handleContinue = async () => {
+    if (isLoading || isStartingLogin) {
+      return;
+    }
+
+    setIsStartingLogin(true);
+
+    try {
+      await loginWithAuth(loginWithRedirect, returnTo);
+    } catch (error) {
+      const message =
+        error?.message ||
+        "Could not open login. Add this site URL in Auth0 Allowed Callback URLs.";
+      toast.error(message);
+      setIsStartingLogin(false);
+    }
+  };
+
   if (isLoading) {
     return <PageLoader label="Checking session..." />;
   }
 
-  if (isAuthenticated) return null;
+  if (isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="page-shell flex min-h-[calc(100vh-5rem)] items-center justify-center bg-hero-gradient">
@@ -46,10 +76,11 @@ const Login = () => {
 
           <button
             type="button"
-            onClick={() => loginWithAuth(loginWithRedirect, returnTo)}
+            onClick={handleContinue}
+            disabled={isStartingLogin}
             className="btn-primary mt-8 w-full !py-4"
           >
-            Continue with Auth0
+            {isStartingLogin ? "Redirecting to sign in..." : "Continue with Auth0"}
           </button>
 
           <Link
