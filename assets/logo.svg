@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="FoodHeaven">
+  <defs>
+    <linearGradient id="fh-gradient" x1="8" y1="8" x2="112" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fb923c"/>
+      <stop offset="1" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="fh-shine" x1="24" y1="16" x2="88" y2="72" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="url(#fh-gradient)"/>
+  <rect width="120" height="120" rx="28" fill="url(#fh-shine)"/>
+  <!-- Delivery box -->
+  <path d="M28 52h64l-8 36H36L28 52z" fill="#fff" fill-opacity=".95"/>
+  <path d="M60 28 88 52H32L60 28z" fill="#fff"/>
+  <!-- Cloche handle -->
+  <path d="M54 38h12" stroke="#ea580c" stroke-width="4" stroke-linecap="round"/>
+  <path d="M44 52c0-10 7-18 16-18s16 8 16 18" fill="none" stroke="#ea580c" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- Steam -->
+  <path d="M52 30c0-5 3-8 8-8s8 3 8 8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".85"/>
+  <path d="M68 26c0-4 2.5-6.5 5.5-6.5s5.5 2.5 5.5 6.5" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+</svg>

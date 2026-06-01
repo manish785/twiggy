@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+import BrandLogo from "./BrandLogo";
+
 const SITEMAP = [
   {
     title: "Company",
@@ -35,7 +37,10 @@ const Footer = () => {
       <div className="page-container py-12">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <p className="font-display text-2xl font-bold text-white">FoodHeaven</p>
+            <div className="flex items-center gap-3">
+              <BrandLogo size="sm" showRing={false} />
+              <p className="font-display text-2xl font-bold text-white">FoodHeaven</p>
+            </div>
             <p className="mt-3 text-sm leading-relaxed text-ink-400">
               Delicious food from the best local restaurants, delivered to your doorstep.
             </p>

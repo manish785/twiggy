@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 import { useAuth } from "../context/AuthContext";
-import { LOGO_URL } from "../utils/constants";
+import BrandLogo from "./BrandLogo";
 import useOnlineStatus from "../utils/useOnlineStatus";
 
 const navClass = ({ isActive }) =>
@@ -65,11 +65,7 @@ const Header = () => {
           className="flex shrink-0 items-center gap-2 sm:gap-3"
           onClick={closeMenu}
         >
-          <img
-            src={LOGO_URL}
-            alt="FoodHeaven"
-            className="h-10 w-10 rounded-xl object-cover ring-2 ring-brand-100 sm:h-12 sm:w-12"
-          />
+          <BrandLogo size="md" />
           <div className="hidden min-[400px]:block">
             <p className="font-display text-lg font-bold tracking-tight text-ink-900 sm:text-xl">
               FoodHeaven

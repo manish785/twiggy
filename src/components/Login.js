@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { useAuth } from "../context/AuthContext";
+import BrandLogo from "./BrandLogo";
 import PageLoader from "./ui/PageLoader";
 
 const Login = () => {
@@ -59,7 +60,9 @@ const Login = () => {
       <div className="page-container flex justify-center py-12">
         <div className="card-surface w-full max-w-md p-8 sm:p-10">
           <div className="text-center">
-            <span className="text-5xl">🍽️</span>
+            <div className="flex justify-center">
+              <BrandLogo size="xl" showRing={false} />
+            </div>
             <h1 className="mt-4 font-display text-3xl font-bold text-ink-900">
               Sign in to FoodHeaven
             </h1>
