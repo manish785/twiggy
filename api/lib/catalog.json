@@ -1,0 +1,1208 @@
+{
+  "restaurants": [
+    {
+      "info": {
+        "id": "55474",
+        "name": "Pizza Hut",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Mandawali",
+        "areaName": "IP Extension",
+        "avgRating": 3.8,
+        "costForTwoMessage": "?350 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 34
+        },
+        "cuisines": [
+          "Pizzas"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "10101",
+        "name": "Burger Barn",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "City Center",
+        "areaName": "Main Market",
+        "avgRating": 4.3,
+        "costForTwoMessage": "?250 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 25
+        },
+        "cuisines": [
+          "Burgers",
+          "Fast Food"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "20202",
+        "name": "Green Bowl",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "Lake View",
+        "areaName": "Sector 9",
+        "avgRating": 4.6,
+        "costForTwoMessage": "?300 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 22
+        },
+        "cuisines": [
+          "Healthy Food",
+          "Salads"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30001",
+        "name": "Spice Route",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Nehru Nagar",
+        "areaName": "Sector 1",
+        "avgRating": 4.2,
+        "costForTwoMessage": "?280 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 28
+        },
+        "cuisines": [
+          "North Indian",
+          "Biryani"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30002",
+        "name": "Roll Nation",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Gandhi Chowk",
+        "areaName": "Sector 2",
+        "avgRating": 4.1,
+        "costForTwoMessage": "?220 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 24
+        },
+        "cuisines": [
+          "Rolls",
+          "Snacks"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30003",
+        "name": "South Spice",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "Old City",
+        "areaName": "Sector 3",
+        "avgRating": 4.4,
+        "costForTwoMessage": "?260 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 26
+        },
+        "cuisines": [
+          "South Indian"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30004",
+        "name": "Taco Street",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Park Avenue",
+        "areaName": "Sector 4",
+        "avgRating": 4,
+        "costForTwoMessage": "?300 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 29
+        },
+        "cuisines": [
+          "Mexican",
+          "Fast Food"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30005",
+        "name": "Kebab House",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "River Side",
+        "areaName": "Sector 5",
+        "avgRating": 4.5,
+        "costForTwoMessage": "?360 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 30
+        },
+        "cuisines": [
+          "Mughlai",
+          "Kebabs"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30006",
+        "name": "Noodle Bar",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "Tech Park",
+        "areaName": "Sector 6",
+        "avgRating": 4.3,
+        "costForTwoMessage": "?270 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 23
+        },
+        "cuisines": [
+          "Chinese",
+          "Asian"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30007",
+        "name": "Chai & Chat",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Station Road",
+        "areaName": "Sector 7",
+        "avgRating": 4,
+        "costForTwoMessage": "?180 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 18
+        },
+        "cuisines": [
+          "Street Food",
+          "Beverages"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30008",
+        "name": "The Salad Lab",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Green Avenue",
+        "areaName": "Sector 8",
+        "avgRating": 4.7,
+        "costForTwoMessage": "?320 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 21
+        },
+        "cuisines": [
+          "Healthy Food",
+          "Salads"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30009",
+        "name": "Wrap It Up",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "City Mall",
+        "areaName": "Sector 9",
+        "avgRating": 4.1,
+        "costForTwoMessage": "?210 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 20
+        },
+        "cuisines": [
+          "Wraps",
+          "Fast Food"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30010",
+        "name": "Dosa Point",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Temple Road",
+        "areaName": "Sector 10",
+        "avgRating": 4.5,
+        "costForTwoMessage": "?240 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 19
+        },
+        "cuisines": [
+          "South Indian"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30011",
+        "name": "Biryani Blues",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Central Plaza",
+        "areaName": "Sector 11",
+        "avgRating": 4.4,
+        "costForTwoMessage": "?340 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 31
+        },
+        "cuisines": [
+          "Biryani",
+          "North Indian"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30012",
+        "name": "Momo Junction",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "Hill View",
+        "areaName": "Sector 12",
+        "avgRating": 4,
+        "costForTwoMessage": "?200 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 22
+        },
+        "cuisines": [
+          "Tibetan",
+          "Chinese"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30013",
+        "name": "Pasta Palace",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Rose Garden",
+        "areaName": "Sector 13",
+        "avgRating": 4.3,
+        "costForTwoMessage": "?330 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 27
+        },
+        "cuisines": [
+          "Italian",
+          "Pasta"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30014",
+        "name": "Sushi Bay",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Lake Side",
+        "areaName": "Sector 14",
+        "avgRating": 4.6,
+        "costForTwoMessage": "?480 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 33
+        },
+        "cuisines": [
+          "Japanese",
+          "Asian"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30015",
+        "name": "BBQ Nation Mini",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "Metro Plaza",
+        "areaName": "Sector 15",
+        "avgRating": 4.2,
+        "costForTwoMessage": "?420 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 35
+        },
+        "cuisines": [
+          "Barbecue",
+          "Grill"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30016",
+        "name": "Cake Corner",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Bakery Lane",
+        "areaName": "Sector 16",
+        "avgRating": 4.1,
+        "costForTwoMessage": "?190 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 17
+        },
+        "cuisines": [
+          "Desserts",
+          "Bakery"
+        ]
+      }
+    },
+    {
+      "info": {
+        "id": "30017",
+        "name": "Falafel Factory",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Food Street",
+        "areaName": "Sector 17",
+        "avgRating": 4.3,
+        "costForTwoMessage": "?280 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 24
+        },
+        "cuisines": [
+          "Middle Eastern",
+          "Healthy Food"
+        ]
+      }
+    }
+  ],
+  "menus": {
+    "10101": {
+      "info": {
+        "id": "10101",
+        "name": "Burger Barn",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "City Center",
+        "areaName": "Main Market",
+        "avgRating": 4.3,
+        "costForTwoMessage": "?250 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 25
+        },
+        "cuisines": [
+          "Burgers",
+          "Fast Food"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "10101-1",
+              "name": "Classic Cheeseburger",
+              "imageId": "ghi789",
+              "price": 179,
+              "defaultPrice": 179,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.1"
+                }
+              }
+            }
+          }
+        },
+        {
+          "card": {
+            "info": {
+              "id": "10101-2",
+              "name": "Peri Peri Fries",
+              "imageId": "jkl012",
+              "price": 99,
+              "defaultPrice": 99,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "3.9"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "20202": {
+      "info": {
+        "id": "20202",
+        "name": "Green Bowl",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "Lake View",
+        "areaName": "Sector 9",
+        "avgRating": 4.6,
+        "costForTwoMessage": "?300 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 22
+        },
+        "cuisines": [
+          "Healthy Food",
+          "Salads"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "20202-1",
+              "name": "Protein Bowl",
+              "imageId": "mno345",
+              "price": 259,
+              "defaultPrice": 259,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.7"
+                }
+              }
+            }
+          }
+        },
+        {
+          "card": {
+            "info": {
+              "id": "20202-2",
+              "name": "Quinoa Salad",
+              "imageId": "pqr678",
+              "price": 229,
+              "defaultPrice": 229,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.5"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30001": {
+      "info": {
+        "id": "30001",
+        "name": "Spice Route",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Nehru Nagar",
+        "areaName": "Sector 1",
+        "avgRating": 4.2,
+        "costForTwoMessage": "?280 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 28
+        },
+        "cuisines": [
+          "North Indian",
+          "Biryani"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30001-1",
+              "name": "Chicken Dum Biryani",
+              "imageId": "img30001",
+              "price": 279,
+              "defaultPrice": 279,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.3"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30002": {
+      "info": {
+        "id": "30002",
+        "name": "Roll Nation",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Gandhi Chowk",
+        "areaName": "Sector 2",
+        "avgRating": 4.1,
+        "costForTwoMessage": "?220 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 24
+        },
+        "cuisines": [
+          "Rolls",
+          "Snacks"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30002-1",
+              "name": "Paneer Kathi Roll",
+              "imageId": "img30002",
+              "price": 149,
+              "defaultPrice": 149,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30003": {
+      "info": {
+        "id": "30003",
+        "name": "South Spice",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "Old City",
+        "areaName": "Sector 3",
+        "avgRating": 4.4,
+        "costForTwoMessage": "?260 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 26
+        },
+        "cuisines": [
+          "South Indian"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30003-1",
+              "name": "Masala Dosa",
+              "imageId": "img30003",
+              "price": 129,
+              "defaultPrice": 129,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.5"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30004": {
+      "info": {
+        "id": "30004",
+        "name": "Taco Street",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Park Avenue",
+        "areaName": "Sector 4",
+        "avgRating": 4,
+        "costForTwoMessage": "?300 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 29
+        },
+        "cuisines": [
+          "Mexican",
+          "Fast Food"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30004-1",
+              "name": "Veg Taco Combo",
+              "imageId": "img30004",
+              "price": 199,
+              "defaultPrice": 199,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "3.9"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30005": {
+      "info": {
+        "id": "30005",
+        "name": "Kebab House",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "River Side",
+        "areaName": "Sector 5",
+        "avgRating": 4.5,
+        "costForTwoMessage": "?360 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 30
+        },
+        "cuisines": [
+          "Mughlai",
+          "Kebabs"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30005-1",
+              "name": "Seekh Kebab Plate",
+              "imageId": "img30005",
+              "price": 299,
+              "defaultPrice": 299,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.4"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30006": {
+      "info": {
+        "id": "30006",
+        "name": "Noodle Bar",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "Tech Park",
+        "areaName": "Sector 6",
+        "avgRating": 4.3,
+        "costForTwoMessage": "?270 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 23
+        },
+        "cuisines": [
+          "Chinese",
+          "Asian"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30006-1",
+              "name": "Hakka Noodles",
+              "imageId": "img30006",
+              "price": 189,
+              "defaultPrice": 189,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.2"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30007": {
+      "info": {
+        "id": "30007",
+        "name": "Chai & Chat",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Station Road",
+        "areaName": "Sector 7",
+        "avgRating": 4,
+        "costForTwoMessage": "?180 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 18
+        },
+        "cuisines": [
+          "Street Food",
+          "Beverages"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30007-1",
+              "name": "Samosa Chaat",
+              "imageId": "img30007",
+              "price": 99,
+              "defaultPrice": 99,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "3.8"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30008": {
+      "info": {
+        "id": "30008",
+        "name": "The Salad Lab",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Green Avenue",
+        "areaName": "Sector 8",
+        "avgRating": 4.7,
+        "costForTwoMessage": "?320 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 21
+        },
+        "cuisines": [
+          "Healthy Food",
+          "Salads"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30008-1",
+              "name": "Mediterranean Salad",
+              "imageId": "img30008",
+              "price": 219,
+              "defaultPrice": 219,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.7"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30009": {
+      "info": {
+        "id": "30009",
+        "name": "Wrap It Up",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "City Mall",
+        "areaName": "Sector 9",
+        "avgRating": 4.1,
+        "costForTwoMessage": "?210 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 20
+        },
+        "cuisines": [
+          "Wraps",
+          "Fast Food"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30009-1",
+              "name": "Chicken Wrap",
+              "imageId": "img30009",
+              "price": 159,
+              "defaultPrice": 159,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.1"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30010": {
+      "info": {
+        "id": "30010",
+        "name": "Dosa Point",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Temple Road",
+        "areaName": "Sector 10",
+        "avgRating": 4.5,
+        "costForTwoMessage": "?240 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 19
+        },
+        "cuisines": [
+          "South Indian"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30010-1",
+              "name": "Mysore Dosa",
+              "imageId": "img30010",
+              "price": 139,
+              "defaultPrice": 139,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.6"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30011": {
+      "info": {
+        "id": "30011",
+        "name": "Biryani Blues",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Central Plaza",
+        "areaName": "Sector 11",
+        "avgRating": 4.4,
+        "costForTwoMessage": "?340 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 31
+        },
+        "cuisines": [
+          "Biryani",
+          "North Indian"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30011-1",
+              "name": "Hyderabadi Biryani",
+              "imageId": "img30011",
+              "price": 269,
+              "defaultPrice": 269,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.5"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30012": {
+      "info": {
+        "id": "30012",
+        "name": "Momo Junction",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "Hill View",
+        "areaName": "Sector 12",
+        "avgRating": 4,
+        "costForTwoMessage": "?200 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 22
+        },
+        "cuisines": [
+          "Tibetan",
+          "Chinese"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30012-1",
+              "name": "Steam Momos",
+              "imageId": "img30012",
+              "price": 129,
+              "defaultPrice": 129,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30013": {
+      "info": {
+        "id": "30013",
+        "name": "Pasta Palace",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Rose Garden",
+        "areaName": "Sector 13",
+        "avgRating": 4.3,
+        "costForTwoMessage": "?330 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 27
+        },
+        "cuisines": [
+          "Italian",
+          "Pasta"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30013-1",
+              "name": "Arrabiata Pasta",
+              "imageId": "img30013",
+              "price": 239,
+              "defaultPrice": 239,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.2"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30014": {
+      "info": {
+        "id": "30014",
+        "name": "Sushi Bay",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Lake Side",
+        "areaName": "Sector 14",
+        "avgRating": 4.6,
+        "costForTwoMessage": "?480 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 33
+        },
+        "cuisines": [
+          "Japanese",
+          "Asian"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30014-1",
+              "name": "California Sushi Roll",
+              "imageId": "img30014",
+              "price": 329,
+              "defaultPrice": 329,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.6"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30015": {
+      "info": {
+        "id": "30015",
+        "name": "BBQ Nation Mini",
+        "cloudinaryImageId": "rng/md/carousel/production/3967580c0329555334072b18ba3c889c",
+        "locality": "Metro Plaza",
+        "areaName": "Sector 15",
+        "avgRating": 4.2,
+        "costForTwoMessage": "?420 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 35
+        },
+        "cuisines": [
+          "Barbecue",
+          "Grill"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30015-1",
+              "name": "BBQ Chicken Platter",
+              "imageId": "img30015",
+              "price": 349,
+              "defaultPrice": 349,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.3"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30016": {
+      "info": {
+        "id": "30016",
+        "name": "Cake Corner",
+        "cloudinaryImageId": "rng/md/carousel/production/fd426b942f60921eb65afb229d274574",
+        "locality": "Bakery Lane",
+        "areaName": "Sector 16",
+        "avgRating": 4.1,
+        "costForTwoMessage": "?190 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 17
+        },
+        "cuisines": [
+          "Desserts",
+          "Bakery"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30016-1",
+              "name": "Chocolate Truffle Cake",
+              "imageId": "img30016",
+              "price": 149,
+              "defaultPrice": 149,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.1"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "30017": {
+      "info": {
+        "id": "30017",
+        "name": "Falafel Factory",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Food Street",
+        "areaName": "Sector 17",
+        "avgRating": 4.3,
+        "costForTwoMessage": "?280 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 24
+        },
+        "cuisines": [
+          "Middle Eastern",
+          "Healthy Food"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "30017-1",
+              "name": "Falafel Pita Pocket",
+              "imageId": "img30017",
+              "price": 199,
+              "defaultPrice": 199,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.4"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "55474": {
+      "info": {
+        "id": "55474",
+        "name": "Pizza Hut",
+        "cloudinaryImageId": "2b4f62d606d1b2bfba9ba9e5386fabb7",
+        "locality": "Mandawali",
+        "areaName": "IP Extension",
+        "avgRating": 3.8,
+        "costForTwoMessage": "?350 for two",
+        "isOpen": true,
+        "veg": false,
+        "sla": {
+          "deliveryTime": 34
+        },
+        "cuisines": [
+          "Pizzas"
+        ]
+      },
+      "itemCards": [
+        {
+          "card": {
+            "info": {
+              "id": "55474-1",
+              "name": "Margherita Pizza",
+              "imageId": "abc123",
+              "price": 199,
+              "defaultPrice": 199,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "card": {
+            "info": {
+              "id": "55474-2",
+              "name": "Farmhouse Pizza",
+              "imageId": "def456",
+              "price": 349,
+              "defaultPrice": 349,
+              "ratings": {
+                "aggregatedRating": {
+                  "rating": "4.4"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

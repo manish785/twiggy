@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "start": "parcel index.html",
-    "build": "parcel build index.html",
+    "build": "node scripts/generate-demo-catalog.mjs && parcel build index.html",
     "watch-test": "jest --watch",
     "verify:env": "node scripts/verify-production-env.mjs"
   },
