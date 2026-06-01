@@ -44,13 +44,33 @@ async function fetchDevSessionToken({ user, forceRefresh = false }) {
   return token;
 }
 
+const AUTH0_API_SCOPES = "openid profile email";
+
+function isMissingRefreshTokenError(error) {
+  const message = error?.message || "";
+  return message.includes("Missing Refresh Token");
+}
+
 async function fetchAuth0AccessToken({ getAccessTokenSilently, forceRefresh }) {
-  return getAccessTokenSilently({
+  const tokenOptions = {
     authorizationParams: {
       audience: AUTH0_AUDIENCE,
+      scope: AUTH0_API_SCOPES,
     },
     cacheMode: forceRefresh ? "off" : "on",
-  });
+  };
+
+  try {
+    return await getAccessTokenSilently(tokenOptions);
+  } catch (error) {
+    if (!forceRefresh && isMissingRefreshTokenError(error)) {
+      return getAccessTokenSilently({
+        ...tokenOptions,
+        cacheMode: "off",
+      });
+    }
+    throw error;
+  }
 }
 
 /**
@@ -68,10 +88,10 @@ export async function getApiAccessToken({
       return await fetchAuth0AccessToken({ getAccessTokenSilently, forceRefresh });
     } catch (error) {
       if (IS_PRODUCTION || !DEV_AUTH_KEY) {
-        throw new Error(
-          error?.message ||
-            "Failed to get Auth0 access token. Log in again or check Auth0 API configuration."
-        );
+        const hint = isMissingRefreshTokenError(error)
+          ? "Please log out, log in again, then retry payment."
+          : "Log in again or check Auth0 API configuration.";
+        throw new Error(error?.message ? `${error.message} ${hint}` : hint);
       }
 
       return fetchDevSessionToken({ user, forceRefresh });

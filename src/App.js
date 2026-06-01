@@ -39,6 +39,7 @@ const auth0ClientId =
 
 const auth0AuthorizationParams = {
   redirect_uri: window.location.origin,
+  scope: "openid profile email",
 };
 
 if (AUTH0_AUDIENCE) {
@@ -52,7 +53,6 @@ const AppLayout = () => {
   <Auth0Provider
     domain={auth0Domain}
     clientId={auth0ClientId}
-    useRefreshTokens
     cacheLocation="localstorage"
     authorizationParams={auth0AuthorizationParams}
     onRedirectCallback={(appState) => {
