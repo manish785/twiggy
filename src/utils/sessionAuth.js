@@ -24,7 +24,7 @@ async function fetchDevSessionToken({ user, forceRefresh = false }) {
 
   if (!DEV_AUTH_KEY) {
     throw new Error(
-      "Missing REACT_APP_DEV_AUTH_KEY. For production, set REACT_APP_AUTH0_AUDIENCE and configure Auth0 API access."
+      "Dev auth is not configured. On Vercel, set REACT_APP_AUTH0_AUDIENCE and redeploy; locally set REACT_APP_DEV_AUTH_KEY."
     );
   }
 
@@ -83,22 +83,34 @@ export async function getApiAccessToken({
   user,
   forceRefresh = false,
 }) {
-  if (AUTH0_AUDIENCE && getAccessTokenSilently) {
-    try {
-      return await fetchAuth0AccessToken({ getAccessTokenSilently, forceRefresh });
-    } catch (error) {
-      if (IS_PRODUCTION || !DEV_AUTH_KEY) {
-        const hint = isMissingRefreshTokenError(error)
-          ? "Please log out, log in again, then retry payment."
-          : "Log in again or check Auth0 API configuration.";
-        throw new Error(error?.message ? `${error.message} ${hint}` : hint);
-      }
-
-      return fetchDevSessionToken({ user, forceRefresh });
+  if (!getAccessTokenSilently) {
+    if (IS_PRODUCTION) {
+      throw new Error("Auth session unavailable. Please log in again.");
     }
+    return fetchDevSessionToken({ user, forceRefresh });
   }
 
-  return fetchDevSessionToken({ user, forceRefresh });
+  if (!AUTH0_AUDIENCE) {
+    if (IS_PRODUCTION) {
+      throw new Error(
+        "Set REACT_APP_AUTH0_AUDIENCE=https://api.foodheaven.app in Vercel and redeploy."
+      );
+    }
+    return fetchDevSessionToken({ user, forceRefresh });
+  }
+
+  try {
+    return await fetchAuth0AccessToken({ getAccessTokenSilently, forceRefresh });
+  } catch (error) {
+    if (IS_PRODUCTION || !DEV_AUTH_KEY) {
+      const hint = isMissingRefreshTokenError(error)
+        ? "Please log out, log in again, then retry payment."
+        : "Log in again or check Auth0 API configuration.";
+      throw new Error(error?.message ? `${error.message} ${hint}` : hint);
+    }
+
+    return fetchDevSessionToken({ user, forceRefresh });
+  }
 }
 
 /** @deprecated Use getApiAccessToken */

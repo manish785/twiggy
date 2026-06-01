@@ -13,9 +13,15 @@ export const BG_URL =
 export const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api/v1";
 
-export const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN || "";
-export const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID || "";
-export const AUTH0_AUDIENCE = process.env.REACT_APP_AUTH0_AUDIENCE || "";
+export const AUTH0_DOMAIN =
+  process.env.REACT_APP_AUTH0_DOMAIN ||
+  "dev-5k6wn3xfw6lvzvkj.us.auth0.com";
+export const AUTH0_CLIENT_ID =
+  process.env.REACT_APP_AUTH0_CLIENT_ID ||
+  "4d8HhuQt62vCakX8rch92Elc6K0HkLYp";
+/** Auth0 API identifier — must match backend AUTH0_AUDIENCE */
+export const AUTH0_AUDIENCE =
+  process.env.REACT_APP_AUTH0_AUDIENCE || "https://api.foodheaven.app";
 
 export const DEV_AUTH_KEY = process.env.REACT_APP_DEV_AUTH_KEY || "";
 
