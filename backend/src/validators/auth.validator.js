@@ -7,6 +7,12 @@ const createDevTokenSchema = Joi.object({
   role: Joi.string().trim().default("customer"),
 });
 
+const loginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  name: Joi.string().trim().min(1).max(120).required(),
+});
+
 module.exports = {
   createDevTokenSchema,
+  loginSchema,
 };

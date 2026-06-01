@@ -1,51 +1,44 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 
+import appStore from "../../utils/appStore";
+import { AuthProvider } from "../../context/AuthContext";
 import Body from "../Body";
 
-jest.mock("@auth0/auth0-react", () => ({
-  useAuth0: () => ({
-    isAuthenticated: false,
-    user: null,
-  }),
-}));
-
-jest.mock("axios", () => ({
-  get: jest.fn(() =>
-    Promise.resolve({
-      data: {
-        data: [
-          {
-            info: {
-              id: "1",
-              name: "Test Restaurant",
-              cuisines: ["Indian"],
-              avgRating: 4.5,
-              costForTwo: "₹300",
-              isOpen: true,
-              sla: { deliveryTime: 25 },
-            },
-          },
-        ],
+jest.mock("../../utils/useRestaurants", () => () => ({
+  restaurants: [
+    {
+      info: {
+        id: "1",
+        name: "Test Restaurant",
+        avgRating: 4.5,
+        costForTwoMessage: "₹300 for two",
+        isOpen: true,
+        sla: { deliveryTime: 25 },
+        cuisines: ["Indian"],
+        cloudinaryImageId: "test",
       },
-    })
-  ),
+    },
+  ],
+  isLoading: false,
+  error: null,
+  refetch: jest.fn(),
 }));
 
 const renderBody = () =>
   render(
     <BrowserRouter>
-      <Body />
+      <AuthProvider>
+        <Provider store={appStore}>
+          <Body />
+        </Provider>
+      </AuthProvider>
     </BrowserRouter>
   );
 
-it("renders home page with search input", async () => {
+it("renders restaurant search section", () => {
   renderBody();
-
-  await waitFor(() => {
-    expect(
-      screen.getByPlaceholderText("Search for restaurants, cuisines...")
-    ).toBeInTheDocument();
-  });
+  expect(screen.getByText(/Restaurants near you/i)).toBeInTheDocument();
 });

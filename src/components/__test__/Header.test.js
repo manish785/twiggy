@@ -4,23 +4,17 @@ import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 
 import appStore from "../../utils/appStore";
+import { AuthProvider } from "../../context/AuthContext";
 import Header from "../Header";
-
-jest.mock("@auth0/auth0-react", () => ({
-  useAuth0: () => ({
-    isAuthenticated: false,
-    user: null,
-    loginWithRedirect: jest.fn(),
-    logout: jest.fn(),
-  }),
-}));
 
 const renderHeader = () =>
   render(
     <BrowserRouter>
-      <Provider store={appStore}>
-        <Header />
-      </Provider>
+      <AuthProvider>
+        <Provider store={appStore}>
+          <Header />
+        </Provider>
+      </AuthProvider>
     </BrowserRouter>
   );
 

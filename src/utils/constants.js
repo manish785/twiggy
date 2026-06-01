@@ -20,7 +20,7 @@ function resolveApiBaseUrl() {
 
   if (typeof window !== "undefined") {
     const { hostname, origin } = window.location;
-    if (hostname.endsWith(".vercel.app") || hostname === "foodheaven-five.vercel.app") {
+    if (hostname.endsWith(".vercel.app")) {
       return `${origin}/api/v1`;
     }
   }
@@ -36,20 +36,7 @@ export function getApiBaseUrl() {
   return resolveApiBaseUrl();
 }
 
-/** Resolved once at module load; prefer getRestaurantsUrl() in fetchers. */
 export const API_BASE_URL = resolveApiBaseUrl();
-
-export const AUTH0_DOMAIN =
-  process.env.REACT_APP_AUTH0_DOMAIN ||
-  "dev-5k6wn3xfw6lvzvkj.us.auth0.com";
-export const AUTH0_CLIENT_ID =
-  process.env.REACT_APP_AUTH0_CLIENT_ID ||
-  "4d8HhuQt62vCakX8rch92Elc6K0HkLYp";
-/** Auth0 API identifier - must match backend AUTH0_AUDIENCE */
-export const AUTH0_AUDIENCE =
-  process.env.REACT_APP_AUTH0_AUDIENCE || "https://api.foodheaven.app";
-
-export const DEV_AUTH_KEY = process.env.REACT_APP_DEV_AUTH_KEY || "";
 
 export function getRestaurantsUrl() {
   return `${getApiBaseUrl()}/restaurants`;
@@ -59,6 +46,10 @@ export function getRestaurantMenuUrl(restaurantId) {
   return `${getApiBaseUrl()}/restaurants/${restaurantId}/menu`;
 }
 
+export function getLoginUrl() {
+  return `${getApiBaseUrl()}/auth/login`;
+}
+
 export function getCreateOrderUrl() {
   return `${getApiBaseUrl()}/orders`;
 }
@@ -66,15 +57,6 @@ export function getCreateOrderUrl() {
 export function getConfirmPaymentUrl(orderId) {
   return `${getApiBaseUrl()}/orders/${orderId}/payments`;
 }
-
-export function getDevTokenUrl() {
-  return `${getApiBaseUrl()}/auth/dev-token`;
-}
-
-/** @deprecated use getRestaurantsUrl() */
-export const GET_RESTAURANTS_URL = getRestaurantsUrl();
-/** @deprecated use getCreateOrderUrl() */
-export const CREATE_ORDER_URL = getCreateOrderUrl();
 
 export const GROCERY_URL =
   "https://cdn.dribbble.com/users/90631/screenshots/16812389/media/7afe0c556ede3387b72f21fe5cc60a57.png";

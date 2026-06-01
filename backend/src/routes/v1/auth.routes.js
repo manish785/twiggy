@@ -1,9 +1,13 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const asyncHandler = require("../../utils/asyncHandler");
 const { validateBody } = require("../../middlewares/validate");
-const { createDevTokenSchema } = require("../../validators/auth.validator");
+const { createDevTokenSchema, loginSchema } = require("../../validators/auth.validator");
+const { login } = require("../../controllers/auth.controller");
 
 const router = express.Router();
+
+router.post("/auth/login", validateBody(loginSchema), asyncHandler(login));
 
 router.post("/auth/dev-token", validateBody(createDevTokenSchema), (req, res) => {
   if (process.env.NODE_ENV === "production") {
@@ -34,6 +38,7 @@ router.post("/auth/dev-token", validateBody(createDevTokenSchema), (req, res) =>
     {
       sub: req.body.userId,
       email: req.body.email,
+      name: req.body.email.split("@")[0],
       role: req.body.role || "customer",
     },
     jwtSecret,

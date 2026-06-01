@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+import { useAuth } from "../../context/AuthContext";
 import { successPayment } from "../../redux/CartPage/action";
 import {
   getConfirmPaymentUrl,
   getCreateOrderUrl,
 } from "../../utils/constants";
-import { startLogin } from "../../utils/auth0Config";
 import { getApiAccessToken } from "../../utils/sessionAuth";
 import appStore from "../../utils/appStore";
 import { persistCart } from "../../utils/cartStorage";
@@ -24,13 +23,7 @@ const PAYMENT_OPTIONS = [
 const PaymentPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {
-    isAuthenticated,
-    isLoading: isAuthLoading,
-    loginWithRedirect,
-    user,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { isAuthenticated, isLoading: isAuthLoading, user } = useAuth();
   const [method, setMethod] = useState("card");
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -40,7 +33,6 @@ const PaymentPage = () => {
 
   const goToLogin = () => {
     persistCart(appStore.getState().cart);
-    startLogin("/payment");
     navigate("/login", { state: { returnTo: "/payment" } });
   };
 
@@ -69,17 +61,14 @@ const PaymentPage = () => {
 
     if (!isAuthenticated) {
       toast.error("Please login to complete payment");
-      await goToLogin();
+      goToLogin();
       return;
     }
 
     try {
       setIsProcessing(true);
 
-      const jwtToken = await getApiAccessToken({
-        getAccessTokenSilently,
-        user,
-      });
+      const jwtToken = await getApiAccessToken();
 
       const headers = {
         Authorization: `Bearer ${jwtToken}`,
@@ -90,7 +79,7 @@ const PaymentPage = () => {
         getCreateOrderUrl(),
         {
           items: data.map((item) => ({
-            menuItemId: Number(item.id),
+            menuItemId: item.id,
             quantity: Number(item.productQuantity || 1),
           })),
           deliveryAddress,
@@ -120,16 +109,9 @@ const PaymentPage = () => {
         },
       });
     } catch (error) {
-      if (error?.needsReauth) {
-        toast.error("Session expired. Please sign in again.");
-        await goToLogin();
-        return;
-      }
-
-      const status = error?.response?.status;
-      if (status === 401) {
-        toast.error("Session expired. Please sign in again.");
-        await goToLogin();
+      if (error?.needsReauth || error?.response?.status === 401) {
+        toast.error("Please log in again to complete payment.");
+        goToLogin();
         return;
       }
 
@@ -185,8 +167,7 @@ const PaymentPage = () => {
 
         {!isAuthLoading && !isAuthenticated && (
           <p className="mt-2 text-sm text-amber-700">
-            Login is required to place your order. You can browse and checkout as
-            a guest, then sign in here to pay.
+            Sign in with your name and email to place your order.
           </p>
         )}
 

@@ -1,59 +1,53 @@
 import { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
+import { useAuth } from "../context/AuthContext";
 import PageLoader from "./ui/PageLoader";
-import { loginWithAuth } from "../utils/auth0Config";
-import { saveAuthReturnTo } from "../utils/authReturnTo";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { loginWithRedirect, isAuthenticated, isLoading, error: auth0Error } =
-    useAuth0();
-  const [isStartingLogin, setIsStartingLogin] = useState(false);
+  const { login, isAuthenticated, isLoading } = useAuth();
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const searchParams = new URLSearchParams(location.search);
-  const returnTo =
-    location.state?.returnTo || searchParams.get("returnTo") || "/";
-
-  useEffect(() => {
-    saveAuthReturnTo(returnTo);
-  }, [returnTo]);
+  const returnTo = location.state?.returnTo || "/";
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (!isLoading && isAuthenticated) {
       navigate(returnTo, { replace: true });
     }
-  }, [isAuthenticated, navigate, returnTo]);
+  }, [isAuthenticated, isLoading, navigate, returnTo]);
 
-  useEffect(() => {
-    if (auth0Error) {
-      toast.error(auth0Error.message || "Auth0 error");
-    }
-  }, [auth0Error]);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const handleContinue = async () => {
-    if (isLoading || isStartingLogin) {
+    if (!email.trim() || !name.trim()) {
+      toast.error("Please enter your name and email");
       return;
     }
 
-    setIsStartingLogin(true);
+    setIsSubmitting(true);
 
     try {
-      await loginWithAuth(loginWithRedirect, returnTo);
+      await login({ email, name });
+      toast.success("Logged in successfully");
+      navigate(returnTo, { replace: true });
     } catch (error) {
-      const message =
-        error?.message ||
-        "Could not open login. Add this site URL in Auth0 Allowed Callback URLs.";
-      toast.error(message);
-      setIsStartingLogin(false);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Login failed. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   if (isLoading) {
-    return <PageLoader label="Checking session..." />;
+    return <PageLoader label="Loading..." />;
   }
 
   if (isAuthenticated) {
@@ -67,21 +61,61 @@ const Login = () => {
           <div className="text-center">
             <span className="text-5xl">🍽️</span>
             <h1 className="mt-4 font-display text-3xl font-bold text-ink-900">
-              Welcome to FoodHeaven
+              Sign in to FoodHeaven
             </h1>
             <p className="mt-2 text-ink-500">
-              Sign in to save your preferences and checkout faster.
+              Use your name and email to checkout and pay. No external account
+              needed.
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={handleContinue}
-            disabled={isStartingLogin}
-            className="btn-primary mt-8 w-full !py-4"
-          >
-            {isStartingLogin ? "Redirecting to sign in..." : "Continue with Auth0"}
-          </button>
+          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+            <div>
+              <label
+                htmlFor="name"
+                className="mb-1 block text-sm font-medium text-ink-700"
+              >
+                Full name
+              </label>
+              <input
+                id="name"
+                type="text"
+                className="input-field"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Manish Kumar"
+                autoComplete="name"
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="mb-1 block text-sm font-medium text-ink-700"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                className="input-field"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                autoComplete="email"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="btn-primary w-full !py-4"
+            >
+              {isSubmitting ? "Signing in..." : "Continue"}
+            </button>
+          </form>
 
           <Link
             to="/"

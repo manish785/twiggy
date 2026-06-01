@@ -81,7 +81,7 @@ const About = () => {
           <div className="card-surface p-8 lg:col-span-2">
             <h3 className="font-display text-lg font-bold text-brand-600">Tech stack</h3>
             <div className="mt-4 flex flex-wrap gap-2">
-              {["React", "Redux", "Node.js", "Express", "MySQL", "Auth0", "REST APIs"].map(
+              {["React", "Redux", "Node.js", "Express", "MySQL", "JWT", "REST APIs"].map(
                 (tech) => (
                   <span
                     key={tech}

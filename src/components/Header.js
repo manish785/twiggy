@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useAuth0 } from "@auth0/auth0-react";
 import toast from "react-hot-toast";
 
-import { performLogout, startLogin } from "../utils/auth0Config";
+import { useAuth } from "../context/AuthContext";
 import { LOGO_URL } from "../utils/constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
 
@@ -21,12 +20,10 @@ const NAV_LINKS = [
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout, isAuthenticated, isLoading: isAuthLoading, user } =
-    useAuth0();
+  const { logout, isAuthenticated, isLoading, user } = useAuth();
   const { itemCount } = useSelector((state) => state.cart);
   const onlineStatus = useOnlineStatus();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const wasAuthenticatedRef = useRef(false);
 
   useEffect(() => {
@@ -36,19 +33,20 @@ const Header = () => {
     wasAuthenticatedRef.current = isAuthenticated;
   }, [isAuthenticated]);
 
-  const handleLogout = async () => {
-    if (isLoggingOut) {
-      return;
-    }
+  const closeMenu = () => setMenuOpen(false);
 
-    setIsLoggingOut(true);
+  const handleLogin = () => {
     closeMenu();
+    const returnTo = location.pathname + location.search || "/";
+    navigate("/login", { state: { returnTo } });
+  };
 
-    try {
-      await performLogout(logout);
-    } catch {
-      toast.error("Could not log out. Please try again.");
-      setIsLoggingOut(false);
+  const handleLogout = () => {
+    closeMenu();
+    logout();
+    toast.success("Logged out");
+    if (location.pathname.startsWith("/payment")) {
+      navigate("/");
     }
   };
 
@@ -58,20 +56,6 @@ const Header = () => {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
-
-  const closeMenu = () => setMenuOpen(false);
-
-  const handleLogin = () => {
-    if (isAuthLoading) {
-      toast.error("Please wait, auth is still loading...");
-      return;
-    }
-
-    closeMenu();
-    const returnTo = location.pathname + location.search || "/";
-    startLogin(returnTo);
-    navigate("/login", { state: { returnTo } });
-  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink-100 bg-white/90 backdrop-blur-md">
@@ -135,18 +119,17 @@ const Header = () => {
           {isAuthenticated ? (
             <button
               type="button"
-              className="btn-secondary hidden !px-3 !py-2 text-sm text-red-600 hover:border-red-200 hover:bg-red-50 sm:inline-flex md:!px-4"
+              className="btn-secondary inline-flex !px-3 !py-2 text-sm text-red-600 hover:border-red-200 hover:bg-red-50 md:!px-4"
               onClick={handleLogout}
-              disabled={isLoggingOut}
             >
-              {isLoggingOut ? "Logging out..." : "Logout"}
+              Logout
             </button>
           ) : (
             <button
               type="button"
               className="btn-primary inline-flex !px-3 !py-2 text-sm md:!px-4"
               onClick={handleLogin}
-              disabled={isAuthLoading}
+              disabled={isLoading}
             >
               Login
             </button>
@@ -200,15 +183,14 @@ const Header = () => {
               {isAuthenticated ? (
                 <>
                   <p className="mb-3 px-4 text-sm font-medium text-ink-600">
-                    Hi, {user?.given_name || user?.name?.split(" ")[0]}
+                    Hi, {user?.name || user?.email}
                   </p>
                   <button
                     type="button"
                     className="btn-secondary w-full text-red-600"
                     onClick={handleLogout}
-                    disabled={isLoggingOut}
                   >
-                    {isLoggingOut ? "Logging out..." : "Logout"}
+                    Logout
                   </button>
                 </>
               ) : (
