@@ -38,7 +38,7 @@ export async function performLogout(logout) {
   window.location.replace(returnTo);
 }
 
-/** Params for Auth0Provider and loginWithRedirect ù includes API audience */
+/** Auth0Provider and loginWithRedirect params (includes API audience). */
 export function getAuth0AuthorizationParams() {
   const params = {
     scope: AUTH0_LOGIN_SCOPE,
