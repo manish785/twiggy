@@ -1,4 +1,8 @@
 import { AUTH0_AUDIENCE, AUTH0_CLIENT_ID } from "./constants";
+import {
+  clearAuthReturnTo,
+  saveAuthReturnTo,
+} from "./authReturnTo";
 import { clearSessionToken } from "./sessionAuth";
 
 export const AUTH0_LOGIN_SCOPE = "openid profile email";
@@ -27,15 +31,24 @@ export function clearAuth0Cache() {
  */
 export async function performLogout(logout) {
   clearSessionToken();
+  clearAuthReturnTo();
+
+  try {
+    await Promise.race([
+      logout({ openUrl: false }),
+      new Promise((resolve) => {
+        setTimeout(resolve, 2500);
+      }),
+    ]);
+  } catch {
+    // Continue with local cleanup
+  }
+
   clearAuth0Cache();
 
-  const returnTo =
-    typeof window !== "undefined"
-      ? window.location.origin.replace(/\/$/, "")
-      : "/";
-
-  await logout({ openUrl: false });
-  window.location.replace(returnTo);
+  if (typeof window !== "undefined") {
+    window.location.assign("/");
+  }
 }
 
 /** Auth0Provider and loginWithRedirect params (includes API audience). */
@@ -55,11 +68,18 @@ export function getAuth0AuthorizationParams() {
   return params;
 }
 
-export function getLoginWithRedirectOptions(appState) {
+export function getLoginWithRedirectOptions(appState = {}) {
+  const returnTo = appState.returnTo || "/";
+  saveAuthReturnTo(returnTo);
+
   return {
-    appState,
-    authorizationParams: getAuth0AuthorizationParams(),
+    appState: { returnTo },
   };
+}
+
+export async function loginWithAuth(loginWithRedirect, returnTo = "/") {
+  const options = getLoginWithRedirectOptions({ returnTo });
+  await loginWithRedirect(options);
 }
 
 export function isAuthSessionError(error) {

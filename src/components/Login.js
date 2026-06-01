@@ -3,13 +3,20 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import PageLoader from "./ui/PageLoader";
-import { getLoginWithRedirectOptions } from "../utils/auth0Config";
+import { loginWithAuth } from "../utils/auth0Config";
+import { saveAuthReturnTo } from "../utils/authReturnTo";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
-  const returnTo = location.state?.returnTo || "/";
+  const searchParams = new URLSearchParams(location.search);
+  const returnTo =
+    location.state?.returnTo || searchParams.get("returnTo") || "/";
+
+  useEffect(() => {
+    saveAuthReturnTo(returnTo);
+  }, [returnTo]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -39,9 +46,7 @@ const Login = () => {
 
           <button
             type="button"
-            onClick={() =>
-              loginWithRedirect(getLoginWithRedirectOptions({ returnTo }))
-            }
+            onClick={() => loginWithAuth(loginWithRedirect, returnTo)}
             className="btn-primary mt-8 w-full !py-4"
           >
             Continue with Auth0

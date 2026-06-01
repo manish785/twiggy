@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { Toaster } from "react-hot-toast";
 
+import AuthRedirectHandler from "./components/AuthRedirectHandler";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Body from "./components/Body";
@@ -24,6 +25,10 @@ import PaymentConfirm from "./Pages/PaymentPage/components/PaymentConfirm";
 import PageLoader from "./components/ui/PageLoader";
 import appStore from "./utils/appStore";
 import { AUTH0_CLIENT_ID, AUTH0_DOMAIN } from "./utils/constants";
+import {
+  clearAuthReturnTo,
+  peekAuthReturnTo,
+} from "./utils/authReturnTo";
 import { getAuth0AuthorizationParams } from "./utils/auth0Config";
 
 const Grocery = lazy(() => import("./components/Grocery"));
@@ -44,10 +49,13 @@ const AppLayout = () => {
     cacheLocation="localstorage"
     authorizationParams={getAuth0AuthorizationParams()}
     onRedirectCallback={(appState) => {
-      navigate(appState?.returnTo || "/", { replace: true });
+      const returnTo = appState?.returnTo || peekAuthReturnTo() || "/";
+      clearAuthReturnTo();
+      navigate(returnTo, { replace: true });
     }}
   >
     <Provider store={appStore}>
+      <AuthRedirectHandler />
       <div className="flex min-h-screen flex-col bg-ink-50">
         <Toaster
           position="bottom-right"

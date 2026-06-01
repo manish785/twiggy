@@ -10,7 +10,7 @@ import {
   getConfirmPaymentUrl,
   getCreateOrderUrl,
 } from "../../utils/constants";
-import { getLoginWithRedirectOptions } from "../../utils/auth0Config";
+import { loginWithAuth } from "../../utils/auth0Config";
 import { getApiAccessToken } from "../../utils/sessionAuth";
 import appStore from "../../utils/appStore";
 import { persistCart } from "../../utils/cartStorage";
@@ -38,12 +38,13 @@ const PaymentPage = () => {
     (state) => state.cart
   );
 
-  const goToLogin = () => {
-    // Save cart before Auth0 redirect (full page reload clears in-memory Redux)
+  const goToLogin = async () => {
     persistCart(appStore.getState().cart);
-    return loginWithRedirect(
-      getLoginWithRedirectOptions({ returnTo: "/payment" })
-    );
+    try {
+      await loginWithAuth(loginWithRedirect, "/payment");
+    } catch {
+      navigate("/login", { state: { returnTo: "/payment" } });
+    }
   };
 
   const handlePayment = async () => {

@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import toast from "react-hot-toast";
 
-import {
-  getLoginWithRedirectOptions,
-  performLogout,
-} from "../utils/auth0Config";
+import { loginWithAuth, performLogout } from "../utils/auth0Config";
 import { LOGO_URL } from "../utils/constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
 
@@ -22,6 +19,8 @@ const NAV_LINKS = [
 ];
 
 const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
   const { itemCount } = useSelector((state) => state.cart);
   const onlineStatus = useOnlineStatus();
@@ -60,6 +59,17 @@ const Header = () => {
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
+
+  const handleLogin = async () => {
+    closeMenu();
+    const returnTo = location.pathname + location.search;
+
+    try {
+      await loginWithAuth(loginWithRedirect, returnTo);
+    } catch {
+      navigate("/login", { state: { returnTo } });
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink-100 bg-white/90 backdrop-blur-md">
@@ -133,9 +143,7 @@ const Header = () => {
             <button
               type="button"
               className="btn-primary hidden !px-3 !py-2 text-sm sm:inline-flex md:!px-4"
-              onClick={() =>
-                loginWithRedirect(getLoginWithRedirectOptions({ returnTo: "/" }))
-              }
+              onClick={handleLogin}
             >
               Login
             </button>
@@ -204,12 +212,7 @@ const Header = () => {
                 <button
                   type="button"
                   className="btn-primary w-full"
-                  onClick={() => {
-                    closeMenu();
-                    loginWithRedirect(
-                      getLoginWithRedirectOptions({ returnTo: "/" })
-                    );
-                  }}
+                  onClick={handleLogin}
                 >
                   Login
                 </button>
