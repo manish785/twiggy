@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AUTH0_AUDIENCE, DEV_AUTH_KEY, DEV_TOKEN_URL } from "./constants";
+import { AUTH0_AUDIENCE, DEV_AUTH_KEY, getDevTokenUrl } from "./constants";
 import {
   AUTH0_LOGIN_SCOPE,
   isAuthSessionError,
@@ -32,7 +32,7 @@ async function fetchDevSessionToken({ user, forceRefresh = false }) {
     );
   }
 
-  const response = await axios.post(DEV_TOKEN_URL, {
+  const response = await axios.post(getDevTokenUrl(), {
     devKey: DEV_AUTH_KEY,
     userId: user?.sub || "guest-user",
     email: user?.email || "guest@foodheaven.app",

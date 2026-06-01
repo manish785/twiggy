@@ -2,7 +2,12 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": null,
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "rewrites": [
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ],
   "env": {
     "REACT_APP_AUTH0_DOMAIN": "dev-5k6wn3xfw6lvzvkj.us.auth0.com",
     "REACT_APP_AUTH0_CLIENT_ID": "4d8HhuQt62vCakX8rch92Elc6K0HkLYp",

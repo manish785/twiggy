@@ -7,8 +7,8 @@ import toast from "react-hot-toast";
 
 import { successPayment } from "../../redux/CartPage/action";
 import {
-  CREATE_ORDER_URL,
   getConfirmPaymentUrl,
+  getCreateOrderUrl,
 } from "../../utils/constants";
 import { getLoginWithRedirectOptions } from "../../utils/auth0Config";
 import { getApiAccessToken } from "../../utils/sessionAuth";
@@ -89,7 +89,7 @@ const PaymentPage = () => {
       };
 
       const createOrderResponse = await axios.post(
-        CREATE_ORDER_URL,
+        getCreateOrderUrl(),
         {
           items: data.map((item) => ({
             menuItemId: Number(item.id),

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { API_BASE_URL, GET_RESTAURANTS_URL } from "./constants";
+import { getApiBaseUrl, getRestaurantsUrl } from "./constants";
 
 const useRestaurants = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -12,8 +12,18 @@ const useRestaurants = () => {
     setError(null);
 
     try {
-      const response = await axios.get(GET_RESTAURANTS_URL);
-      setRestaurants(response?.data?.data || []);
+      const response = await axios.get(getRestaurantsUrl(), {
+        headers: { Accept: "application/json" },
+      });
+      const list = response?.data?.data;
+
+      if (!Array.isArray(list)) {
+        throw new Error(
+          "API returned an invalid response. Redeploy the latest Vercel build."
+        );
+      }
+
+      setRestaurants(list);
     } catch (err) {
       const isNetworkError =
         !err?.response &&
@@ -28,7 +38,7 @@ const useRestaurants = () => {
         isNetworkError
           ? isLocal
             ? "Cannot reach the API. Start the backend: cd backend && npm run dev"
-            : `Cannot reach the API at ${API_BASE_URL}. Try again in a moment.`
+            : `Cannot reach the API at ${getApiBaseUrl()}. Try again in a moment.`
           : err?.response?.data?.message || "Unable to fetch restaurants"
       );
     } finally {

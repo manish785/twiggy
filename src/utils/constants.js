@@ -32,6 +32,11 @@ function resolveApiBaseUrl() {
   return LOCAL_API_BASE;
 }
 
+export function getApiBaseUrl() {
+  return resolveApiBaseUrl();
+}
+
+/** Resolved once at module load; prefer getRestaurantsUrl() in fetchers. */
 export const API_BASE_URL = resolveApiBaseUrl();
 
 export const AUTH0_DOMAIN =
@@ -46,13 +51,30 @@ export const AUTH0_AUDIENCE =
 
 export const DEV_AUTH_KEY = process.env.REACT_APP_DEV_AUTH_KEY || "";
 
-export const GET_RESTAURANTS_URL = `${API_BASE_URL}/restaurants`;
-export const getRestaurantMenuUrl = (restaurantId) =>
-  `${API_BASE_URL}/restaurants/${restaurantId}/menu`;
-export const CREATE_ORDER_URL = `${API_BASE_URL}/orders`;
-export const getConfirmPaymentUrl = (orderId) =>
-  `${API_BASE_URL}/orders/${orderId}/payments`;
-export const DEV_TOKEN_URL = `${API_BASE_URL}/auth/dev-token`;
+export function getRestaurantsUrl() {
+  return `${getApiBaseUrl()}/restaurants`;
+}
+
+export function getRestaurantMenuUrl(restaurantId) {
+  return `${getApiBaseUrl()}/restaurants/${restaurantId}/menu`;
+}
+
+export function getCreateOrderUrl() {
+  return `${getApiBaseUrl()}/orders`;
+}
+
+export function getConfirmPaymentUrl(orderId) {
+  return `${getApiBaseUrl()}/orders/${orderId}/payments`;
+}
+
+export function getDevTokenUrl() {
+  return `${getApiBaseUrl()}/auth/dev-token`;
+}
+
+/** @deprecated use getRestaurantsUrl() */
+export const GET_RESTAURANTS_URL = getRestaurantsUrl();
+/** @deprecated use getCreateOrderUrl() */
+export const CREATE_ORDER_URL = getCreateOrderUrl();
 
 export const GROCERY_URL =
   "https://cdn.dribbble.com/users/90631/screenshots/16812389/media/7afe0c556ede3387b72f21fe5cc60a57.png";
