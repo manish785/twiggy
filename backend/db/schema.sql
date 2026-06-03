@@ -1,6 +1,25 @@
+/*
+ * FoodHeaven MySQL schema (source of truth for table structure).
+ *
+ * Why this file exists:
+ * - Defines the relational model the Node API expects (restaurants, menus, orders, payments).
+ * - Gives new environments a reproducible bootstrap without hand-written DDL in docs or code.
+ * - Loaded automatically by scripts/init-db.js on first server start (empty DB), and by
+ *   docker-compose / manual `mysql < db/schema.sql` for local and CI setups.
+ *
+ * Not for altering live databases: init-db skips if `restaurants` already exists. Incremental
+ * changes on existing DBs go in src/config/migrate.js (e.g. orders.idempotency_key for older DBs).
+ *
+ * Pair with db/seed.sql for demo restaurant/menu data after tables exist.
+ *
+ * Note: hard-codes database name foodheaven_db (CREATE DATABASE / USE). Set DB_NAME in .env to
+ * match, or adjust these lines for your environment.
+ */
+
 CREATE DATABASE IF NOT EXISTS foodheaven_db;
 USE foodheaven_db;
 
+/* restaurants: catalog header (list/search); id matches Swiggy-style external ids in seed */
 CREATE TABLE IF NOT EXISTS restaurants (
   id BIGINT PRIMARY KEY,
   name VARCHAR(150) NOT NULL,
@@ -17,6 +36,7 @@ CREATE TABLE IF NOT EXISTS restaurants (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+/* menu_items: dishes per restaurant; prices in paise; CASCADE delete when restaurant removed */
 CREATE TABLE IF NOT EXISTS menu_items (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   restaurant_id BIGINT NOT NULL,
@@ -33,6 +53,7 @@ CREATE TABLE IF NOT EXISTS menu_items (
     ON DELETE CASCADE
 );
 
+/* Index on restaurant_id for menu lookups (idempotent: skip if index already exists) */
 SET @idx_menu_exists := (
   SELECT COUNT(1)
   FROM information_schema.statistics
@@ -49,6 +70,7 @@ PREPARE idx_stmt FROM @idx_menu_sql;
 EXECUTE idx_stmt;
 DEALLOCATE PREPARE idx_stmt;
 
+/* orders: checkout header; idempotency_key supports Idempotency-Key header on POST /orders */
 CREATE TABLE IF NOT EXISTS orders (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   order_number VARCHAR(30) NOT NULL UNIQUE,
@@ -68,6 +90,7 @@ CREATE TABLE IF NOT EXISTS orders (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+/* order_items: line items; snapshot item_name/price; RESTRICT delete on menu_item if referenced */
 CREATE TABLE IF NOT EXISTS order_items (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   order_id BIGINT NOT NULL,
@@ -101,6 +124,7 @@ PREPARE idx_stmt FROM @idx_order_items_sql;
 EXECUTE idx_stmt;
 DEALLOCATE PREPARE idx_stmt;
 
+/* payments: one row per order payment attempt; mock gateway provider for local dev */
 CREATE TABLE IF NOT EXISTS payments (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   order_id BIGINT NOT NULL,

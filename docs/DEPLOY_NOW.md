@@ -1,6 +1,6 @@
 # Deploy now (your repo is ready)
 
-Code is pushed to: **https://github.com/manish785/twiggy**
+Code is pushed to: **https://github.com/manish785/foodHeaven**
 
 ---
 
@@ -11,15 +11,15 @@ Code is pushed to: **https://github.com/manish785/twiggy**
 | React app | **Static Site** | repo root | `npm install && npm run build` | `dist` |
 | Node API | **Web Service** | `backend` | `npm ci` | `npm start` |
 
-Do **not** deploy the frontend as a Web Service with `npm start` (Parcel dev) — you get a **blank page**. See [RENDER_FIX_BLANK_PAGE.md](RENDER_FIX_BLANK_PAGE.md).
+Do **not** deploy the frontend as a Web Service with `npm start` (Parcel dev) ï¿½ you get a **blank page**. See [RENDER_FIX_BLANK_PAGE.md](RENDER_FIX_BLANK_PAGE.md).
 
 ---
 
 ## One-click links (use your GitHub account)
 
-### 1. Render — backend API
+### 1. Render ï¿½ backend API
 
-**Open:** https://dashboard.render.com/blueprint/new?repo=https://github.com/manish785/twiggy
+**Open:** https://dashboard.render.com/blueprint/new?repo=https://github.com/manish785/foodHeaven
 
 1. Click **Apply** (creates `foodheaven-api`)
 2. Add environment variables in the dashboard:
@@ -27,7 +27,7 @@ Do **not** deploy the frontend as a Web Service with `npm start` (Parcel dev) — 
 | Key | Value |
 |-----|--------|
 | `DATABASE_URL` | Your MySQL URL (TiDB Cloud free: https://tidbcloud.com) |
-| `CORS_ORIGIN` | *(set after Vercel — step 2)* |
+| `CORS_ORIGIN` | *(set after Vercel ï¿½ step 2)* |
 | `AUTH0_DOMAIN` | `dev-ssvzdizyuhxdvzmr.us.auth0.com` |
 | `AUTH0_AUDIENCE` | `https://api.foodheaven.app` |
 
@@ -37,13 +37,13 @@ Test: https://foodheaven-api.onrender.com/health
 
 ---
 
-### 2. Vercel — frontend
+### 2. Vercel ï¿½ frontend
 
-**Open:** https://vercel.com/new/clone?repository-url=https://github.com/manish785/twiggy
+**Open:** https://vercel.com/new/clone?repository-url=https://github.com/manish785/foodHeaven
 
 1. Import repo (log in with GitHub if asked)
 2. Framework: **Other**
-3. Build: `npm run build` · Output: `dist`
+3. Build: `npm run build` ï¿½ Output: `dist`
 4. Environment variables:
 
 | Key | Value |
@@ -67,7 +67,7 @@ Test: https://foodheaven-api.onrender.com/health
 ## CLI (optional, on your Mac)
 
 ```bash
-# Vercel — one-time login
+# Vercel ï¿½ one-time login
 npx vercel@latest login
 cd /Users/manish/Documents/2.workspace/reactapp/twiggy
 npx vercel@latest --prod
@@ -87,6 +87,6 @@ npx vercel@latest --prod
 
 ## Automated deploy (GitHub Actions)
 
-Add secrets in https://github.com/manish785/twiggy/settings/secrets/actions then run workflow **Deploy Production**.
+Add secrets in https://github.com/manish785/foodHeaven/settings/secrets/actions then run workflow **Deploy Production**.
 
 See `.github/workflows/deploy-production.yml`

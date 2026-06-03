@@ -18,10 +18,10 @@ A blank page is expected with that setup.
 
 ## Fix in Render dashboard (do this now)
 
-### Option A — Create a Static Site (recommended)
+### Option A ï¿½ Create a Static Site (recommended)
 
 1. Render dashboard ? **New +** ? **Static Site**
-2. Connect repo **manish785/twiggy**
+2. Connect repo **manish785/foodHeaven**
 3. Settings:
 
 | Field | Value |
@@ -49,7 +49,7 @@ A blank page is expected with that setup.
 
 6. **Create Static Site** ? wait for deploy ? open the **new** URL (not the old Web Service URL).
 
-### Option B — Fix the existing Web Service (if you keep it)
+### Option B ï¿½ Fix the existing Web Service (if you keep it)
 
 Change **only if** the service is meant to be the API:
 
@@ -81,8 +81,8 @@ Test API: `https://foodheaven-api.onrender.com/health`
 If you don't have an API service yet:
 
 1. **New +** ? **Web Service**
-2. Repo: **twiggy**, Root Directory: **`backend`**
-3. Build: `npm ci` · Start: `npm start`
+2. Repo: **foodHeaven**, Root Directory: **`backend`**
+3. Build: `npm ci` ï¿½ Start: `npm start`
 4. Add `DATABASE_URL` and Auth0 env vars
 5. Set `CORS_ORIGIN` to your **Static Site** URL
 

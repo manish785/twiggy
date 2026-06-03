@@ -1,3 +1,25 @@
+/**
+ * Startup schema migrations (lightweight, idempotent patches).
+ *
+ * Why this file exists:
+ * - Fresh databases are created from `backend/db/schema.sql` via `scripts/init-db.js`,
+ *   which already includes `orders.idempotency_key`.
+ * - Older databases created before that column was added would miss the column and break
+ *   idempotent order creation (`Idempotency-Key` header).
+ * - Re-running the full schema on an existing DB is unsafe (drops/recreates data), so we
+ *   apply small, targeted ALTERs here instead.
+ *
+ * When it runs: `server.js` calls `runMigrations` after DB connectivity check and
+ * `initializeDatabaseIfEmpty`, before Express listens for traffic.
+ *
+ * This is not a migration framework (no version table). Each check is safe to run on
+ * every boot; add new `ensure*` helpers and call them from `runMigrations`.
+ */
+
+/**
+ * Adds `orders.idempotency_key` if missing (matches `backend/db/schema.sql`).
+ * Queries `information_schema` so the ALTER runs only once per database.
+ */
 async function ensureOrderIdempotencyColumn(pool, logger) {
   const [rows] = await pool.query(
     `SELECT COUNT(1) AS columnCount
@@ -19,6 +41,12 @@ async function ensureOrderIdempotencyColumn(pool, logger) {
   logger.info("Migration applied: added orders.idempotency_key");
 }
 
+/**
+ * Runs all startup migrations in order. Extend this when adding new schema patches.
+ *
+ * @param {import('mysql2/promise').Pool} pool - Shared MySQL pool from `config/db.js`
+ * @param {{ info: (msg: string) => void }} logger - App logger from `utils/logger.js`
+ */
 async function runMigrations(pool, logger) {
   await ensureOrderIdempotencyColumn(pool, logger);
 }

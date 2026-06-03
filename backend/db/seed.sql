@@ -1,5 +1,32 @@
+/*
+ * FoodHeaven demo data (restaurants + menu items).
+ *
+ * Why this file exists:
+ * - schema.sql creates empty tables; the API and UI need sample rows to browse and checkout.
+ * - Gives every new developer/deploy a consistent catalog without manual INSERTs or external APIs.
+ * - IDs are fixed (restaurants use explicit BIGINT ids) so frontend mocks and tests stay stable.
+ *
+ * When it runs:
+ * - Right after schema.sql via scripts/init-db.js on first server start (empty database only).
+ * - Docker: docker-entrypoint-initdb.d/02-seed.sql after 01-schema.sql.
+ * - Manual: mysql -u root -p foodheaven_db < db/seed.sql (after schema exists).
+ * - Tests: integration helpers load schema + this file.
+ *
+ * Not for production catalog management: treat as dev/demo data. Real deployments would load
+ * catalog from an admin tool or upstream source, not re-run this file on every deploy.
+ *
+ * Idempotency notes:
+ * - Restaurants: ON DUPLICATE KEY UPDATE refreshes metadata if you re-run the INSERT block.
+ * - Menu: DELETE for known restaurant_ids then INSERT avoids duplicate dishes on re-seed.
+ * - init-db.js skips entirely when restaurants table already exists (seed won't run on boot).
+ *
+ * Data summary: 20 restaurants, 22 menu items (1–2 dishes each). Prices in paise (19900 = ₹199).
+ * cloudinary_image_id / image_id are placeholder asset keys for Cloudinary-style URLs in the app.
+ */
+
 USE foodheaven_db;
 
+/* Demo restaurants — Swiggy-style fixed ids; cuisines stored as JSON_ARRAY */
 INSERT INTO restaurants (
   id,
   name,
@@ -262,12 +289,14 @@ ON DUPLICATE KEY UPDATE
   cuisines = VALUES(cuisines),
   is_active = 1;
 
+/* Replace seed menu rows for demo restaurants (menu_items.id is AUTO_INCREMENT) */
 DELETE FROM menu_items
 WHERE restaurant_id IN (
   55474, 10101, 20202, 30001, 30002, 30003, 30004, 30005, 30006, 30007,
   30008, 30009, 30010, 30011, 30012, 30013, 30014, 30015, 30016, 30017
 );
 
+/* One or two dishes per restaurant; price_paise matches API order/checkout math */
 INSERT INTO menu_items (restaurant_id, name, image_id, price_paise, default_price_paise, rating)
 VALUES
   (55474, 'Margherita Pizza', 'abc123', 19900, 19900, 4.2),

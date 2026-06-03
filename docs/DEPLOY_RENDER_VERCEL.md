@@ -10,7 +10,7 @@
 
 ---
 
-## Step 1 — Push code to GitHub
+## Step 1 ï¿½ Push code to GitHub
 
 ```bash
 git add vercel.json render.yaml backend/scripts/init-db.js docs/
@@ -18,11 +18,11 @@ git commit -m "Add Render and Vercel deployment config"
 git push origin master
 ```
 
-Repo: https://github.com/manish785/twiggy
+Repo: https://github.com/manish785/foodHeaven
 
 ---
 
-## Step 2 — Free MySQL (TiDB Cloud)
+## Step 2 ï¿½ Free MySQL (TiDB Cloud)
 
 1. Sign up at https://tidbcloud.com (free tier, MySQL compatible)
 2. Create a cluster ? get connection string
@@ -32,10 +32,10 @@ Alternatively use Railway, Aiven, or PlanetScale MySQL.
 
 ---
 
-## Step 3 — Deploy backend on Render
+## Step 3 ï¿½ Deploy backend on Render
 
 1. https://dashboard.render.com ? **New** ? **Blueprint**
-2. Connect **manish785/twiggy** repository
+2. Connect **manish785/foodHeaven** repository
 3. Render reads `render.yaml` and creates **foodheaven-api**
 4. In the service **Environment** tab, set:
 
@@ -53,9 +53,9 @@ First boot auto-runs schema + seed if the database is empty.
 
 ---
 
-## Step 4 — Deploy frontend on Vercel
+## Step 4 ï¿½ Deploy frontend on Vercel
 
-1. https://vercel.com/new ? Import **manish785/twiggy**
+1. https://vercel.com/new ? Import **manish785/foodHeaven**
 2. Framework: **Other** (Parcel)
 3. Root directory: `.` (repo root)
 4. Build command: `npm run build`
@@ -73,7 +73,7 @@ First boot auto-runs schema + seed if the database is empty.
 
 ---
 
-## Step 5 — Wire Auth0 + CORS
+## Step 5 ï¿½ Wire Auth0 + CORS
 
 In [Auth0 Dashboard](https://manage.auth0.com/) ? your SPA ? Settings:
 
@@ -87,7 +87,7 @@ On Render, set `CORS_ORIGIN` to your exact Vercel URL and **Manual Deploy**.
 
 ---
 
-## Step 6 — CLI deploy (optional)
+## Step 6 ï¿½ CLI deploy (optional)
 
 ```bash
 # Vercel (from repo root)
@@ -112,6 +112,6 @@ npx vercel@latest --prod
 
 ## Notes
 
-- Render **free** web services sleep after ~15 min inactivity (first request may take 30–60s).
+- Render **free** web services sleep after ~15 min inactivity (first request may take 30ï¿½60s).
 - Do **not** set `REACT_APP_DEV_AUTH_KEY` on Vercel production.
 - Payment requires Auth0 API configured (see `scripts/setup-auth0-api.md`).

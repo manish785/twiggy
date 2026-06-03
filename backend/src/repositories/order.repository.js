@@ -1,7 +1,13 @@
+/**
+ * Order repository — SQL data access only.
+ * All functions take a mysql2 connection (for transactions). No HTTP or pricing logic.
+ */
+// Detect schema missing idempotency_key column (older DB migrations)
 function isMissingIdempotencyColumnError(error) {
   return error?.code === "ER_BAD_FIELD_ERROR";
 }
 
+// Fetch active menu items by id — used to price order lines server-side
 async function findMenuItemsByIds(connection, itemIds) {
   if (!itemIds.length) {
     return [];
@@ -18,6 +24,7 @@ async function findMenuItemsByIds(connection, itemIds) {
   return rows;
 }
 
+// INSERT into orders; falls back to schema without idempotency_key if column absent
 async function createOrder(connection, payload) {
   let result;
   try {
@@ -94,6 +101,7 @@ async function createOrder(connection, payload) {
   return result.insertId;
 }
 
+// Lookup prior order by Idempotency-Key header; null if column missing or no match
 async function findOrderByIdempotencyKey(connection, idempotencyKey) {
   let rows;
   try {
@@ -120,6 +128,7 @@ async function findOrderByIdempotencyKey(connection, idempotencyKey) {
   return rows[0] || null;
 }
 
+// Bulk INSERT order line items (snapshot name/price at order time)
 async function createOrderItems(connection, orderItems) {
   if (!orderItems.length) {
     return;
@@ -147,6 +156,7 @@ async function createOrderItems(connection, orderItems) {
   );
 }
 
+// INSERT initial payment record when order is created
 async function createPayment(connection, payload) {
   const [result] = await connection.query(
     `INSERT INTO payments (
@@ -168,6 +178,7 @@ async function createPayment(connection, payload) {
   return result.insertId;
 }
 
+// Load order header by primary key (for payment confirmation)
 async function findOrderById(connection, orderId) {
   const [rows] = await connection.query(
     `SELECT id, order_number AS orderNumber, total_amount AS totalAmount
@@ -179,6 +190,7 @@ async function findOrderById(connection, orderId) {
   return rows[0] || null;
 }
 
+// Update payment row after mock gateway success/failure
 async function updatePaymentByOrderId(connection, payload) {
   await connection.query(
     `UPDATE payments
@@ -188,6 +200,7 @@ async function updatePaymentByOrderId(connection, payload) {
   );
 }
 
+// Set orders.status (e.g. PENDING → PAID or FAILED)
 async function updateOrderStatus(connection, orderId, status) {
   await connection.query(`UPDATE orders SET status = ? WHERE id = ?`, [
     status,

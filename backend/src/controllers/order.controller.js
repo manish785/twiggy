@@ -1,5 +1,11 @@
+/**
+ * Order controller — thin HTTP adapter between Express and order.service.
+ * Parses request input, calls service, shapes JSON responses. No DB or business rules here.
+ */
+// Business logic, transactions, pricing — lives in the service layer
 const orderService = require("../services/order.service");
 
+// POST /api/v1/orders — merge body with Idempotency-Key header, delegate to service
 async function createOrder(req, res) {
   const order = await orderService.createOrder({
     ...req.body,
@@ -13,6 +19,7 @@ async function createOrder(req, res) {
   });
 }
 
+// POST /api/v1/orders/:orderId/payments — validate route param, then confirm payment
 async function confirmPayment(req, res) {
   const orderId = Number(req.params.orderId);
   if (!Number.isInteger(orderId) || orderId <= 0) {

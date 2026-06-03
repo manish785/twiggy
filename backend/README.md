@@ -8,7 +8,7 @@
 3. Create schema and seed data:
    - `mysql -u root -p < db/schema.sql`
    - `mysql -u root -p < db/seed.sql`
-4. Start backend:
+4. Start backend:k
    - `npm run dev`
 5. Run tests:
    - `npm test`
