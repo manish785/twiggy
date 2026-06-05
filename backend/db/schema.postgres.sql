@@ -6,10 +6,10 @@ CREATE TABLE IF NOT EXISTS restaurants (
   area_name VARCHAR(120),
   avg_rating DECIMAL(3, 2) DEFAULT 0.00,
   cost_for_two_message VARCHAR(60),
-  is_open BOOLEAN NOT NULL DEFAULT TRUE,
+  is_open SMALLINT NOT NULL DEFAULT 1,
   delivery_time_minutes INT NOT NULL DEFAULT 30,
   cuisines JSONB NOT NULL,
-  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_active SMALLINT NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS menu_items (
   price_paise INT,
   default_price_paise INT,
   rating DECIMAL(3, 2),
-  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_active SMALLINT NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
