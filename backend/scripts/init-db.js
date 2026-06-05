@@ -87,6 +87,7 @@ function convertMysqlSeedToPostgres(sql) {
         .map((part) => part.trim().replace(/^'|'$/g, ""));
       return `'${JSON.stringify(items)}'::jsonb`;
     })
+    .replace(/('₹[^']*',\n)\s*1,\n\s*(\d+,)/g, "$1    TRUE,\n    $2")
     .replace(
       /INSERT INTO restaurants[\s\S]*?ON DUPLICATE KEY UPDATE[\s\S]*?;/,
       (statement) =>
