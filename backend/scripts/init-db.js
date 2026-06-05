@@ -99,7 +99,7 @@ function convertMysqlSeedToPostgres(sql) {
   is_open = EXCLUDED.is_open,
   delivery_time_minutes = EXCLUDED.delivery_time_minutes,
   cuisines = EXCLUDED.cuisines,
-  is_active = TRUE`
+  is_active = TRUE;`
         )
     );
 }
