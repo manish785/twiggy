@@ -3,6 +3,7 @@
  * All functions take a DB connection (for transactions). No HTTP or pricing logic.
  */
 const pool = require("../config/db");
+const activeFilter = pool.isPostgres ? "TRUE" : "1";
 
 function isMissingIdempotencyColumnError(error) {
   return (
@@ -24,7 +25,7 @@ async function findMenuItemsByIds(connection, itemIds) {
   const [rows] = await connection.query(
     `SELECT id, name, price_paise AS pricePaise, default_price_paise AS defaultPricePaise
      FROM menu_items
-     WHERE id IN (${placeholders}) AND is_active = 1`,
+     WHERE id IN (${placeholders}) AND is_active = ${activeFilter}`,
     itemIds
   );
 

@@ -1,5 +1,6 @@
-// Shared MySQL pool — all queries run through this singleton
+// Shared DB pool — all queries run through this singleton
 const pool = require("../config/db");
+const activeFilter = pool.isPostgres ? "TRUE" : "1";
 
 // Fetch every active restaurant, highest rated first
 async function findAllRestaurants() {
@@ -17,7 +18,7 @@ async function findAllRestaurants() {
       delivery_time_minutes AS deliveryTimeMinutes,
       cuisines
     FROM restaurants
-    WHERE is_active = 1
+    WHERE is_active = ${activeFilter}
     ORDER BY avg_rating DESC, id DESC`
   );
 
@@ -36,7 +37,7 @@ async function findRestaurantMenuByRestaurantId(restaurantId) {
       default_price_paise AS defaultPrice,
       rating
     FROM menu_items
-    WHERE restaurant_id = ? AND is_active = 1
+    WHERE restaurant_id = ? AND is_active = ${activeFilter}
     ORDER BY id ASC`,
     [restaurantId]
   );
@@ -59,7 +60,7 @@ async function findRestaurantById(restaurantId) {
       delivery_time_minutes AS deliveryTimeMinutes,
       cuisines
     FROM restaurants
-    WHERE id = ? AND is_active = 1
+    WHERE id = ? AND is_active = ${activeFilter}
     LIMIT 1`,
     [restaurantId]
   );
