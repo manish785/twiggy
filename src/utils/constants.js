@@ -7,14 +7,30 @@ export const MENU_ITEM_URL =
 export const BG_URL =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpaeAl1DBJ6LEXy8b2GMdt3fgTfY9NcQHbbgNCauOaA&s";
 
-const DEFAULT_API_BASE = "http://localhost:5000/api/v1";
+const LOCAL_API_BASE = "http://localhost:5000/api/v1";
+const PRODUCTION_API_BASE = "https://foodheaven-api.onrender.com/api/v1";
 
 function resolveApiBaseUrl() {
+  if (typeof window !== "undefined") {
+    const { hostname } = window.location;
+    const isLocal =
+      hostname === "localhost" || hostname === "127.0.0.1";
+
+    if (!isLocal) {
+      return PRODUCTION_API_BASE;
+    }
+  }
+
   const fromEnv = process.env.REACT_APP_API_BASE_URL;
   if (fromEnv) {
     return fromEnv.replace(/\/$/, "");
   }
-  return DEFAULT_API_BASE;
+
+  if (process.env.NODE_ENV === "production") {
+    return PRODUCTION_API_BASE;
+  }
+
+  return LOCAL_API_BASE;
 }
 
 export function getApiBaseUrl() {
