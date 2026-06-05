@@ -55,6 +55,10 @@ docker compose up --build
 
 - `.github/workflows/backend-ci.yml` — unit + integration tests
 
+## Config reference
+
+See [../docs/PROJECT_CONFIG.md](../docs/PROJECT_CONFIG.md) for `docker-compose.yml`, `.env`, `.dockerignore`, and Jest configs.
+
 ## Project Structure
 
 - `src/config` - DB config and migrations

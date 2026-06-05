@@ -4,12 +4,11 @@
   "framework": null,
   "rewrites": [
     {
-      "source": "/((?!api/).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
   "env": {
-    "REACT_APP_API_BASE_URL": "/api/v1",
-    "JWT_SECRET": "foodheaven-jwt-secret-for-vercel-demo"
+    "REACT_APP_API_BASE_URL": "https://foodheaven-api.onrender.com/api/v1"
   }
 }

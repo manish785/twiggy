@@ -77,6 +77,8 @@ Home → Restaurant menu → Cart → Checkout → Payment → Order confirmatio
 
 See [backend/README.md](backend/README.md) for API endpoints.
 
+Config reference (Docker, `.env`, Jest): [docs/PROJECT_CONFIG.md](docs/PROJECT_CONFIG.md).
+
 ## Production
 
 See [docs/production-deploy.md](docs/production-deploy.md) for Auth0, env vars, and deployment checklist.

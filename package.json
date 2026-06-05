@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "start": "parcel index.html",
-    "build": "node scripts/generate-demo-catalog.mjs && parcel build index.html",
+    "build": "parcel build index.html",
     "watch-test": "jest --watch",
     "verify:env": "node scripts/verify-production-env.mjs"
   },
@@ -29,7 +29,6 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.6.7",
-    "jsonwebtoken": "^9.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.6.0",

@@ -7,26 +7,14 @@ export const MENU_ITEM_URL =
 export const BG_URL =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpaeAl1DBJ6LEXy8b2GMdt3fgTfY9NcQHbbgNCauOaA&s";
 
-const LOCAL_API_BASE = "http://localhost:5000/api/v1";
+const DEFAULT_API_BASE = "http://localhost:5000/api/v1";
 
 function resolveApiBaseUrl() {
   const fromEnv = process.env.REACT_APP_API_BASE_URL;
   if (fromEnv) {
     return fromEnv.replace(/\/$/, "");
   }
-
-  if (typeof window !== "undefined") {
-    const { hostname, origin } = window.location;
-    if (hostname.endsWith(".vercel.app")) {
-      return `${origin}/api/v1`;
-    }
-  }
-
-  if (process.env.NODE_ENV === "production") {
-    return "/api/v1";
-  }
-
-  return LOCAL_API_BASE;
+  return DEFAULT_API_BASE;
 }
 
 export function getApiBaseUrl() {
