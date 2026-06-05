@@ -1,10 +1,24 @@
 import { CDN_URL } from "../utils/constants";
 
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=660&q=80";
+
+function resolveRestaurantImage(cloudinaryImageId) {
+  if (!cloudinaryImageId) {
+    return FALLBACK_IMAGE;
+  }
+  if (cloudinaryImageId.startsWith("http")) {
+    return cloudinaryImageId;
+  }
+  return CDN_URL + cloudinaryImageId;
+}
+
 const RestaurantCard = ({
   cloudinaryImageId,
   name = "Unknown Restaurant",
   cuisines = [],
-  costForTwo = "N/A",
+  costForTwo,
+  costForTwoMessage,
   avgRating = "N/A",
   sla = {},
   isOpen = true,
@@ -14,11 +28,11 @@ const RestaurantCard = ({
       <img
         className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         alt={name}
-        src={
-          cloudinaryImageId
-            ? CDN_URL + cloudinaryImageId
-            : "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80"
-        }
+        src={resolveRestaurantImage(cloudinaryImageId)}
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = FALLBACK_IMAGE;
+        }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink-900/70 via-transparent to-transparent" />
       {!isOpen && (
@@ -42,9 +56,13 @@ const RestaurantCard = ({
       <div className="mt-4 flex items-center justify-between border-t border-ink-100 pt-3 text-sm">
         <span className="flex items-center gap-1 text-ink-600">
           <span aria-hidden>⏱</span>
-          {sla?.deliveryTime ? `${sla.deliveryTime} mins` : "—"}
+          {sla?.deliveryTime ?? sla?.deliveryTimeMinutes
+            ? `${sla.deliveryTime ?? sla.deliveryTimeMinutes} mins`
+            : "—"}
         </span>
-        <span className="font-semibold text-ink-800">{costForTwo}</span>
+        <span className="font-semibold text-ink-800">
+          {costForTwoMessage || costForTwo || "N/A"}
+        </span>
       </div>
     </div>
   </article>
