@@ -79,7 +79,7 @@ VALUES
   (
     30001,
     'Spice Route',
-    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'r4ufflqojich0r29efvc',
     'Nehru Nagar',
     'Sector 1',
     4.20,
@@ -91,7 +91,7 @@ VALUES
   (
     30002,
     'Roll Nation',
-    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'rx5zxjcq02d8cmsss13n',
     'Gandhi Chowk',
     'Sector 2',
     4.10,
@@ -103,7 +103,7 @@ VALUES
   (
     30003,
     'South Spice',
-    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    'nzxwzsmafnjk9fvmga5c',
     'Old City',
     'Sector 3',
     4.40,
@@ -115,7 +115,7 @@ VALUES
   (
     30004,
     'Taco Street',
-    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'm8ioxkwre5noqmgpuxpn',
     'Park Avenue',
     'Sector 4',
     4.00,
@@ -127,7 +127,7 @@ VALUES
   (
     30005,
     'Kebab House',
-    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'ebrbgrkwpa4hpibg8our',
     'River Side',
     'Sector 5',
     4.50,
@@ -139,7 +139,7 @@ VALUES
   (
     30006,
     'Noodle Bar',
-    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    '6abyc3k3kskdn9bnl5xt',
     'Tech Park',
     'Sector 6',
     4.30,
@@ -151,7 +151,7 @@ VALUES
   (
     30007,
     'Chai & Chat',
-    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'wwnz3v110eeeawlbamez',
     'Station Road',
     'Sector 7',
     4.00,
@@ -163,7 +163,7 @@ VALUES
   (
     30008,
     'The Salad Lab',
-    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'dqpnapenvlfl5idmoxkm',
     'Green Avenue',
     'Sector 8',
     4.70,
@@ -175,7 +175,7 @@ VALUES
   (
     30009,
     'Wrap It Up',
-    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    'zdpazycrzmpfjdp7c9xn',
     'City Mall',
     'Sector 9',
     4.10,
@@ -187,7 +187,7 @@ VALUES
   (
     30010,
     'Dosa Point',
-    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'b7vrqul5r2fnh7xwk8xb',
     'Temple Road',
     'Sector 10',
     4.50,
@@ -199,7 +199,7 @@ VALUES
   (
     30011,
     'Biryani Blues',
-    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'fiw9xz6ocwv2ddzd4p4l',
     'Central Plaza',
     'Sector 11',
     4.40,
@@ -211,7 +211,7 @@ VALUES
   (
     30012,
     'Momo Junction',
-    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    'gkg3jxsbmpzxtkox07vg',
     'Hill View',
     'Sector 12',
     4.00,
@@ -223,7 +223,7 @@ VALUES
   (
     30013,
     'Pasta Palace',
-    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'h4p7f8g9k2m1n0q3r5s7',
     'Rose Garden',
     'Sector 13',
     4.30,
@@ -235,7 +235,7 @@ VALUES
   (
     30014,
     'Sushi Bay',
-    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'j6k8m0n2p4r6s8t0u2v4',
     'Lake Side',
     'Sector 14',
     4.60,
@@ -247,7 +247,7 @@ VALUES
   (
     30015,
     'BBQ Nation Mini',
-    'rng/md/carousel/production/3967580c0329555334072b18ba3c889c',
+    'l8m0n2p4r6s8t0u2v4w6',
     'Metro Plaza',
     'Sector 15',
     4.20,
@@ -259,7 +259,7 @@ VALUES
   (
     30016,
     'Cake Corner',
-    'rng/md/carousel/production/fd426b942f60921eb65afb229d274574',
+    'n0p2r4s6t8u0v2w4x6y8',
     'Bakery Lane',
     'Sector 16',
     4.10,
@@ -271,7 +271,7 @@ VALUES
   (
     30017,
     'Falafel Factory',
-    '2b4f62d606d1b2bfba9ba9e5386fabb7',
+    'p2r4s6t8u0v2w4x6y8z0',
     'Food Street',
     'Sector 17',
     4.30,

@@ -54,8 +54,20 @@ async function ensureOrderIdempotencyColumn(pool, logger) {
  * @param {import('mysql2/promise').Pool} pool - Shared MySQL pool from `config/db.js`
  * @param {{ info: (msg: string) => void }} logger - App logger from `utils/logger.js`
  */
+const RESTAURANT_IMAGE_IDS = require("../../db/restaurant-images");
+
+async function ensureUniqueRestaurantImages(pool) {
+  for (const [id, imageId] of Object.entries(RESTAURANT_IMAGE_IDS)) {
+    await pool.query(
+      "UPDATE restaurants SET cloudinary_image_id = ? WHERE id = ?",
+      [imageId, id]
+    );
+  }
+}
+
 async function runMigrations(pool, logger) {
   await ensureOrderIdempotencyColumn(pool, logger);
+  await ensureUniqueRestaurantImages(pool, logger);
 }
 
 module.exports = {

@@ -1,5 +1,6 @@
 // Shared DB pool — all queries run through this singleton
 const pool = require("../config/db");
+const { mapRestaurantRow, mapMenuItemRow } = require("./rowMappers");
 const activeFilter = pool.isPostgres ? "TRUE" : "1";
 
 // Fetch every active restaurant, highest rated first
@@ -22,7 +23,7 @@ async function findAllRestaurants() {
     ORDER BY avg_rating DESC, id DESC`
   );
 
-  return rows;
+  return rows.map(mapRestaurantRow);
 }
 
 // Fetch active menu items for one restaurant (prices stored in paise)
@@ -42,7 +43,7 @@ async function findRestaurantMenuByRestaurantId(restaurantId) {
     [restaurantId]
   );
 
-  return rows;
+  return rows.map(mapMenuItemRow);
 }
 
 // Fetch a single active restaurant by primary key, or null if not found
@@ -66,7 +67,7 @@ async function findRestaurantById(restaurantId) {
   );
 
   // Empty result set → null so the service can return 404
-  return rows[0] || null;
+  return rows[0] ? mapRestaurantRow(rows[0]) : null;
 }
 
 module.exports = {

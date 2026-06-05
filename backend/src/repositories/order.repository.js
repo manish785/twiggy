@@ -3,6 +3,7 @@
  * All functions take a DB connection (for transactions). No HTTP or pricing logic.
  */
 const pool = require("../config/db");
+const { mapMenuItemRow } = require("./rowMappers");
 const activeFilter = pool.isPostgres ? "TRUE" : "1";
 
 function isMissingIdempotencyColumnError(error) {
@@ -29,7 +30,15 @@ async function findMenuItemsByIds(connection, itemIds) {
     itemIds
   );
 
-  return rows;
+  return rows.map((row) => {
+    const mapped = mapMenuItemRow(row);
+    return {
+      id: mapped.id,
+      name: mapped.name,
+      pricePaise: mapped.price,
+      defaultPricePaise: mapped.defaultPrice,
+    };
+  });
 }
 
 // INSERT into orders; falls back to schema without idempotency_key if column absent
