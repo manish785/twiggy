@@ -70,8 +70,16 @@ async function runSqlFile(connection, filePath) {
  * @param {import('mysql2/promise').Pool} pool - Shared MySQL pool from `src/config/db.js`
  * @returns {Promise<boolean>} `true` if schema+seed ran; `false` if already initialized
  */
-function convertMysqlSeedToPostgres(sql) {
+function stripSqlComments(sql) {
   return sql
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .split("\n")
+    .filter((line) => !line.trim().startsWith("--"))
+    .join("\n");
+}
+
+function convertMysqlSeedToPostgres(sql) {
+  return stripSqlComments(sql)
     .replace(/USE foodheaven_db;\s*/g, "")
     .replace(/JSON_ARRAY\(([^)]+)\)/g, (_match, inner) => {
       const items = inner
@@ -80,15 +88,19 @@ function convertMysqlSeedToPostgres(sql) {
       return `'${JSON.stringify(items)}'::jsonb`;
     })
     .replace(
-      /ON DUPLICATE KEY UPDATE[\s\S]*?;/,
-      `ON CONFLICT (id) DO UPDATE SET
+      /INSERT INTO restaurants[\s\S]*?ON DUPLICATE KEY UPDATE[\s\S]*?;/,
+      (statement) =>
+        statement.replace(
+          /ON DUPLICATE KEY UPDATE[\s\S]*$/,
+          `ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   avg_rating = EXCLUDED.avg_rating,
   cost_for_two_message = EXCLUDED.cost_for_two_message,
   is_open = EXCLUDED.is_open,
   delivery_time_minutes = EXCLUDED.delivery_time_minutes,
   cuisines = EXCLUDED.cuisines,
-  is_active = TRUE;`
+  is_active = TRUE`
+        )
     );
 }
 
@@ -97,7 +109,15 @@ async function initializeDatabaseIfEmpty(pool) {
     throw new Error("DB_NAME is required to initialize the database");
   }
 
-  if (await tableExists(pool)) {
+  const hasRestaurants = await tableExists(pool);
+  const [countRows] = await pool.query(
+    hasRestaurants
+      ? "SELECT COUNT(1) AS count FROM restaurants"
+      : "SELECT 0 AS count"
+  );
+  const restaurantCount = Number(countRows[0]?.count || 0);
+
+  if (hasRestaurants && restaurantCount > 0) {
     return false;
   }
 
@@ -109,7 +129,9 @@ async function initializeDatabaseIfEmpty(pool) {
 
   // eslint-disable-next-line no-console
   console.log("Initializing database (schema + seed)...");
-  await runSqlFile(pool, schemaPath);
+  if (!hasRestaurants) {
+    await runSqlFile(pool, schemaPath);
+  }
 
   const seedSql = fs.readFileSync(seedPath, "utf8");
   const seedToRun = isPostgres ? convertMysqlSeedToPostgres(seedSql) : seedSql;
