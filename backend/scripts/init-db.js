@@ -27,13 +27,23 @@ const path = require("path");
  * Returns true if `restaurants` already exists in the configured database.
  * Used as a simple signal that schema.sql has been applied at least once.
  */
-async function tableExists(connection, databaseName) {
-  const [rows] = await connection.query(
-    `SELECT COUNT(1) AS count
-     FROM information_schema.tables
-     WHERE table_schema = ? AND table_name = 'restaurants'`,
-    [databaseName]
-  );
+const isPostgres = Boolean(
+  process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith("postgres")
+);
+
+async function tableExists(connection) {
+  const [rows] = isPostgres
+    ? await connection.query(
+        `SELECT COUNT(1) AS count
+         FROM information_schema.tables
+         WHERE table_schema = 'public' AND table_name = 'restaurants'`
+      )
+    : await connection.query(
+        `SELECT COUNT(1) AS count
+         FROM information_schema.tables
+         WHERE table_schema = ? AND table_name = 'restaurants'`,
+        [process.env.DB_NAME]
+      );
   return Number(rows[0]?.count || 0) > 0;
 }
 
@@ -60,23 +70,57 @@ async function runSqlFile(connection, filePath) {
  * @param {import('mysql2/promise').Pool} pool - Shared MySQL pool from `src/config/db.js`
  * @returns {Promise<boolean>} `true` if schema+seed ran; `false` if already initialized
  */
+function convertMysqlSeedToPostgres(sql) {
+  return sql
+    .replace(/USE foodheaven_db;\s*/g, "")
+    .replace(/JSON_ARRAY\(([^)]+)\)/g, (_match, inner) => {
+      const items = inner
+        .split(",")
+        .map((part) => part.trim().replace(/^'|'$/g, ""));
+      return `'${JSON.stringify(items)}'::jsonb`;
+    })
+    .replace(
+      /ON DUPLICATE KEY UPDATE[\s\S]*?;/,
+      `ON CONFLICT (id) DO UPDATE SET
+  name = EXCLUDED.name,
+  avg_rating = EXCLUDED.avg_rating,
+  cost_for_two_message = EXCLUDED.cost_for_two_message,
+  is_open = EXCLUDED.is_open,
+  delivery_time_minutes = EXCLUDED.delivery_time_minutes,
+  cuisines = EXCLUDED.cuisines,
+  is_active = TRUE;`
+    );
+}
+
 async function initializeDatabaseIfEmpty(pool) {
-  const databaseName = process.env.DB_NAME;
-  if (!databaseName) {
+  if (!isPostgres && !process.env.DB_NAME) {
     throw new Error("DB_NAME is required to initialize the database");
   }
 
-  if (await tableExists(pool, databaseName)) {
+  if (await tableExists(pool)) {
     return false;
   }
 
-  const schemaPath = path.resolve(__dirname, "../db/schema.sql");
+  const schemaPath = path.resolve(
+    __dirname,
+    isPostgres ? "../db/schema.postgres.sql" : "../db/schema.sql"
+  );
   const seedPath = path.resolve(__dirname, "../db/seed.sql");
 
   // eslint-disable-next-line no-console
   console.log("Initializing database (schema + seed)...");
   await runSqlFile(pool, schemaPath);
-  await runSqlFile(pool, seedPath);
+
+  const seedSql = fs.readFileSync(seedPath, "utf8");
+  const seedToRun = isPostgres ? convertMysqlSeedToPostgres(seedSql) : seedSql;
+  const seedStatements = seedToRun
+    .split(/;\s*\n/)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0 && !s.startsWith("--"));
+
+  for (const statement of seedStatements) {
+    await pool.query(statement);
+  }
   // eslint-disable-next-line no-console
   console.log("Database initialized successfully");
   return true;

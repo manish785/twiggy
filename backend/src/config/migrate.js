@@ -21,6 +21,13 @@
  * Queries `information_schema` so the ALTER runs only once per database.
  */
 async function ensureOrderIdempotencyColumn(pool, logger) {
+  if (pool.isPostgres) {
+    await pool.query(
+      "ALTER TABLE orders ADD COLUMN IF NOT EXISTS idempotency_key VARCHAR(80) UNIQUE"
+    );
+    return;
+  }
+
   const [rows] = await pool.query(
     `SELECT COUNT(1) AS columnCount
      FROM information_schema.columns

@@ -1,10 +1,17 @@
 /**
  * Order repository — SQL data access only.
- * All functions take a mysql2 connection (for transactions). No HTTP or pricing logic.
+ * All functions take a DB connection (for transactions). No HTTP or pricing logic.
  */
-// Detect schema missing idempotency_key column (older DB migrations)
+const pool = require("../config/db");
+
 function isMissingIdempotencyColumnError(error) {
-  return error?.code === "ER_BAD_FIELD_ERROR";
+  return (
+    error?.code === "ER_BAD_FIELD_ERROR" || error?.code === "42703"
+  );
+}
+
+function getInsertId(rows) {
+  return Number(rows?.[0]?.id || 0);
 }
 
 // Fetch active menu items by id — used to price order lines server-side
@@ -26,9 +33,10 @@ async function findMenuItemsByIds(connection, itemIds) {
 
 // INSERT into orders; falls back to schema without idempotency_key if column absent
 async function createOrder(connection, payload) {
-  let result;
+  const returning = pool.isPostgres ? " RETURNING id" : "";
+
   try {
-    [result] = await connection.query(
+    const [rows] = await connection.query(
       `INSERT INTO orders (
         order_number,
         idempotency_key,
@@ -43,7 +51,7 @@ async function createOrder(connection, payload) {
         delivery_fee,
         total_amount,
         status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)${returning}`,
       [
         payload.orderNumber,
         payload.idempotencyKey,
@@ -60,13 +68,15 @@ async function createOrder(connection, payload) {
         payload.status,
       ]
     );
+
+    return pool.isPostgres ? getInsertId(rows) : rows.insertId;
   } catch (error) {
     if (!isMissingIdempotencyColumnError(error)) {
       throw error;
     }
 
-    // Backward compatibility for older DB schema without idempotency_key.
-    [result] = await connection.query(
+    const returningFallback = pool.isPostgres ? " RETURNING id" : "";
+    const [rows] = await connection.query(
       `INSERT INTO orders (
         order_number,
         customer_name,
@@ -80,7 +90,7 @@ async function createOrder(connection, payload) {
         delivery_fee,
         total_amount,
         status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)${returningFallback}`,
       [
         payload.orderNumber,
         payload.customerName,
@@ -96,9 +106,9 @@ async function createOrder(connection, payload) {
         payload.status,
       ]
     );
-  }
 
-  return result.insertId;
+    return pool.isPostgres ? getInsertId(rows) : rows.insertId;
+  }
 }
 
 // Lookup prior order by Idempotency-Key header; null if column missing or no match
@@ -134,38 +144,39 @@ async function createOrderItems(connection, orderItems) {
     return;
   }
 
-  const values = orderItems.map((item) => [
-    item.orderId,
-    item.menuItemId,
-    item.itemName,
-    item.unitPrice,
-    item.quantity,
-    item.lineTotal,
-  ]);
-
-  await connection.query(
-    `INSERT INTO order_items (
-      order_id,
-      menu_item_id,
-      item_name,
-      unit_price,
-      quantity,
-      line_total
-    ) VALUES ?`,
-    [values]
-  );
+  for (const item of orderItems) {
+    await connection.query(
+      `INSERT INTO order_items (
+        order_id,
+        menu_item_id,
+        item_name,
+        unit_price,
+        quantity,
+        line_total
+      ) VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        item.orderId,
+        item.menuItemId,
+        item.itemName,
+        item.unitPrice,
+        item.quantity,
+        item.lineTotal,
+      ]
+    );
+  }
 }
 
 // INSERT initial payment record when order is created
 async function createPayment(connection, payload) {
-  const [result] = await connection.query(
+  const returning = pool.isPostgres ? " RETURNING id" : "";
+  const [rows] = await connection.query(
     `INSERT INTO payments (
       order_id,
       provider,
       payment_method,
       amount,
       status
-    ) VALUES (?, ?, ?, ?, ?)`,
+    ) VALUES (?, ?, ?, ?, ?)${returning}`,
     [
       payload.orderId,
       payload.provider,
@@ -175,7 +186,7 @@ async function createPayment(connection, payload) {
     ]
   );
 
-  return result.insertId;
+  return pool.isPostgres ? getInsertId(rows) : rows.insertId;
 }
 
 // Load order header by primary key (for payment confirmation)
